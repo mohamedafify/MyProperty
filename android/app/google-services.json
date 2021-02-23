@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "689667879741",
+    "project_id": "my-property-10680",
+    "storage_bucket": "my-property-10680.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689667879741:android:b736a1f3ea9c4061870b54",
+        "android_client_info": {
+          "package_name": "com.MohamedAfify.my_property"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689667879741-na2tli8kjmcrclgf6g35qt8966sbjfc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA54RjD1IBszCiOR_DYUSDrHU07UwbW4lI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689667879741-na2tli8kjmcrclgf6g35qt8966sbjfc2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
