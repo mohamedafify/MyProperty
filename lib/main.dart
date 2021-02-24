@@ -1,22 +1,59 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_property/screens/landing.dart';
-import 'package:my_property/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-Future<void> main() async{
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-    runApp(MyApp());
+void main() {
+	WidgetsFlutterBinding.ensureInitialized();
+	runApp(App());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
+class App extends StatelessWidget {
+	final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+	@override
+	Widget build(BuildContext context) {
+		return FutureBuilder(
+			future: _initialization,
+			builder: (context, snapshot) {
+				if (snapshot.hasError) {
+					return UnexpectedError();
+				}
+				if (snapshot.connectionState == ConnectionState.done) {
+					return MaterialApp(
+						theme: ThemeData.light(),
+						debugShowCheckedModeBanner: false,
+						home: AuthService().handleAuth(),
+					);
+				}
+				return Loading();
+			},
+		);
+	}
+}
+
+class UnexpectedError extends StatelessWidget {
+	@override
 	Widget build(BuildContext context) {
 		return MaterialApp(
-			//home: Wrapper(),
-			home: Landing(),
-	);
+				theme: ThemeData.dark(),
+				home: Scaffold(
+						appBar: AppBar(title: Text('MyProperty')),
+						body: Center(
+							child: Text('Something went wrong... try again later'),
+						)));
+	}
+}
+
+
+class Loading extends StatelessWidget {
+	@override
+	Widget build(BuildContext context) {
+		return MaterialApp(
+				theme: ThemeData.dark(),
+				home: Scaffold(
+						appBar: AppBar(title: Text('MyProperty')),
+						body: Center(
+							child: Text('App loading...'),
+						)));
 	}
 }
