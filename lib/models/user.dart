@@ -1,29 +1,6 @@
-import 'package:flutter/cupertino.dart';
-
-enum Gender {
-	male,
-	female,
-	other
-}
-
-enum LoginStatus {
-	online,
-	offline
-}
-class User {
+class MyUser {
+	final String name;
 	final String uid;
-	final Gender gender;
-	Image profilePicture;
-	String name;
-	String password;
-	String email;
-	String address;
-	LoginStatus loginStatus;
-
-	User(String name, this.uid, String password, String email, this.gender, String address) {
-		this.name = name;
-		this.password = password;
-		this.email = email;
-		this.address = address;
-	}
+	final String email;
+	MyUser(this.name, this.uid, this.email);
 }

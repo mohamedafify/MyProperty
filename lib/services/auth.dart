@@ -1,17 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_property/models/user.dart' as my;
+import 'package:my_property/models/user.dart';
 
 class AuthService {
-
 	final FirebaseAuth _auth = FirebaseAuth.instance;
 
-	//TODO convert firebase user to my.user
+	// change firebase user to MyUser
+	MyUser _userFromFirebaseUser(User user) {
+		return (user != null) ? MyUser(user.displayName, user.uid, user.email) : null;
+	}
 
 	// authentication change for user sign in/out
-	Stream<User> get user {
-		return _auth.authStateChanges();
-		//Tuturial #7 7:10
-		//TODO use .map to chagne it to my.User
+	Stream<MyUser> get user {
+		return _auth.authStateChanges()
+			.map(_userFromFirebaseUser);
+			// map the authentication state change to MyUser
 	}
 
 	// Sign in with email and password
@@ -37,16 +39,17 @@ class AuthService {
 			return null;
 		}
 	}
-	//TODO register with Gmail
 
 	// Sign out
-	Future<void> signOut() async {
+	Future signOut() async {
 		try {
-		  await _auth.signOut();
-		  print("Signed Out Successfully");
+			print("Signed Out Successfully");
+			return await _auth.signOut();
 		} catch (e) {
 			print(e.toString());
+			return null;
 		}
 	}
+	//TODO register with Gmail
 
 }

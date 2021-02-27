@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_property/services/auth.dart';
+import 'package:my_property/utils/show_dialog.dart';
 
 class SignIn extends StatefulWidget {
 	@override
 	_SignInState createState() => _SignInState();
 }
-
+//TODO design the signup page
 class _SignInState extends State<SignIn> {
 	final AuthService _auth = AuthService();
 
@@ -27,11 +28,13 @@ class _SignInState extends State<SignIn> {
 					//TODO implement email and password widgets to get user info from
 					// Testing Sign in 
 				dynamic user = await _auth.signInEmailandPassword(email: "afify.afify.1999@gmail.com", password: "123qwe");                 
+				ShowDialog signInDialog = ShowDialog();
 				if (user == null) {
 					print("Error Siging in");
+					signInDialog.showDialogOnScreen(context, "SignIn", "SignInError");
 				} else {
 					print("Signed In Succesfully");
-					print(user);
+					signInDialog.showDialogOnScreen(context, "SignIn", "SignedInSuccessfully");
 				}
 				}
 			),
