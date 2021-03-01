@@ -10,34 +10,60 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
 	final AuthService _auth = AuthService();
 
+	String _email = "";
+	String _password = "";
+
 	@override
 	Widget build(BuildContext context) {
 	return Scaffold(
-		backgroundColor: Colors.black12,
+		backgroundColor: Colors.blue[100],
 		appBar: AppBar(
-			backgroundColor: Colors.black26,
+			backgroundColor: Colors.blue[300],
 			elevation: 0.0,
-			title: Text("SignIn to My Property"),
+			title: Text("SignIn to MyProperty"),
 		),
 		body: Container(
 			padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-			child: RaisedButton(
-				padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-				child: Text("Sign in with email and password"),
-				onPressed: () async{
-					//TODO implement email and password widgets to get user info from
-					// Testing Sign in 
-				dynamic user = await _auth.signInEmailandPassword(email: "afify.afify.1999@gmail.com", password: "123qwe");                 
-				ShowDialog signInDialog = ShowDialog();
-				if (user == null) {
-					print("Error Siging in");
-					signInDialog.showDialogOnScreen(context, "SignIn", "SignInError");
-				} else {
-					print("Signed In Succesfully");
-					signInDialog.showDialogOnScreen(context, "SignIn", "SignedInSuccessfully");
-				}
-				}
-			),
+			child: Center(
+			  child: Form(
+			  	child: Column(
+			  		children:<Widget> [
+			  			SizedBox(height: 20.0),
+			  			TextFormField(
+			  				onChanged: (val) {
+			  					setState(() => _email = val);
+			  				},
+			  			),
+			  			SizedBox(height: 20.0),
+			  			TextFormField(
+			  				obscureText: true,
+			  				onChanged: (val) {
+			  					setState(() => _password = val);
+			  				},
+			  			),
+			  			SizedBox(height: 20.0),
+			  			RaisedButton(
+			  				child: Text(
+			  					"Sign In",
+			  					// style: TextStyle(color: Colors.white)
+			  				),
+			  				onPressed: () async {
+			  					dynamic user = await _auth.signInEmailandPassword(email: this._email, password: this._password);
+			  					ShowDialog signInDialog = ShowDialog();
+			  					if (user == null) {
+			  						print("Error Siging in");
+			  						signInDialog.showDialogOnScreen(context, "SignIn", "SignInError");
+			  					} else {
+			  						print("Signed In Succesfully");
+			  						signInDialog.showDialogOnScreen(context, "SignIn", "SignedInSuccessfully");
+			  					}
+			  				},
+			  			)
+			  		],
+			  	)
+			  ),
+			) 
+			// ),
 		)
 	);
 	}
