@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_property/models/user.dart';
 
@@ -21,9 +23,10 @@ class AuthService {
 		try {
 		   UserCredential credintials = await _auth.signInWithEmailAndPassword(email: email, password: password);
 		   User user = credintials.user;
+		   developer.log("signedIn Successfully", name: "auth_signIn");
 		   return user;
 		} catch (e) {
-			print(e.toString());
+			developer.log(e.toString(), name: "auth_signInERROR");
 			return null;
 		}
 	}
@@ -33,9 +36,10 @@ class AuthService {
 		try {
 			UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 			User user = credential.user;
+			developer.log("registered Successfully", name: "auth_register");
 			return user;
 		} catch (e) {
-			print(e.toString());
+			developer.log(e.toString(), name: "auth_registerERROR");
 			return null;
 		}
 	}
@@ -43,10 +47,10 @@ class AuthService {
 	// Sign out
 	Future signOut() async {
 		try {
-			print("Signed Out Successfully");
+			developer.log("Signed Out Successfully", name: "auth_signOut");
 			return await _auth.signOut();
 		} catch (e) {
-			print(e.toString());
+			developer.log(e.toString(), name: "auth_signOutERROR");
 			return null;
 		}
 	}
