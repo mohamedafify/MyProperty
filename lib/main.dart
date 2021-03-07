@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_property/screens/utils/constant.dart';
 import 'package:my_property/screens/wrapper.dart';
 import 'package:my_property/services/auth.dart';
 import 'package:my_property/models/user.dart';
@@ -19,8 +20,9 @@ class MyApp extends StatelessWidget {
 		return StreamProvider<MyUser>.value(
 			value: AuthService().user,
 			child: MaterialApp(
-		  		home: Wrapper(),
-		  ),
+				theme: ThemeData(fontFamily: Constant.font),
+				home: Wrapper(),
+			),
 		);
 	}
 }

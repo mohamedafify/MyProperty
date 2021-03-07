@@ -14,39 +14,76 @@ class _AuthenticateState extends State<Authenticate> {
   Widget build(BuildContext context) {
 	return Container(
 		color: Constant.backgroundColor,
-		padding: EdgeInsets.symmetric(vertical: 100.0, horizontal: 40.0),
-		child: Form(
-			child: Column(
-				children:<Widget> [
-					FlatButton(
-						child: Text("SignUp"),
-						onPressed: () {
-							Navigator.push(
-							context,
-							MaterialPageRoute(builder: (context) => Register()),
-							);
-						},
+		// decoration: BoxDecoration(backgroundBlendMode: ),
+		padding: EdgeInsets.fromLTRB(20.0, 150.0, 20.0, 20.0),
+		child: Column(
+			children:<Widget> [
+				FlatButton(
+					child: Text(
+						"Create account",
+						style: TextStyle(
+							fontSize: 30.0,
+							color: Constant.buttonTextColor,
+						),
 					),
-					FlatButton(
-						child: Text("SignIn"),
-						onPressed: () {
-							Navigator.push(
-							context,
-							MaterialPageRoute(builder: (context) => SignIn()),
-							);
-						},
+					onPressed: () {
+						Navigator.push(
+						context,
+						MaterialPageRoute(builder: (context) => Register()),
+						);
+					},
+				),
+				Flexible(
+				  child: FractionallySizedBox(
+				  	heightFactor: 0.7,
+				  ),
+				),
+				Text(
+					"Just want to look around",
+					textAlign: TextAlign.center,
+					style: TextStyle(
+						fontSize: 24.0,
+						fontFamily: Constant.font,
+						fontWeight: FontWeight.normal,
+						color: Constant.buttonTextColor,
+						decoration: TextDecoration.none,
 					),
-					FlatButton(
-						child: Text("Guest"),
-						onPressed: () {
-							Navigator.push(
-							context,
-							MaterialPageRoute(builder: (context) => Home()),
-							);
-						},
+				),
+				FlatButton(
+					child: Text(
+						"Join as Guest",
+						style: TextStyle(
+							fontSize: 30.0,
+							color: Constant.buttonTextColor,
+						),
 					),
-				],
-			),
+					onPressed: () {
+						Navigator.push(
+						context,
+						MaterialPageRoute(builder: (context) => Home()),
+						);
+					},
+				),
+				Flexible(
+				  child: FractionallySizedBox(
+				  	heightFactor: 0.7,
+				  ),
+				),
+				FlatButton( 
+					child: Text(
+						"Have an account already? SignIn",
+						style: TextStyle(
+							color: Constant.buttonTextColor,
+						),
+					),
+					onPressed: () {
+						Navigator.push(
+						context,
+						MaterialPageRoute(builder: (context) => SignIn()),
+						);
+					},
+				),
+			],
 		),
 	);
   }
