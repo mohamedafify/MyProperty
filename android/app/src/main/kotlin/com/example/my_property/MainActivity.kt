@@ -1,4 +1,4 @@
-package com.example.my_property
+package com.example.MyProperty
 
 import io.flutter.embedding.android.FlutterActivity
 

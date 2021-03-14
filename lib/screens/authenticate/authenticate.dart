@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_property/screens/authenticate/sign_in.dart';
-import 'package:my_property/screens/authenticate/register.dart';
-import 'package:my_property/screens/home/home.dart';
-import 'package:my_property/screens/utils/constant.dart';
+import 'package:MyProperty/screens/authenticate/sign_in.dart';
+import 'package:MyProperty/screens/authenticate/register.dart';
+import 'package:MyProperty/screens/home/home.dart';
+import 'package:MyProperty/utils/constant.dart';
 
 class Authenticate extends StatefulWidget {
   @override
@@ -14,11 +14,10 @@ class _AuthenticateState extends State<Authenticate> {
   Widget build(BuildContext context) {
 	return Container(
 		color: Constant.backgroundColor,
-		// decoration: BoxDecoration(backgroundBlendMode: ),
-		padding: EdgeInsets.fromLTRB(20.0, 150.0, 20.0, 20.0),
+		padding: EdgeInsets.fromLTRB(20.0, 130.0, 20.0, 20.0),
 		child: Column(
 			children:<Widget> [
-				FlatButton(
+				TextButton(
 					child: Text(
 						"Create account",
 						style: TextStyle(
@@ -35,7 +34,7 @@ class _AuthenticateState extends State<Authenticate> {
 				),
 				Flexible(
 				  child: FractionallySizedBox(
-				  	heightFactor: 0.7,
+				  	heightFactor: 1.0,
 				  ),
 				),
 				Text(
@@ -49,7 +48,7 @@ class _AuthenticateState extends State<Authenticate> {
 						decoration: TextDecoration.none,
 					),
 				),
-				FlatButton(
+				TextButton(
 					child: Text(
 						"Join as Guest",
 						style: TextStyle(
@@ -66,10 +65,10 @@ class _AuthenticateState extends State<Authenticate> {
 				),
 				Flexible(
 				  child: FractionallySizedBox(
-				  	heightFactor: 0.7,
+				  	heightFactor: 1.0,
 				  ),
 				),
-				FlatButton( 
+				TextButton( 
 					child: Text(
 						"Have an account already? SignIn",
 						style: TextStyle(

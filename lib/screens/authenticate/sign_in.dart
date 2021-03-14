@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_property/screens/utils/constant.dart';
-import 'package:my_property/services/auth.dart';
-import 'package:my_property/utils/show_dialog.dart';
+import 'package:MyProperty/utils/constant.dart';
+import 'package:MyProperty/services/auth.dart';
+import 'package:MyProperty/utils/show_dialog.dart';
+import 'package:MyProperty/utils/loading.dart';
 
 class SignIn extends StatefulWidget {
 	@override
@@ -10,13 +11,15 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
 	final AuthService _auth = AuthService();
+	final _formKey = GlobalKey<FormState>();
+	bool loading = false;
 
 	String _email = "";
 	String _password = "";
 
 	@override
 	Widget build(BuildContext context) {
-		return Scaffold(
+		return loading ? Loading() : Scaffold(
 			backgroundColor: Constant.backgroundColor,
 			appBar: AppBar(
 				leading: BackButton(
@@ -36,28 +39,33 @@ class _SignInState extends State<SignIn> {
 			child: Container(
 				padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
 					child: Form(
+						key: _formKey,
 						child: Column(
 							children:<Widget> [
 								SizedBox(height: 20.0),
+								// email
 								TextFormField(
+									// TODO make an email validator
+									validator: (val) => val.isEmpty ? "Enter valid email" : null,
 									keyboardType: TextInputType.emailAddress,
 									decoration: InputDecoration(
 										hintText: "Email"
 									),
 									onChanged: (val) {
-										_email = val;
-										// setState(() => _email = val);
+										setState(() => _email = val);
 									},
 								),
 								SizedBox(height: 20.0),
+								// password
 								TextFormField(
+									// TODO make a password validator
+									validator: (val) => val.length < 8 ? "Enter valid password" : null,
 									obscureText: true,
 									decoration: InputDecoration(
 									hintText: "Password"
 									),
 									onChanged: (val) {
-										_password = val;
-										// setState(() => _password = val);
+										setState(() => _password = val);
 									},
 								),
 								SizedBox(height: 20.0),
@@ -69,16 +77,20 @@ class _SignInState extends State<SignIn> {
 											),
 									),
 									onPressed: () async {
-										dynamic user = await _auth.signInEmailandPassword(email: this._email, password: this._password);
-										ShowDialog signInDialog = ShowDialog();
-										// pop the signIn widget from authentication push
-										if (user == null) {
-											print("Error Siging in");
-											signInDialog.showDialogOnScreen(context, "SignIn", "SignInError");
-										} else {
-											print("Signed In Succesfully");
-											Navigator.pop(context);
-											signInDialog.showDialogOnScreen(context, "SignIn", "SignedInSuccessfully");
+										if (_formKey.currentState.validate()) {
+											setState(() => loading = true);
+											dynamic user = await _auth.signInEmailandPassword(email: this._email, password: this._password);
+											ShowDialog signInDialog = ShowDialog();
+											// pop the signIn widget from authentication push
+											if (user == null) {
+												print("Error Siging in");
+												signInDialog.showDialogOnScreen(context, "SignIn", "SignInError");
+											} else {
+												print("Signed In Succesfully");
+												Navigator.pop(context);
+												signInDialog.showDialogOnScreen(context, "SignIn", "SignedInSuccessfully");
+											}
+											setState(() => loading = false);
 										}
 									},
 								),

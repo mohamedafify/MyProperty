@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_property/screens/utils/constant.dart';
-import 'package:my_property/screens/wrapper.dart';
-import 'package:my_property/services/auth.dart';
-import 'package:my_property/models/user.dart';
+import 'package:MyProperty/utils/constant.dart';
+import 'package:MyProperty/screens/wrapper.dart';
+import 'package:MyProperty/services/auth.dart';
+import 'package:MyProperty/models/user.dart';
 import 'package:provider/provider.dart';
 
 

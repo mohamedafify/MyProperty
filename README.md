@@ -1,4 +1,4 @@
-# my_property
+# MyProperty
 
 A new Flutter project.
 

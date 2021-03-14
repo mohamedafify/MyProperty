@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_property/services/auth.dart';
+import 'package:MyProperty/utils/constant.dart';
+import 'package:MyProperty/services/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:my_property/models/user.dart';
+import 'package:MyProperty/models/user.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -21,9 +22,17 @@ class _HomeState extends State<Home> {
 			appBar: AppBar(
 				title: Text("Home"),
 				actions: [
-					FlatButton.icon(
-						icon: Icon(Icons.person),
-						label: Text("Sign Out"),
+					TextButton.icon(
+						icon: Icon(
+							Icons.person,
+							color: Constant.backgroundColor,
+						),
+						label: Text(
+							"Sign Out",
+							style: TextStyle(
+								color: Constant.buttonTextColor
+							),
+						),
 						onPressed: () async {
 							await _auth.signOut();
 						},

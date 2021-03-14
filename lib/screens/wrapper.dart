@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_property/models/user.dart';
-import 'package:my_property/screens/authenticate/authenticate.dart';
-import 'package:my_property/screens/home/home.dart';
+import 'package:MyProperty/models/user.dart';
+import 'package:MyProperty/screens/authenticate/authenticate.dart';
+import 'package:MyProperty/screens/home/home.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {

@@ -1,9 +1,10 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:my_property/screens/utils/constant.dart';
-import 'package:my_property/services/auth.dart';
-import 'package:my_property/utils/show_dialog.dart';
+import 'package:MyProperty/utils/constant.dart';
+import 'package:MyProperty/utils/loading.dart';
+import 'package:MyProperty/services/auth.dart';
+import 'package:MyProperty/utils/show_dialog.dart';
 
 class Register extends StatefulWidget {
 	@override
@@ -12,13 +13,17 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 	final AuthService _auth = AuthService();
+	final _formKey = GlobalKey<FormState>();
+	bool loading = false;
 
+	String _fName = "";
+	String _sName = "";
 	String _email = "";
 	String _password = "";
 
 	@override
 	Widget build(BuildContext context) {
-		return Scaffold(
+		return loading ? Loading() : Scaffold(
 			backgroundColor: Constant.backgroundColor,
 			appBar: AppBar(
 				leading: BackButton(
@@ -38,31 +43,59 @@ class _RegisterState extends State<Register> {
 			child: Container(
 				padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
 					child: Form(
+						key: _formKey,
 						child: Column(
 							children:<Widget> [
 								SizedBox(height: 20.0),
+								// first name
 								TextFormField(
+									validator: (val) => val.isEmpty ? "Enter valid name" : null,
+									keyboardType: TextInputType.name,
+									decoration: InputDecoration(
+										hintText: "first name"
+									),
+									onChanged: (val) {
+										setState(() => _fName = val);
+									},
+								),
+								SizedBox(height: 20.0),
+								// second name
+								TextFormField(
+									validator: (val) => val.isEmpty ? "Enter valid name" : null,
+									keyboardType: TextInputType.name,
+									decoration: InputDecoration(
+										hintText: "second name"
+									),
+									onChanged: (val) {
+										setState(() => _sName = val);
+									},
+								),
+								SizedBox(height: 20.0),
+								// email
+								TextFormField(
+									validator: (val) => val.isEmpty ? "Enter valid email" : null,
 									keyboardType: TextInputType.emailAddress,
 									decoration: InputDecoration(
 										hintText: "Email"
 									),
 									onChanged: (val) {
-										_email = val;
-										// setState(() => _email = val);
+										setState(() => _email = val);
 									},
 								),
 								SizedBox(height: 20.0),
+								// password
 								TextFormField(
+									validator: (val) => val.length < 8 ? "Enter valid password" : null,
 									obscureText: true,
 									decoration: InputDecoration(
 									hintText: "Password"
 									),
 									onChanged: (val) {
-										_password = val;
-										// setState(() => _password = val);
+										setState(() => _password = val);
 									},
 								),
 								SizedBox(height: 20.0),
+								// signup button
 								TextButton(
 									child: Text(
 										"Sign Up",
@@ -71,18 +104,21 @@ class _RegisterState extends State<Register> {
 											),
 									),
 									onPressed: () async {
-										dynamic user = await _auth.registerWithEmailandPassword(email: this._email, password: this._password);
-										ShowDialog signUpDialog = ShowDialog();
-										// pop the signIn widget from authentication push
-										if (user == null) {
-											print("Error Siging Up");
-											developer.log("user is null", name: "register_signUpButtonERROR");
-											signUpDialog.showDialogOnScreen(context, "user is null", "register_signUpButtonERROR");
-										} else {
-											Navigator.pop(context);
-
-											developer.log("registered Successfully", name: "register_signUpButton");
-											signUpDialog.showDialogOnScreen(context, "registered Successfully", "register_signUpButton");
+										if (_formKey.currentState.validate()) {
+											setState(() => loading = true);
+											dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._fName, this._sName);
+											ShowDialog signUpDialog = ShowDialog();
+											// pop the signIn widget from authentication push
+											if (user == null) {
+												print("Error Siging Up");
+												developer.log("user is null", name: "register_signUpButtonERROR");
+												signUpDialog.showDialogOnScreen(context, "user is null", "register_signUpButtonERROR");
+											} else {
+												Navigator.pop(context);
+												developer.log("registered Successfully", name: "register_signUpButton");
+												signUpDialog.showDialogOnScreen(context, "registered Successfully", "register_signUpButton");
+											}
+											setState(() => loading = false);
 										}
 									},
 								),
