@@ -16,8 +16,7 @@ class _RegisterState extends State<Register> {
 	final _formKey = GlobalKey<FormState>();
 	bool loading = false;
 
-	String _fName = "";
-	String _sName = "";
+	String _name = "";
 	String _email = "";
 	String _password = "";
 
@@ -55,19 +54,7 @@ class _RegisterState extends State<Register> {
 										hintText: "first name"
 									),
 									onChanged: (val) {
-										setState(() => _fName = val);
-									},
-								),
-								SizedBox(height: 20.0),
-								// second name
-								TextFormField(
-									validator: (val) => val.isEmpty ? "Enter valid name" : null,
-									keyboardType: TextInputType.name,
-									decoration: InputDecoration(
-										hintText: "second name"
-									),
-									onChanged: (val) {
-										setState(() => _sName = val);
+										setState(() => _name = val);
 									},
 								),
 								SizedBox(height: 20.0),
@@ -106,7 +93,7 @@ class _RegisterState extends State<Register> {
 									onPressed: () async {
 										if (_formKey.currentState.validate()) {
 											setState(() => loading = true);
-											dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._fName, this._sName);
+											dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._name);
 											ShowDialog signUpDialog = ShowDialog();
 											// pop the signIn widget from authentication push
 											if (user == null) {
