@@ -36,8 +36,8 @@ class _SignInState extends State<SignIn> {
 				),
 			),
 			body: Center(
-			child: Container(
-				padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
+				child: Container(
+					padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
 					child: Form(
 						key: _formKey,
 						child: Column(

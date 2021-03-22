@@ -5,14 +5,14 @@ import 'package:MyProperty/screens/home/home.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-	  // return authenticate, home page
-	  final user = Provider.of<MyUser>(context);
-	  // checks if the user is logged in
-	  if (user != null) {
-		  return Home();
-	  }
-      return Authenticate();
-  }
+	@override
+	Widget build(BuildContext context) {
+		// return authenticate or home page
+		final user = Provider.of<MyUser>(context);
+		// checks if the user is logged in
+		if (user != null) {
+			return Home();
+		}
+		return Authenticate();
+	}
 }

@@ -8,7 +8,7 @@ import 'package:MyProperty/utils/show_dialog.dart';
 
 class Register extends StatefulWidget {
 	@override
-  	_RegisterState createState() => _RegisterState();
+	_RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
