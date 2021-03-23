@@ -1,17 +1,42 @@
 import 'package:flutter/cupertino.dart';
 
+class Room {
+	int length, width, height;
+	Room(int length, int width, int height) {
+		length = length;
+		width = width;
+		height = height;
+	}
+	int area () {
+		return length * width;
+	}
+}
+
 abstract class Property {
+
+static List<String> types = [
+	"Apartment",
+	"Villa",
+	"BeachHouse",
+	"Chalet",
+	"Studio",
+	"Office",
+	"Warehouse",
+	"Store"
+];
 	Image photos;
+	String type;
 	String title;
 	String location;
-	DateTime postDate;
-	bool negotiatable;
-	int area;
+	DateTime postDate = DateTime.now();
+	bool negotiatable = false;
+	int size;
 	int price;
+	int floor;
 	PropertyDescription description;
 }
 
-class RentProperty extends Property{
+class RentProperty extends Property {
 	DateTime rentableAt;
 	int maxRent;
 	bool rented;
@@ -38,14 +63,14 @@ class PropertyDescription {
 }
 
 class LayoutDetails {
-	int bedroom;
-	int swimmingPool;
-	int bathroom;
-	int livingroom;
-	int kitchen;
-	int balacone;
+	List<Room> bedroom;
+	List<Room> swimmingPool;
+	List<Room> bathroom;
+	List<Room> livingroom;
+	List<Room> kitchen;
+	List<Room> balacone;
+	List<Room> yard;
+	List<Room> roof;
+	List<Room> reception;
 	bool garage;
-	bool yard;
-	bool roof;
-	bool reception;
 }

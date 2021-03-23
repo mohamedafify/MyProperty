@@ -1,7 +1,7 @@
+import 'package:MyProperty/screens/home/homeGuest.dart';
 import 'package:flutter/material.dart';
 import 'package:MyProperty/screens/authenticate/sign_in.dart';
 import 'package:MyProperty/screens/authenticate/register.dart';
-import 'package:MyProperty/screens/home/home.dart';
 import 'package:MyProperty/utils/constant.dart';
 
 class Authenticate extends StatefulWidget {
@@ -33,9 +33,9 @@ class _AuthenticateState extends State<Authenticate> {
 						},
 					),
 					Flexible(
-					child: FractionallySizedBox(
-						heightFactor: 1.0,
-					),
+						child: FractionallySizedBox(
+							heightFactor: 1.0,
+						),
 					),
 					Text(
 						"Just want to look around",
@@ -58,8 +58,8 @@ class _AuthenticateState extends State<Authenticate> {
 						),
 						onPressed: () {
 							Navigator.push(
-							context,
-							MaterialPageRoute(builder: (context) => Home()),
+								context,
+								MaterialPageRoute(builder: (context) => HomeGuest()),
 							);
 						},
 					),
