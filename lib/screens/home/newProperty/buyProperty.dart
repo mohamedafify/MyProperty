@@ -1,4 +1,7 @@
 import 'package:MyProperty/models/property.dart';
+import 'package:MyProperty/models/user.dart';
+import 'package:MyProperty/services/auth.dart';
+import 'package:MyProperty/services/database.dart';
 import 'package:MyProperty/utils/show_dialog.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,8 +14,9 @@ class BuyPropertyPage extends StatefulWidget {
 
 class _BuyPropertyPageState extends State<BuyPropertyPage> {
 	final _formKey = GlobalKey<FormState>();
-	final BuyProperty property = BuyProperty();
-	DateTime currentDateTime = DateTime.now();
+	final BuyProperty _property = BuyProperty();
+	final AuthService _auth = AuthService();
+	final DatabaseService _database = DatabaseService();
 
 	@override
 	Widget build(BuildContext context) {
@@ -27,9 +31,9 @@ class _BuyPropertyPageState extends State<BuyPropertyPage> {
 						),
 						// type
 						TextFormField(
-							validator: (val) => val.isEmpty ? "please pick a property type" : null,
+							validator: (val) => val.isEmpty ? "please choose a property type" : null,
 							controller: TextEditingController(
-								text: property.type,
+								text: _property.type,
 							),
 							decoration: InputDecoration(
 								hintText: "Choose the property type",
@@ -55,7 +59,7 @@ class _BuyPropertyPageState extends State<BuyPropertyPage> {
 															onPressed: () {
 																Navigator.pop(context);
 																setState(() {
-																	property.type = Property.types[index];
+																	_property.type = Property.types[index];
 																});
 															},
 														),
@@ -87,7 +91,10 @@ class _BuyPropertyPageState extends State<BuyPropertyPage> {
 							decoration: InputDecoration(
 								hintText: "Location"
 							),
-							onChanged: (val) {
+							onChanged: (value) {
+								setState(() {
+									_property.location = value;
+								});
 							},
 						),
 						SizedBox(
@@ -103,7 +110,10 @@ class _BuyPropertyPageState extends State<BuyPropertyPage> {
 							decoration: InputDecoration(
 								hintText: "Size in m²"
 							),
-							onChanged: (val) {
+							onChanged: (value) {
+								setState(() {
+									_property.size = int.parse(value);
+								});
 							},
 						),
 						SizedBox(
@@ -119,7 +129,10 @@ class _BuyPropertyPageState extends State<BuyPropertyPage> {
 							decoration: InputDecoration(
 								hintText: "Price"
 							),
-							onChanged: (val) {
+							onChanged: (value) {
+								setState(() {
+									_property.price = int.parse(value);
+								});
 							},
 						),
 						SizedBox(
@@ -135,10 +148,10 @@ class _BuyPropertyPageState extends State<BuyPropertyPage> {
 									),
 								),
 								Switch(
-									value: property.negotiatable,
+									value: _property.negotiatable,
 									onChanged: (value) {
-										setState((){
-											property.negotiatable = value;
+										setState(() {
+											_property.negotiatable = value;
 										});
 									},
 								),
@@ -151,9 +164,10 @@ class _BuyPropertyPageState extends State<BuyPropertyPage> {
 									fontSize: 20
 								),
 							),
-							onPressed: () {
+							onPressed: () async {
 								if (_formKey.currentState.validate()) {
-									ShowDialog().showDialogOnScreen(context, "validation testing", "sucess");
+									_property.ownerID = _auth.currentUser.uid;
+									await _database.updateBuyPropertyData(_property);
 								}
 							},
 						),

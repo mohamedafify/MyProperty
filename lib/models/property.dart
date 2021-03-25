@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 
 class Room {
 	int length, width, height;
@@ -13,20 +13,20 @@ class Room {
 }
 
 abstract class Property {
-
-static List<String> types = [
-	"Apartment",
-	"Villa",
-	"BeachHouse",
-	"Chalet",
-	"Studio",
-	"Office",
-	"Warehouse",
-	"Store"
-];
-	Image photos;
+	static List<String> types = [
+		"Apartment",
+		"Villa",
+		"BeachHouse",
+		"Chalet",
+		"Studio",
+		"Office",
+		"Warehouse",
+		"Store"
+	];
+	List<String> photosURLs;
+	String ownerUID;
+	String uid;
 	String type;
-	String title;
 	String location;
 	DateTime postDate = DateTime.now();
 	bool negotiatable = false;
@@ -34,6 +34,10 @@ static List<String> types = [
 	int price;
 	int floor;
 	PropertyDescription description;
+
+	Property() {
+		this.uid = Uuid().v1();
+	}
 }
 
 class RentProperty extends Property {

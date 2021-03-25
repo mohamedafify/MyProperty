@@ -19,6 +19,10 @@ class AuthService {
 			// map the authentication state change to MyUser
 	}
 
+	MyUser get currentUser {
+		return _userFromFirebaseUser(FirebaseAuth.instance.currentUser);
+	}
+
 	// Sign in with email and password
 	Future signInEmailandPassword({String email, String password}) async {
 		try {
@@ -37,8 +41,8 @@ class AuthService {
 			await _auth.createUserWithEmailAndPassword(email: email, password: password);
 			developer.log("registered Successfully", name: "auth_register");
 			MyUser myUser = _userFromFirebaseUser(FirebaseAuth.instance.currentUser);
-			myUser.updateUser(name: name);
-			await DatabaseService(uid: FirebaseAuth.instance.currentUser.uid).updateUserData(myUser);
+			myUser.name = name;
+			await DatabaseService().updateUserData(myUser);
 			return myUser;
 		} catch (e) {
 			developer.log(e.toString(), name: "auth_registerERROR");

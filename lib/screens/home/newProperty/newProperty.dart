@@ -1,5 +1,5 @@
-import 'package:MyProperty/screens/home/buyProperty.dart';
-import 'package:MyProperty/screens/home/rentProperty.dart';
+import 'package:MyProperty/screens/home/newProperty/buyProperty.dart';
+import 'package:MyProperty/screens/home/newProperty/rentProperty.dart';
 import 'package:flutter/material.dart';
 
 class NewPropertyPage extends StatefulWidget {

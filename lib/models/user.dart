@@ -1,5 +1,3 @@
-import 'package:MyProperty/models/property.dart';
-
 enum Gender {
 	male,
 	female,
@@ -11,16 +9,11 @@ class MyUser {
 	String name;
 	String profilePictureURL;
 	bool loginStatus;
-	List<Property> ownedProperties;
-	List<Property> favouriteProperties;
+	List<dynamic> ownedPropertiesUIDs = List.filled(0, "", growable: true);
+	List<dynamic> favouritePropertiesUIDs = List.filled(0, "", growable: true);
 
 	MyUser(this.uid, this.email) {
 		profilePictureURL = "";
 		loginStatus = true;
 	}
-
-	void updateUser({String name}) {
-		this.name = name;
-	}
-
 }
