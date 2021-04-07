@@ -1,46 +1,41 @@
+import 'package:MyProperty/services/auth.dart';
 import 'package:uuid/uuid.dart';
 
-class Room {
-	int length, width, height;
-	Room(int length, int width, int height) {
-		length = length;
-		width = width;
-		height = height;
-	}
-	int area () {
-		return length * width;
-	}
-}
-
-abstract class Property {
+class Property {
 	static List<String> types = [
 		"Apartment",
 		"Villa",
-		"BeachHouse",
-		"Chalet",
-		"Studio",
-		"Office",
-		"Warehouse",
-		"Store"
 	];
-	List<String> photosURLs;
+	static List<String> finishingDegree = [
+		"none",
+		"half",
+		"full",
+		"lux",
+		"superLux",
+		"ultraLux",
+		"superDelux",
+	];
+	String adType;
+	List<String> imagesUIDs;
 	String ownerUID;
 	String uid;
-	String type;
+	String propertyType;
 	String location;
-	DateTime postDate = DateTime.now();
-	bool negotiatable = false;
+	DateTime postDate;
+	bool negotiatable;
 	int size;
 	int price;
-	int floor;
-	PropertyDescription description;
-
-	Property() {
-		this.uid = Uuid().v1();
-	}
-}
-
-class RentProperty extends Property {
+	String finish;
+	String flows;
+	String landmarks;
+	int age;
+	String additionalInformation;
+	int bedroom;
+	int bathroom;
+	int livingroom;
+	int kitchen;
+	int balacone;
+	int reception;
 	DateTime rentableAt;
 	int maxRent;
 	bool rented;
@@ -48,33 +43,34 @@ class RentProperty extends Property {
 	bool modifiable;
 	bool rentedBefore;
 	int insurance;
-}
-
-class BuyProperty extends Property{
 	bool sold;
 	bool installments;
 	int installmentPerMonth;
 	int installmentPremium;
-}
-
-class PropertyDescription {
-	String flows;
-	List<String> landmarks;
-	DateTime buildDate;
+	int floorNumber;
+	bool elevator;
 	bool security;
-	LayoutDetails details;
-	String extraDetails;
-}
-
-class LayoutDetails {
-	List<Room> bedroom;
-	List<Room> swimmingPool;
-	List<Room> bathroom;
-	List<Room> livingroom;
-	List<Room> kitchen;
-	List<Room> balacone;
-	List<Room> yard;
-	List<Room> roof;
-	List<Room> reception;
+	bool yard;
+	bool roof;
 	bool garage;
+	int numberOfFloors;
+	bool swimmingPool;
+	Property() {
+		postDate = DateTime.now();
+		ownerUID = AuthService().currentUser.uid;
+		adType = "Buy";
+		negotiatable = false;
+		elevator = false;
+		security = false;
+		yard = false;
+		roof = false;
+		garage = false;
+		installments = false;
+		swimmingPool = false;
+		rented = false;
+		petFriendly = false;
+		modifiable = false;
+		rentedBefore = false;
+		uid = Uuid().v4();
+	}
 }

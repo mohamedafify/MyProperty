@@ -60,6 +60,4 @@ class AuthService {
 			return null;
 		}
 	}
-	//TODO register with Gmail
-
 }

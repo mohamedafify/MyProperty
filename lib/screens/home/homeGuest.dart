@@ -8,12 +8,12 @@ class HomeGuest extends StatefulWidget {
 class _HomeGuestState extends State<HomeGuest> {
 	@override
 	Widget build(BuildContext context) {
-		return Scaffold(
-			appBar: AppBar(
-				title: Text("Home"),
-			),
-			body: Container(
-
+		return Container(
+			child: Text(
+				"Home Guest",
+				style: TextStyle(
+					fontSize: 50,
+				),
 			),
 		);
 	}

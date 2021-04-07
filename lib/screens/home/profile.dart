@@ -1,3 +1,4 @@
+import 'package:MyProperty/services/auth.dart';
 import 'package:MyProperty/utils/constant.dart';
 import 'package:flutter/material.dart';
 
@@ -7,13 +8,25 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+	final AuthService _auth = AuthService();
 	@override
 	Widget build(BuildContext context) {
 		return Container(
 			color: Constant.backgroundColor,
 			child: Scaffold(
 				appBar: AppBar(
-					title: Text("Profile"),
+				),
+				body: TextButton(
+					child: Text(
+						"Sign Out",
+						style: TextStyle(
+							fontSize: 20
+						),
+					),
+					onPressed: () async {
+						await _auth.signOut();
+						Navigator.pop(context);
+					},
 				),
 			),
 		);
