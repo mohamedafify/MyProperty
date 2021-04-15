@@ -9,7 +9,10 @@ class PropertyViewModel {
 	Future updateProperty(Property property) async {
 		return await _database.updatePropertyData(property);
 	}
-	Future addNewImage(String userUID, String propertyUID, List<Asset> filePath) async {
-		await _databaseStorage.storePropertyImageToUser(userUID, propertyUID, filePath);
+	Future uploadPropertyImages(String userUID, String propertyUID, List<Asset> filePath) async {
+		return await _databaseStorage.uploadPropertyImages(userUID, propertyUID, filePath);
+	}
+	List storeRefsToProperty(String userUID, String propertyUID, List<Asset> imagesPaths) {
+		return _databaseStorage.storeRefsToProperty(userUID, propertyUID, imagesPaths);
 	}
 }

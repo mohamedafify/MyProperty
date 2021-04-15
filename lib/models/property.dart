@@ -16,7 +16,7 @@ class Property {
 		"superDelux",
 	];
 	String adType;
-	List<String> imagesUIDs;
+	List<dynamic> imagesRefs;
 	String ownerUID;
 	String uid;
 	String propertyType;

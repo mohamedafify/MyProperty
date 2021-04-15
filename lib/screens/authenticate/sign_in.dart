@@ -1,8 +1,10 @@
+import 'package:MyProperty/services/connection.dart';
 import 'package:flutter/material.dart';
 import 'package:MyProperty/utils/constant.dart';
 import 'package:MyProperty/services/auth.dart';
 import 'package:MyProperty/utils/show_dialog.dart';
 import 'package:MyProperty/utils/loading.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
 	@override
@@ -19,6 +21,7 @@ class _SignInState extends State<SignIn> {
 
 	@override
 	Widget build(BuildContext context) {
+		final connection = context.watch<Connection>();
 		return loading ? Loading(Colors.blue) : Scaffold(
 			backgroundColor: Constant.backgroundColor,
 			appBar: AppBar(
@@ -78,19 +81,30 @@ class _SignInState extends State<SignIn> {
 									),
 									onPressed: () async {
 										if (_formKey.currentState.validate()) {
-											setState(() => loading = true);
-											dynamic user = await _auth.signInEmailandPassword(email: this._email, password: this._password);
-											ShowDialog signInDialog = ShowDialog();
-											// pop the signIn widget from authentication push
-											if (user == null) {
-												print("Error Siging in");
-												signInDialog.showDialogOnScreen(context, "SignIn", "SignInError");
+											await connection.checkConnection();
+											if (Connection.hasInternet) {
+												setState(() => loading = true);
+												dynamic user = await _auth.signInEmailandPassword(email: this._email, password: this._password);
+												ShowDialog signInDialog = ShowDialog();
+												// pop the signIn widget from authentication push
+												if (user == null) {
+													print("Error Siging in");
+													signInDialog.showDialogOnScreen(context, "SignIn", "SignInError");
+												} else {
+													print("Signed In Succesfully");
+													Navigator.pop(context);
+													signInDialog.showDialogOnScreen(context, "SignIn", "SignedInSuccessfully");
+												}
+												setState(() => loading = false);
 											} else {
-												print("Signed In Succesfully");
-												Navigator.pop(context);
-												signInDialog.showDialogOnScreen(context, "SignIn", "SignedInSuccessfully");
+												connection.checkConnection();
+												ScaffoldMessenger.of(context).showSnackBar(
+													SnackBar(
+														content: Text(
+															"No Internet Connection")
+													)
+												);
 											}
-											setState(() => loading = false);
 										}
 									},
 								),

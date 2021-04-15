@@ -1,10 +1,13 @@
 import 'dart:developer' as developer;
 
+import 'package:MyProperty/services/connection.dart';
+import 'package:MyProperty/utils/noInternet.dart';
 import 'package:flutter/material.dart';
 import 'package:MyProperty/utils/constant.dart';
 import 'package:MyProperty/utils/loading.dart';
 import 'package:MyProperty/services/auth.dart';
 import 'package:MyProperty/utils/show_dialog.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
 	@override
@@ -22,6 +25,7 @@ class _RegisterState extends State<Register> {
 
 	@override
 	Widget build(BuildContext context) {
+		final connection = context.watch<Connection>();
 		return loading ? Loading(Colors.blue) : Scaffold(
 			backgroundColor: Constant.backgroundColor,
 			appBar: AppBar(
@@ -92,20 +96,31 @@ class _RegisterState extends State<Register> {
 									),
 									onPressed: () async {
 										if (_formKey.currentState.validate()) {
-											setState(() => loading = true);
-											dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._name);
-											ShowDialog signUpDialog = ShowDialog();
-											// pop the signIn widget from authentication push
-											if (user == null) {
-												print("Error Siging Up");
-												developer.log("user is null", name: "register_signUpButtonERROR");
-												signUpDialog.showDialogOnScreen(context, "user is null", "register_signUpButtonERROR");
+											await connection.checkConnection();
+											if (Connection.hasInternet) {
+												setState(() => loading = true);
+												dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._name);
+												ShowDialog signUpDialog = ShowDialog();
+												// pop the signIn widget from authentication push
+												if (user == null) {
+													print("Error Siging Up");
+													developer.log("user is null", name: "register_signUpButtonERROR");
+													signUpDialog.showDialogOnScreen(context, "user is null", "register_signUpButtonERROR");
+												} else {
+													Navigator.pop(context);
+													developer.log("registered Successfully", name: "register_signUpButton");
+													signUpDialog.showDialogOnScreen(context, "registered Successfully", "register_signUpButton");
+												}
+												setState(() => loading = false);
 											} else {
-												Navigator.pop(context);
-												developer.log("registered Successfully", name: "register_signUpButton");
-												signUpDialog.showDialogOnScreen(context, "registered Successfully", "register_signUpButton");
+												connection.checkConnection();
+												ScaffoldMessenger.of(context).showSnackBar(
+													SnackBar(
+														content: Text(
+															"No Internet Connection")
+													)
+												);
 											}
-											setState(() => loading = false);
 										}
 									},
 								),

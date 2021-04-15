@@ -14,8 +14,9 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 class NewPropertyPage extends StatefulWidget {
 	final Integer homePageIndex;
 	final Boolean isLoading;
+	final GlobalKey scaffoldKey;
 	final Function(Function fn) notifyParent;
-	NewPropertyPage(this.homePageIndex, this.notifyParent, this.isLoading);
+	NewPropertyPage(this.homePageIndex, this.notifyParent, this.isLoading, this.scaffoldKey);
 	@override
 	_NewPropertyPageState createState() => _NewPropertyPageState();
 }
@@ -640,19 +641,20 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								),
 								onPressed: () async {
 									if (_formKey.currentState.validate()) {
-										// notify user that the property has been added
-										ScaffoldMessenger.of(context).showSnackBar(
-											SnackBar(
-												content: Text(
-													"added property successfully")
-											)
-										);
-										if (_images != null) {
-											await propertyViewModel.addNewImage(_property.ownerUID, _property.uid, _images);
-										} 
 										widget.notifyParent(() {
 											widget.isLoading.myBool = true;
 										});
+										if (_images != null) {
+											await propertyViewModel.uploadPropertyImages(_property.ownerUID, _property.uid, _images);
+											_property.imagesRefs = propertyViewModel.storeRefsToProperty(_property.ownerUID, _property.uid, _images);
+											ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
+												SnackBar(
+													duration: Duration(milliseconds: 800),
+													content: Text(
+														"Images added")
+												)
+											);
+										} 
 										await propertyViewModel.updateProperty(_property);
 										widget.notifyParent(() {
 											// return to homepage
@@ -660,6 +662,13 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 											// stop loading
 											widget.isLoading.myBool = false;
 										});
+										ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
+											SnackBar(
+												duration: Duration(milliseconds: 800),
+												content: Text(
+													"Property added")
+											)
+										);
 									}
 								},
 							),

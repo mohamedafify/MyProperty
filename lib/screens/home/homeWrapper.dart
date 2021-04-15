@@ -29,7 +29,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
 	void initState() {
 		navigationPages.add(Home());
 		navigationPages.add(OwnedPropertiesPage());
-		navigationPages.add(NewPropertyPage(index, refresh, isLoading));
+		navigationPages.add(NewPropertyPage(index, refresh, isLoading, _scaffoldKey));
 		navigationPages.add(Settings());
 		navigationPages.add(FavouritePropertiesPage());
 		super.initState();
@@ -71,9 +71,9 @@ class _HomeWrapperState extends State<HomeWrapper> {
 			),
 			bottomNavigationBar: BottomNavigationBar(
 				currentIndex: index.myNum,
-				iconSize: 35.0,
-				selectedFontSize: 17,
-				unselectedFontSize: 17,
+				iconSize: 30.0,
+				selectedFontSize: 15,
+				unselectedFontSize: 15,
 				type: BottomNavigationBarType.fixed,
 				items: [
 					BottomNavigationBarItem(
@@ -103,15 +103,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
 					});
 				},
 			),
-			body: Builder( 
-				builder: (context) {
-					if (isLoading.myBool) {
-						return Loading(Colors.blue);
-					} else {
-						return navigationPages[index.myNum];
-					}
-				},
-			),
+			body: isLoading.myBool ? Loading(Colors.blue) : navigationPages[index.myNum]
 		);
 	}
 }
