@@ -640,21 +640,34 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									),
 								),
 								onPressed: () async {
-									if (_formKey.currentState.validate()) {
+									if(_images.isEmpty) {
+										ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
+											SnackBar(
+												duration: Duration(seconds: 3),
+												content: Text(
+													"Please add images to the property",
+													style: TextStyle(
+														color: Colors.red,
+													),
+												)
+											)
+										);
+										return;
+									}
+									// if (_formKey.currentState.validate()) {
 										widget.notifyParent(() {
 											widget.isLoading.myBool = true;
 										});
-										if (_images != null) {
-											await propertyViewModel.uploadPropertyImages(_property.ownerUID, _property.uid, _images);
-											_property.imagesRefs = propertyViewModel.storeRefsToProperty(_property.ownerUID, _property.uid, _images);
-											ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
-												SnackBar(
-													duration: Duration(milliseconds: 800),
-													content: Text(
-														"Images added")
-												)
-											);
-										} 
+										await propertyViewModel.uploadPropertyImages(_property.ownerUID, _property.uid, _images);
+										_property.imagesRefs = propertyViewModel.storeRefsToProperty(_property.ownerUID, _property.uid, _images);
+										_property.imagesURLs = await propertyViewModel.storeURLsToProperty(_property.imagesRefs);
+										ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
+											SnackBar(
+												duration: Duration(milliseconds: 800),
+												content: Text(
+													"Images added")
+											)
+										);
 										await propertyViewModel.updateProperty(_property);
 										widget.notifyParent(() {
 											// return to homepage
@@ -669,7 +682,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 													"Property added")
 											)
 										);
-									}
+									// }
 								},
 							),
 						],

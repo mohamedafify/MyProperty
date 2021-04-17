@@ -90,6 +90,7 @@ class DatabaseService {
 			"rentedBefore": property.rentedBefore,
 			"insurance": property.insurance,
 			"imagesRefs": property.imagesRefs,
+			"imagesURLs": property.imagesURLs,
 		}).then((value) => "success" , onError: (value) => null);
 	}
 
@@ -134,6 +135,7 @@ class DatabaseService {
 			property.rentedBefore = snap.get("rentedBefore");
 			property.insurance = snap.get("insurance");
 			property.imagesRefs = snap.get("imagesRefs");
+			property.imagesURLs = snap.get("imagesURLs");
 			return property;
 		} else {
 			return null;

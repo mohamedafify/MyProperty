@@ -17,6 +17,7 @@ class Property {
 	];
 	String adType;
 	List<dynamic> imagesRefs;
+	List<dynamic> imagesURLs;
 	String ownerUID;
 	String uid;
 	String propertyType;

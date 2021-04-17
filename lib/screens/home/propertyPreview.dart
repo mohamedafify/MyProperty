@@ -25,74 +25,68 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 				children:<Widget> [
 					SizedBox(
 						width: _screen.width * (2/3),
-						// child: Image(
-						// 	image: NetworkImage(widget._property.imagesRefs[0]),
-						// )
-						child: FutureBuilder(
-							future: _viewModel.getImageUrl(widget._property.imagesRefs[0]),
-							builder: (context, snap) {
-								if (snap.connectionState == ConnectionState.done) {
-									return Image(
-										image: NetworkImage(snap.data),
-										fit: BoxFit.fill,
-										frameBuilder: (context, child, frame, wasSync) {
-											return Padding(
-												padding: EdgeInsets.all(10),
-												child: child,
-											);
-										},
-										loadingBuilder: (context, child, _) {
-											return Center(child: child);
-										},
-									);
-								} else {
-									return FittedBox(
-										child: CircularProgressIndicator(),
-									);
-								}
+						child: Image(
+							image: NetworkImage(widget._property.imagesURLs[0]),
+							fit: BoxFit.fill,
+							frameBuilder: (context, child, frame, wasSync) {
+								return Padding(
+									padding: EdgeInsets.all(10),
+									child: child,
+								);
 							},
-						),
+							loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+								if (loadingProgress == null)
+									return child;
+								else
+									return Center(child: CircularProgressIndicator());
+							},
+							errorBuilder: (context, object, stackTrace) {
+								return Center(child: Text("No Internet"));
+							},
+						)
 					),
 					SizedBox(
 						width: _screen.width * (1/3),
 						child: Container(
-							padding: EdgeInsets.only(top: 10),
-							child: Column(
-								mainAxisAlignment: MainAxisAlignment.start,
-								crossAxisAlignment: CrossAxisAlignment.start,
-								children:<Widget> [
-									AutoSizeText(
-										widget._property.propertyType,
-										maxLines: 1,
-										style: TextStyle(
-											fontSize: 25,
+							padding: EdgeInsets.only(right: 10),
+							child: FittedBox(
+								child: Column(
+									mainAxisAlignment: MainAxisAlignment.start,
+									crossAxisAlignment: CrossAxisAlignment.start,
+									children:<Widget> [
+										AutoSizeText(
+											widget._property.propertyType,
+											maxLines: 1,
+											style: TextStyle(
+												fontSize: 25,
+											),
 										),
-									),
-									SizedBox(height: 10),
-									AutoSizeText(
-										widget._property.adType,
-										maxLines: 1,
-										style: TextStyle(
-											fontSize: 25,
+										SizedBox(height: 5),
+										AutoSizeText(
+											widget._property.adType,
+											maxLines: 1,
+											style: TextStyle(
+												fontSize: 25,
+											),
 										),
-									),
-									SizedBox(height: 10),
-									AutoSizeText(
-										widget._property.price.toString(),
-										maxLines: 1,
-										style: TextStyle(
-											fontSize: 25,
+										SizedBox(height: 5),
+										AutoSizeText(
+											widget._property.price.toString(),
+											maxLines: 1,
+											style: TextStyle(
+												fontSize: 25,
+											),
 										),
-									),
-									SizedBox(height: 10),
-									AutoSizeText(
-										StringHelp.dateToString(widget._property.postDate),
-										maxLines: 1,
-										style: TextStyle(
-											fontSize: 25,
+										SizedBox(height: 5),
+										AutoSizeText(
+											StringHelp.dateToString(widget._property.postDate),
+											maxLines: 1,
+											style: TextStyle(
+												fontSize: 25,
+											),
 										),
-									),
-								],
+									],
+								)
 							)
 						)
 					),

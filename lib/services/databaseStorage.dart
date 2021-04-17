@@ -23,8 +23,12 @@ class DatabaseStorageService {
 		return imagesRefs;
 	}
 
-	Future<String> getImageDownloadURL(String url) async {
-		Reference imageRef = root.child(url);
-		return await imageRef.getDownloadURL();
+	Future storeImagesDownloadURLs(List<String> imagesRefs) async {
+		Reference imageRef;
+		Future<List<String>> urls = Future.wait(imagesRefs.map((element) async {
+			imageRef = root.child(element);
+			return await imageRef.getDownloadURL();
+		}));
+		return urls;
 	}
 }
