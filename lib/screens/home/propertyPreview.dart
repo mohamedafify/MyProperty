@@ -23,28 +23,62 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 			child: Row(
 				mainAxisAlignment: MainAxisAlignment.center,
 				children:<Widget> [
-					SizedBox(
+					// image and icon
+					Container(
+						padding: EdgeInsets.all(10),
 						width: _screen.width * (2/3),
-						child: Image(
-							image: NetworkImage(widget._property.imagesURLs[0]),
-							fit: BoxFit.fill,
-							frameBuilder: (context, child, frame, wasSync) {
-								return Padding(
-									padding: EdgeInsets.all(10),
-									child: child,
-								);
-							},
-							loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-								if (loadingProgress == null)
-									return child;
-								else
-									return Center(child: CircularProgressIndicator());
-							},
-							errorBuilder: (context, object, stackTrace) {
-								return Center(child: Text("No Internet"));
-							},
-						)
+						child: Stack(
+							children:<Widget> [
+								Image(
+									width: _screen.width * (2/3),
+									image: NetworkImage(widget._property.imagesURLs[0]),
+									fit: BoxFit.fill,
+									frameBuilder: (context, child, frame, wasSync) {
+										return Center(child: child);
+									},
+									loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+										if (loadingProgress == null)
+											return child;
+										else
+											return Center(child: CircularProgressIndicator());
+									},
+									errorBuilder: (context, object, stackTrace) {
+										return Center(child: Text("No Internet"));
+									},
+								),
+								FutureBuilder(
+									future: _viewModel.isFavourite(widget._property),
+									builder: (context, snapshot) {
+										if (snapshot.connectionState == ConnectionState.done) {
+											return IconButton(
+												icon: snapshot.data ? Icon(Icons.star) : Icon(Icons.star_outline),
+												onPressed: () async {
+													if (snapshot.data) {
+														await _viewModel.removePropertyToFavourites(widget._property).then((value) {
+															setState((){});
+														});
+													} else {
+														await _viewModel.addPropertyToFavourites(widget._property).then((value) {
+															setState((){});
+														});
+													}
+												},
+											);
+										} else {
+											return snapshot.data ? Padding(
+												padding: const EdgeInsets.all(12.0),
+												child: Icon(Icons.star_outline),
+											) : Padding(
+												padding: const EdgeInsets.all(12.0),
+												child: Icon(Icons.star),
+											);
+										}
+									}
+								),
+							],
+						),
 					),
+					// info
 					SizedBox(
 						width: _screen.width * (1/3),
 						child: Container(

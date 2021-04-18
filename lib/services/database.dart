@@ -6,9 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseService {
 
 	final String uid = AuthService().currentUser.uid;
-	// final AuthService _auth = AuthService();
 	final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
 	final CollectionReference propertyCollection = FirebaseFirestore.instance.collection("properties");
+
+	Future<MyUser> get currentUser async {
+		return await getUserByID(uid);
+	}
 
 	Future updateUserData(MyUser user) async {
 		return await userCollection.doc(uid).set({
@@ -53,6 +56,7 @@ class DatabaseService {
 		await addPropertyToCurrentUser(property);
 		return await propertyCollection.doc(property.uid).set({
 			"ownerUID": property.ownerUID,
+			"uid": property.uid,
 			"type": property.propertyType,
 			"location": property.location,
 			"postDate": property.postDate,
@@ -98,6 +102,7 @@ class DatabaseService {
 		Property property = Property();
 		if (snap.exists) {
 			property.ownerUID = snap.get("ownerUID");
+			property.uid = snap.get("uid");
 			property.propertyType = snap.get("type");
 			property.location = snap.get("location");
 			property.postDate = snap.get("postDate").toDate();

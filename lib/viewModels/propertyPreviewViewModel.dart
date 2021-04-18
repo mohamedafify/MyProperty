@@ -1,11 +1,31 @@
+import 'package:MyProperty/models/property.dart';
+import 'package:MyProperty/models/user.dart';
+import 'package:MyProperty/services/auth.dart';
+import 'package:MyProperty/services/database.dart';
 import 'package:MyProperty/services/databaseStorage.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
 
 class PropertyPreviewViewModel {
+	final DatabaseService _database = DatabaseService();
 	final DatabaseStorageService _storage = DatabaseStorageService();
-
-
-	// Future getImageUrl(String url) async {
-	// 	return await _storage.;
-	// }
+	MyUser currentUser;
+	Future<bool> isFavourite(Property property) async {
+		currentUser = await _database.currentUser;
+		if (currentUser.favouritePropertiesUIDs.contains(property.uid)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	Future addPropertyToFavourites(Property property) async {
+		currentUser = await _database.currentUser;
+		MyUser user = currentUser;
+		user.favouritePropertiesUIDs.add(property.uid);
+		return await _database.updateUserData(user);
+	}
+	Future removePropertyToFavourites(Property property) async {
+		currentUser = await _database.currentUser;
+		MyUser user = currentUser;
+		user.favouritePropertiesUIDs.remove(property.uid);
+		return await _database.updateUserData(user);
+	}
 }
