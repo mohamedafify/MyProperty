@@ -1,6 +1,6 @@
 import 'package:MyProperty/models/property.dart';
-import 'package:MyProperty/screens/home/newProperty/catergories/apartment.dart';
-import 'package:MyProperty/screens/home/newProperty/catergories/villa.dart';
+import 'package:MyProperty/screens/home/newProperty/categories/apartment.dart';
+import 'package:MyProperty/screens/home/newProperty/categories/villa.dart';
 import 'package:MyProperty/screens/home/newProperty/ad%20type/buy.dart';
 import 'package:MyProperty/screens/home/newProperty/ad%20type/rent.dart';
 import 'package:MyProperty/utils/boolean.dart';

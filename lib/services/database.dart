@@ -93,6 +93,7 @@ class DatabaseService {
 			"modifiable": property.modifiable,
 			"rentedBefore": property.rentedBefore,
 			"insurance": property.insurance,
+			"hasInsurance": property.hasInsurance,
 			"imagesRefs": property.imagesRefs,
 			"imagesURLs": property.imagesURLs,
 		}).then((value) => "success" , onError: (value) => null);
@@ -132,13 +133,14 @@ class DatabaseService {
 			property.garage = snap.get("garage");
 			property.numberOfFloors = snap.get("numberOfFloors");
 			property.swimmingPool = snap.get("swimmingPool");
-			// property.rentableAt = snap.get("rentableAt").toDate();
+			property.rentableAt = snap.get("rentableAt");
 			property.maxRent = snap.get("maxRent");
 			property.rented = snap.get("rented");
 			property.petFriendly = snap.get("petFriendly");
 			property.modifiable = snap.get("modifiable");
 			property.rentedBefore = snap.get("rentedBefore");
 			property.insurance = snap.get("insurance");
+			property.hasInsurance = snap.get("hasInsurance");
 			property.imagesRefs = snap.get("imagesRefs");
 			property.imagesURLs = snap.get("imagesURLs");
 			return property;

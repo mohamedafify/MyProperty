@@ -1,12 +1,9 @@
 import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/models/user.dart';
-import 'package:MyProperty/services/auth.dart';
 import 'package:MyProperty/services/database.dart';
-import 'package:MyProperty/services/databaseStorage.dart';
 
 class PropertyPreviewViewModel {
 	final DatabaseService _database = DatabaseService();
-	final DatabaseStorageService _storage = DatabaseStorageService();
 	MyUser currentUser;
 	Future<bool> isFavourite(Property property) async {
 		currentUser = await _database.currentUser;

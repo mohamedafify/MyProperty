@@ -17,6 +17,7 @@ class _BuyState extends State<Buy> {
 				mainAxisAlignment: MainAxisAlignment.start,
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children: [
+					// installments
 					Row(
 						children:[ 
 							Text(

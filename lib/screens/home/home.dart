@@ -16,7 +16,7 @@ class _HomeState extends State<Home> {
 			child: FutureBuilder(
 				future: _homeViewModel.getAllProperties(),
 				builder: (context, snapshot) {
-					if (snapshot.connectionState == ConnectionState.done) {
+					if (snapshot.connectionState == ConnectionState.done) { 
 							return ListView.builder(
 								itemBuilder: (_, index) => PropertyPreview(snapshot.data[index]),
 								itemCount: snapshot.data.length,

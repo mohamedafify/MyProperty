@@ -133,6 +133,59 @@ class _RentState extends State<Rent> {
 							),
 						]
 					),
+					// insurance
+					Row(
+						children:[ 
+							Text(
+								"Insurance",
+								style: TextStyle(
+									fontSize: 20,
+								),
+							),
+							Switch(
+								value: widget._property.hasInsurance,
+								onChanged: (value) {
+									setState(() {
+										widget._property.hasInsurance = value;
+									});
+								},
+							),
+						]
+					),
+					Builder(
+						builder: (context) {
+							if (widget._property.hasInsurance) {
+								return Column(
+									mainAxisAlignment: MainAxisAlignment.start,
+									crossAxisAlignment: CrossAxisAlignment.start,
+									children: [
+										TextFormField(
+											style: TextStyle(
+												fontSize: 20,
+											),
+											keyboardType: TextInputType.number,
+											validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid number" : null,
+											decoration: InputDecoration(
+												border: OutlineInputBorder(
+													borderSide: BorderSide(
+														color: Colors.black,
+													),
+												),
+												hintText: "Insurance"
+											),
+											onChanged: (value) {
+												setState(() {
+													widget._property.insurance = int.parse(value);
+												});
+											},
+										),
+									],
+								);
+							} else {
+								return Container();
+							}
+						},
+					),
 				],
 			),
 		);
