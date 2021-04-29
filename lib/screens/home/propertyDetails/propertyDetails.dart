@@ -1,8 +1,14 @@
 import 'package:MyProperty/models/property.dart';
+import 'package:MyProperty/screens/home/propertyDetails/ad%20type/buy.dart';
+import 'package:MyProperty/screens/home/propertyDetails/ad%20type/rent.dart';
+import 'package:MyProperty/screens/home/propertyDetails/categories/apartment.dart';
+import 'package:MyProperty/screens/home/propertyDetails/categories/villa.dart';
 import 'package:MyProperty/screens/home/propertyDetails/imagesViewer.dart';
 import 'package:MyProperty/utils/constant.dart';
+import 'package:MyProperty/utils/screen.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:MyProperty/viewModels/propertyDetailsViewModel.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class PropertyDetails extends StatefulWidget {
@@ -12,11 +18,13 @@ class PropertyDetails extends StatefulWidget {
 	_PropertyDetailsState createState() => _PropertyDetailsState();
 }
 class _PropertyDetailsState extends State<PropertyDetails> {
+	final double fontSize = 20;
 	final PropertyDetailsViewModel _viewModel = PropertyDetailsViewModel();
 	@override
 	Widget build(BuildContext context) {
+		final Screen myScreen = Screen(context);
 		return Container(
-			padding: EdgeInsets.fromLTRB(10, 40, 10, 10),
+			padding: EdgeInsets.fromLTRB(10, 50, 10, 10),
 			color: Colors.white,
 			child: SingleChildScrollView(
 				child: Column(
@@ -25,25 +33,12 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 					children:<Widget> [
 						/* ------------------ Default ------------------- */
 						// images
-						Center(
-							child: FittedBox(
-								child: TextButton(
-									child: Text(
-										"Show Images",
-										style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.bold,
-										fontFamily: Constant.font
-										),
-									),
-									onPressed: () {
-										//TODO show images
-									},
-								),
-							),
+						SizedBox(
+							height: myScreen.height * (1/5),
+							width: myScreen.width,
+							child: ImagesViewer(widget._property.imagesURLs, true),
 						),
+						SizedBox(height: 20),
 						// adType
 						FittedBox(
 							child: Row(
@@ -51,7 +46,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"AdType: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -61,7 +56,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.adType,
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -78,7 +73,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Property Type: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -88,7 +83,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.propertyType,
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -105,7 +100,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Owner Name: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -119,7 +114,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 												return Text(
 													snapshot.data.name,
 													style: TextStyle(
-														fontSize: 30,
+														fontSize: fontSize,
 														color: Constant.buttonTextColor,
 														decoration: TextDecoration.none,
 														fontWeight: FontWeight.normal,
@@ -141,7 +136,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Location: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -151,7 +146,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.location,
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -168,7 +163,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Size: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -178,7 +173,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.size.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -188,7 +183,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										" m²",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -205,7 +200,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Price: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -215,7 +210,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.price.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -225,7 +220,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										" EGP",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -242,7 +237,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Finish: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -252,7 +247,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.finish,
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -269,7 +264,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Property age: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -279,7 +274,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.age.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -296,7 +291,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Bedrooms: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -306,7 +301,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.bedroom.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -323,7 +318,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Bathrooms: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -333,7 +328,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.bathroom.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -350,7 +345,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Livingrooms: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -360,7 +355,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.livingroom.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -377,7 +372,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Kitchen: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -387,7 +382,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.kitchen.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -404,7 +399,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Balacone: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -414,7 +409,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.balacone.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -431,7 +426,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Reception: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -441,7 +436,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.reception.toString(),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -453,6 +448,29 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 						),
 						/* ------------------ Default ------------------- */
 
+						/* ---------------- Rent or Buy ----------------- */
+						widget._property.adType == "Rent" ?
+						RentAdditionalInfo(widget._property, fontSize) :
+						BuyAdditionalInfo(widget._property, fontSize),
+						/* ---------------- Rent or Buy ----------------- */
+
+						/* -------------- property types ---------------- */
+						Builder(
+							builder: (context) {
+								switch (widget._property.propertyType) {
+								case "Apartment":
+									return ApartmentAdditionalInfo(widget._property, fontSize);
+									break;
+								case "Villa":
+									return VillaAdditionalInfo(widget._property, fontSize);
+									break;
+								default:
+									return Container();
+								}
+							},
+						),
+						/* -------------- property types ---------------- */
+
 						/* ------------------ Bottom -------------------- */
 						// post date
 						FittedBox(
@@ -461,7 +479,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Post Date: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -471,7 +489,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										StringHelp.dateToString(widget._property.postDate),
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -488,7 +506,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										"Negotiatable: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
@@ -498,7 +516,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Text(
 										widget._property.negotiatable ? "Yes" : "No",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -509,23 +527,25 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 							),
 						),
 						// flows
-						FittedBox(
-							child: Row(
+						Container(
+							child: Column(
+								mainAxisAlignment: MainAxisAlignment.start,
+								crossAxisAlignment: CrossAxisAlignment.start,
 								children: [
 									Text(
 										"Flows: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
 											fontFamily: Constant.font
 										),
 									),
-									Text(
+									AutoSizeText(
 										widget._property.flows ?? "none",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -536,23 +556,25 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 							),
 						),
 						// landmarks
-						FittedBox(
-							child: Row(
+						Container(
+							child: Column(
+								mainAxisAlignment: MainAxisAlignment.start,
+								crossAxisAlignment: CrossAxisAlignment.start,
 								children: [
 									Text(
-										"LandMarks: ",
+										"Landmarks: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
 											fontFamily: Constant.font
 										),
 									),
-									Text(
+									AutoSizeText(
 										widget._property.landmarks ?? "none",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
@@ -560,31 +582,70 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 										),
 									),
 								],
-							),
+							)
 						),
 						// additional info
-						FittedBox(
-							child: Row(
+						Container(
+							child: Column(
+								mainAxisAlignment: MainAxisAlignment.start,
+								crossAxisAlignment: CrossAxisAlignment.start,
 								children: [
 									Text(
 										"Additional Information: ",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.bold,
 											fontFamily: Constant.font
 										),
 									),
-									Text(
+									AutoSizeText(
 										widget._property.additionalInformation ?? "none",
 										style: TextStyle(
-											fontSize: 30,
+											fontSize: fontSize,
 											color: Constant.buttonTextColor,
 											decoration: TextDecoration.none,
 											fontWeight: FontWeight.normal,
 											fontFamily: Constant.font
 										),
+									),
+
+								],
+							)
+						),
+						// contact info
+						FittedBox(
+							child: Row(
+								children: [
+									Text(
+										"Contact info: ",
+										style: TextStyle(
+											fontSize: fontSize,
+											color: Constant.buttonTextColor,
+											decoration: TextDecoration.none,
+											fontWeight: FontWeight.bold,
+											fontFamily: Constant.font
+										),
+									),
+									FutureBuilder(
+										future: _viewModel.getUserByUID(widget._property.ownerUID),
+										builder: (context, snapshot) {
+											if (snapshot.connectionState == ConnectionState.done) {
+												return Text(
+													snapshot.data.number.toString(),
+													style: TextStyle(
+														fontSize: fontSize,
+														color: Constant.buttonTextColor,
+														decoration: TextDecoration.none,
+														fontWeight: FontWeight.normal,
+														fontFamily: Constant.font,
+													),
+												);
+											} else {
+												return Container();
+											}
+										},
 									),
 								],
 							),

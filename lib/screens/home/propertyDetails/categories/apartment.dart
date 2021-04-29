@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class ApartmentAdditionalInfo extends StatelessWidget {
 	final Property _property;
-	ApartmentAdditionalInfo(this._property);
+	final double fontSize;
+	ApartmentAdditionalInfo(this._property, this.fontSize);
 	@override
 	Widget build(BuildContext context) {
 		return Container(
@@ -19,7 +20,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									"Floor number: ",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.bold,
@@ -29,7 +30,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									_property.floorNumber.toString() ?? "none",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.normal,
@@ -46,7 +47,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									"Elevator: ",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.bold,
@@ -56,7 +57,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									(_property.installments ? "Yes" : "No") ?? "none",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.normal,
@@ -73,7 +74,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									"Security: ",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.bold,
@@ -83,7 +84,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									(_property.security ? "Yes" : "No") ?? "none",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.normal,
@@ -100,7 +101,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									"Yard: ",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.bold,
@@ -110,7 +111,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									(_property.yard ? "Yes" : "No") ?? "none",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.normal,
@@ -127,7 +128,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									"Roof: ",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.bold,
@@ -137,7 +138,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									(_property.roof ? "Yes" : "No") ?? "none",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.normal,
@@ -154,7 +155,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									"Garage: ",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.bold,
@@ -164,7 +165,7 @@ class ApartmentAdditionalInfo extends StatelessWidget {
 								Text(
 									(_property.garage ? "Yes" : "No") ?? "none",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.normal,

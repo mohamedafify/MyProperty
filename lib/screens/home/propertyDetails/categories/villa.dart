@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class VillaAdditionalInfo extends StatelessWidget {
 	final Property _property;
-	VillaAdditionalInfo(this._property);
+	final double fontSize;
+	VillaAdditionalInfo(this._property, this.fontSize);
 	@override
 	Widget build(BuildContext context) {
 		return Container(
@@ -19,7 +20,7 @@ class VillaAdditionalInfo extends StatelessWidget {
 								Text(
 									"Swimming pool: ",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.bold,
@@ -29,7 +30,7 @@ class VillaAdditionalInfo extends StatelessWidget {
 								Text(
 									(_property.swimmingPool ? "Yes" : "No") ?? "none",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.normal,
@@ -46,7 +47,7 @@ class VillaAdditionalInfo extends StatelessWidget {
 								Text(
 									"Number of floors: ",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.bold,
@@ -56,7 +57,7 @@ class VillaAdditionalInfo extends StatelessWidget {
 								Text(
 									_property.numberOfFloors.toString() ?? "none",
 									style: TextStyle(
-										fontSize: 30,
+										fontSize: fontSize,
 										color: Constant.buttonTextColor,
 										decoration: TextDecoration.none,
 										fontWeight: FontWeight.normal,

@@ -1,7 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:MyProperty/services/connection.dart';
-import 'package:MyProperty/utils/noInternet.dart';
+import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:flutter/material.dart';
 import 'package:MyProperty/utils/constant.dart';
 import 'package:MyProperty/utils/loading.dart';
@@ -22,6 +22,7 @@ class _RegisterState extends State<Register> {
 	String _name = "";
 	String _email = "";
 	String _password = "";
+	String _number = "";
 
 	@override
 	Widget build(BuildContext context) {
@@ -86,6 +87,18 @@ class _RegisterState extends State<Register> {
 									},
 								),
 								SizedBox(height: 20.0),
+								// number
+								TextFormField(
+									validator: (val) => !StringHelp.isNumeric(val) ? "Enter a valid number" : null,
+									keyboardType: TextInputType.phone,
+									decoration: InputDecoration(
+										hintText: "Phone number"
+									),
+									onChanged: (val) {
+										setState(() => _number = val);
+									},
+								),
+								SizedBox(height: 20.0),
 								// signup button
 								TextButton(
 									child: Text(
@@ -99,7 +112,7 @@ class _RegisterState extends State<Register> {
 											await connection.checkConnection();
 											if (Connection.hasInternet) {
 												setState(() => loading = true);
-												dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._name);
+												dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._name, this._number);
 												ShowDialog signUpDialog = ShowDialog();
 												// pop the signIn widget from authentication push
 												if (user == null) {

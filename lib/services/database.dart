@@ -18,6 +18,7 @@ class DatabaseService {
 			"uid":user.uid,
 			"name":user.name,
 			"email":user.email,
+			"number": user.number,
 			"profilePictureURL":user.profilePictureURL,
 			"ownedPropertiesUIDs":user.ownedPropertiesUIDs,
 			"favouritePropertiesUIDs":user.favouritePropertiesUIDs,
@@ -30,6 +31,7 @@ class DatabaseService {
 		if (snap.exists) {
 			user.name = snap.get("name");
 			user.email = snap.get("email");
+			user.number = snap.get("number");
 			user.favouritePropertiesUIDs = snap.get("favouritePropertiesUIDs");
 			user.ownedPropertiesUIDs = snap.get("ownedPropertiesUIDs");
 			user.profilePictureURL = snap.get("profilePictureURL");
@@ -57,7 +59,8 @@ class DatabaseService {
 		return await propertyCollection.doc(property.uid).set({
 			"ownerUID": property.ownerUID,
 			"uid": property.uid,
-			"type": property.propertyType,
+			"propertyType": property.propertyType,
+			"adType": property.adType,
 			"location": property.location,
 			"postDate": property.postDate,
 			"negotiatable": property.negotiatable,
@@ -104,7 +107,8 @@ class DatabaseService {
 		if (snap.exists) {
 			property.ownerUID = snap.get("ownerUID");
 			property.uid = snap.get("uid");
-			property.propertyType = snap.get("type");
+			property.propertyType = snap.get("propertyType");
+			property.adType = snap.get("adType");
 			property.location = snap.get("location");
 			property.postDate = snap.get("postDate").toDate();
 			property.negotiatable = snap.get("negotiatable");

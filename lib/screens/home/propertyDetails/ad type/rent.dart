@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class RentAdditionalInfo extends StatelessWidget {
 	final Property _property;
-	RentAdditionalInfo(this._property);
+	final double fontSize;
+	RentAdditionalInfo(this._property, this.fontSize);
 	@override
 	Widget build(BuildContext context) {
 		return Container(
@@ -14,193 +15,179 @@ class RentAdditionalInfo extends StatelessWidget {
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children: [
 					// rentable At
-					FittedBox(
-						child: Row(
-							children: [
-								Text(
-									"Rentable at: ",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.bold,
-										fontFamily: Constant.font
-									),
+					Row(
+						children: [
+							Text(
+								"Rentable at: ",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.bold,
+									fontFamily: Constant.font
 								),
-								Text(
-									StringHelp.dateToString(_property.rentableAt) ?? "none",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.normal,
-										fontFamily: Constant.font
-									),
+							),
+							Text(
+								StringHelp.dateToString(_property.rentableAt) ?? "none",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.normal,
+									fontFamily: Constant.font
 								),
-							],
-						),
+							),
+						],
 					),
 					// max rent
-					FittedBox(
-						child: Row(
-							children: [
-								Text(
-									"Max rent: ",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.bold,
-										fontFamily: Constant.font
-									),
+					Row(
+						children: [
+							Text(
+								"Max rent: ",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.bold,
+									fontFamily: Constant.font
 								),
-								Text(
-									_property.maxRent.toString() ?? "none",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.normal,
-										fontFamily: Constant.font
-									),
+							),
+							Text(
+								_property.maxRent.toString() ?? "none",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.normal,
+									fontFamily: Constant.font
 								),
-							],
-						),
+							),
+						],
 					),
 					// Rented
-					FittedBox(
-						child: Row(
-							children: [
-								Text(
-									"Rented: ",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.bold,
-										fontFamily: Constant.font
-									),
+					Row(
+						children: [
+							Text(
+								"Rented: ",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.bold,
+									fontFamily: Constant.font
 								),
-								Text(
-									(_property.rented ? "Yes" : "No") ?? "none",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.normal,
-										fontFamily: Constant.font
-									),
+							),
+							Text(
+								(_property.rented ? "Yes" : "No") ?? "none",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.normal,
+									fontFamily: Constant.font
 								),
-							],
-						),
+							),
+						],
 					),
 					// pet friendly
-					FittedBox(
-						child: Row(
-							children: [
-								Text(
-									"Pet friendly: ",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.bold,
-										fontFamily: Constant.font
-									),
+					Row(
+						children: [
+							Text(
+								"Pet friendly: ",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.bold,
+									fontFamily: Constant.font
 								),
-								Text(
-									(_property.petFriendly ? "Yes" : "No") ?? "none",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.normal,
-										fontFamily: Constant.font
-									),
+							),
+							Text(
+								(_property.petFriendly ? "Yes" : "No") ?? "none",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.normal,
+									fontFamily: Constant.font
 								),
-							],
-						),
+							),
+						],
 					),
 					// modifiable
-					FittedBox(
-						child: Row(
-							children: [
-								Text(
-									"Modifiable: ",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.bold,
-										fontFamily: Constant.font
-									),
+					Row(
+						children: [
+							Text(
+								"Modifiable: ",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.bold,
+									fontFamily: Constant.font
 								),
-								Text(
-									(_property.modifiable ? "Yes" : "No") ?? "none",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.normal,
-										fontFamily: Constant.font
-									),
+							),
+							Text(
+								(_property.modifiable ? "Yes" : "No") ?? "none",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.normal,
+									fontFamily: Constant.font
 								),
-							],
-						),
+							),
+						],
 					),
 					// rented before
-					FittedBox(
-						child: Row(
-							children: [
-								Text(
-									"Rented before: ",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.bold,
-										fontFamily: Constant.font
-									),
+					Row(
+						children: [
+							Text(
+								"Rented before: ",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.bold,
+									fontFamily: Constant.font
 								),
-								Text(
-									(_property.rentedBefore ? "Yes" : "No") ?? "none",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.normal,
-										fontFamily: Constant.font
-									),
+							),
+							Text(
+								(_property.rentedBefore ? "Yes" : "No") ?? "none",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.normal,
+									fontFamily: Constant.font
 								),
-							],
-						),
+							),
+						],
 					),
 					// insurance
-					FittedBox(
-						child: Row(
-							children: [
-								Text(
-									"Insurance: ",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.bold,
-										fontFamily: Constant.font
-									),
+					Row(
+						children: [
+							Text(
+								"Insurance: ",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.bold,
+									fontFamily: Constant.font
 								),
-								Text(
-									_property.insurance.toString() ?? "none",
-									style: TextStyle(
-										fontSize: 30,
-										color: Constant.buttonTextColor,
-										decoration: TextDecoration.none,
-										fontWeight: FontWeight.normal,
-										fontFamily: Constant.font
-									),
+							),
+							Text(
+								_property.insurance.toString() ?? "none",
+								style: TextStyle(
+									fontSize: fontSize,
+									color: Constant.buttonTextColor,
+									decoration: TextDecoration.none,
+									fontWeight: FontWeight.normal,
+									fontFamily: Constant.font
 								),
-							],
-						),
+							),
+						],
 					),
 				]
 			),

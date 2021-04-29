@@ -74,10 +74,10 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 											} else {
 												return snapshot.data ? Padding(
 													padding: const EdgeInsets.all(12.0),
-													child: Icon(Icons.star_outline),
+													child: Icon(Icons.star),
 												) : Padding(
 													padding: const EdgeInsets.all(12.0),
-													child: Icon(Icons.star),
+													child: Icon(Icons.star_outline),
 												);
 											}
 										}

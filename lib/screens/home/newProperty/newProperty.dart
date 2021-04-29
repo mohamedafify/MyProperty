@@ -515,17 +515,9 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 							// property types additional forms
 							propertyTypesPages[_index],
 							// rent or buy additional forms
-							Builder(
-								builder: (context) {
-									if (_property.adType == "Rent") {
-										return Rent(_property);
-									} else if (_property.adType == "Buy") {
-										return Buy(_property);
-									} else {
-										return Container();
-									}
-								},
-							),
+							_property.adType == "Rent" ?
+							Rent(_property) :
+							Buy(_property),
 							/* ----------------- Bottom ----------------- */
 							// negotiatable
 							Row(
