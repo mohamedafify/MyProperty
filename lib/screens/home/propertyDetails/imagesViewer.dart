@@ -31,7 +31,7 @@ class _ImagesViewerState extends State<ImagesViewer> {
 								color: Colors.black,
 							),
 							onPressed: () {
-								if (startPoint.dx - endPoint.dx > 0 && index > 0) {
+								if (index > 0) {
 									setState(() {
 										index--;
 									});
@@ -46,7 +46,7 @@ class _ImagesViewerState extends State<ImagesViewer> {
 									color: Colors.black,
 								),
 								onPressed: () {
-									if (startPoint.dx - endPoint.dx < 0 && index < widget.imagesList.length - 1) {
+									if (index < widget.imagesList.length - 1) {
 										setState(() {
 											index++;
 										});

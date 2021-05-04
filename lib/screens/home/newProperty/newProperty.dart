@@ -3,6 +3,7 @@ import 'package:MyProperty/screens/home/newProperty/categories/apartment.dart';
 import 'package:MyProperty/screens/home/newProperty/categories/villa.dart';
 import 'package:MyProperty/screens/home/newProperty/ad%20type/buy.dart';
 import 'package:MyProperty/screens/home/newProperty/ad%20type/rent.dart';
+import 'package:MyProperty/screens/home/newProperty/location.dart';
 import 'package:MyProperty/utils/boolean.dart';
 import 'package:MyProperty/utils/integer.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
@@ -71,6 +72,24 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 											),
 										);
 									} catch (e){}
+								},
+							),
+							SizedBox(height: 10),
+							// location
+							// TODO make validator
+							TextButton.icon(
+								label: Text(
+									"Add property location",
+									style: TextStyle(
+										fontSize: 20,
+									),
+								),
+								icon: Icon(Icons.my_location),
+								onPressed: () {
+									Navigator.push(
+										context,
+										MaterialPageRoute(builder: (context) => LocationPicker(_property))
+									);
 								},
 							),
 							SizedBox(height: 10),
@@ -235,27 +254,6 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										},
 									),
 								]
-							),
-							SizedBox(height: 10),
-							// // location
-							TextFormField(
-								style: TextStyle(
-									fontSize: 20,
-								),
-								validator: (val) => val.isEmpty ? "pleasea enter a valid locatation" : null,
-								decoration: InputDecoration(
-									border: OutlineInputBorder(
-										borderSide: BorderSide(
-											color: Colors.black,
-										),
-									),
-									hintText: "Location"
-								),
-								onChanged: (value) {
-									setState(() {
-										_property.location = value;
-									});
-								},
 							),
 							SizedBox(height: 10),
 							// // size
