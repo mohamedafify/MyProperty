@@ -4,6 +4,7 @@ import 'package:MyProperty/screens/home/propertyDetails/ad%20type/rent.dart';
 import 'package:MyProperty/screens/home/propertyDetails/categories/apartment.dart';
 import 'package:MyProperty/screens/home/propertyDetails/categories/villa.dart';
 import 'package:MyProperty/screens/home/propertyDetails/imagesViewer.dart';
+import 'package:MyProperty/screens/home/propertyDetails/location.dart';
 import 'package:MyProperty/utils/constant.dart';
 import 'package:MyProperty/utils/screen.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
@@ -130,21 +131,49 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 							)
 						),
 						// location
-						FittedBox(
-							child: Row(
+						Container(
+							child: Column(
+								mainAxisAlignment: MainAxisAlignment.start,
+								crossAxisAlignment: CrossAxisAlignment.start,
 								children: [
-									Text(
-										"Location: ",
-										style: TextStyle(
-											fontSize: fontSize,
-											color: Constant.buttonTextColor,
-											decoration: TextDecoration.none,
-											fontWeight: FontWeight.bold,
-											fontFamily: Constant.font
-										),
+									Row(
+										children: [
+											Text(
+												"Location: ",
+												style: TextStyle(
+													fontSize: fontSize,
+													color: Constant.buttonTextColor,
+													decoration: TextDecoration.none,
+													fontWeight: FontWeight.bold,
+													fontFamily: Constant.font
+												),
+											),
+											OutlinedButton(
+												child: Text(
+													"show location on map",
+													style: TextStyle(
+														fontSize: fontSize,
+														fontWeight: FontWeight.normal,
+														color: Colors.blue[900]
+													),
+												),
+												style: ButtonStyle(
+													backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.blue[100]),
+													tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+												),
+												onPressed: () {
+													Navigator.push(
+														context,
+														MaterialPageRoute(builder: (context) => LocationShower(widget._property))
+													);
+												},
+											),
+										],
 									),
-									Text(
-										widget._property.location,
+									AutoSizeText(
+										widget._property.location.toString(),
+										minFontSize: fontSize,
+										// widget._property.location,
 										style: TextStyle(
 											fontSize: fontSize,
 											color: Constant.buttonTextColor,

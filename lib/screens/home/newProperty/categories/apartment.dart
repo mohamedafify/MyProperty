@@ -33,9 +33,7 @@ class _ApartmentState extends State<Apartment> {
 							hintText: "floor Number"
 						),
 						onChanged: (value) {
-							setState(() {
-								widget._property.floorNumber = int.parse(value);
-							});
+							widget._property.floorNumber = int.parse(value);
 						},
 					),
 					// elevator

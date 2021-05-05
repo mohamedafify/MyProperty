@@ -1,8 +1,12 @@
+import 'package:MyProperty/models/address.dart';
 import 'package:MyProperty/models/property.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:MyProperty/services/geolocation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:map/map.dart';
-import 'package:latlng/latlng.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:http/http.dart';
+import 'package:latlong/latlong.dart';
+import 'package:geolocator/geolocator.dart';
 
 class LocationPicker extends StatefulWidget {
 	final Property property;
@@ -12,67 +16,114 @@ class LocationPicker extends StatefulWidget {
 }
 
 class _LocationPickerState extends State<LocationPicker> {
-	final MapController mapController = MapController(location: LatLng(0, 0));
-	Offset _dragStart;
-	double _scaleStart = 1.0;
+	LatLng center = LatLng(30.04, 31.24);
+	MapController controller;
+	LatLng pinLocation;
+	double zoom;
+	@override
+	void initState() {
+		controller = MapController();
+		pinLocation = center;
+		zoom = 10.0;
+		super.initState();
+	}
 
-	void _gotoDefault() {
-		mapController.center = LatLng(0, 0);
-	}
-	void _onDoubleTap() {
-		mapController.zoom += 0.5;
-	}
-	void _onScaleStart(ScaleStartDetails details) {
-		_dragStart = details.focalPoint;
-		_scaleStart = 1.0;
-	}
-	void _onScaleUpdate(ScaleUpdateDetails details) {
-		final scaleDiff = details.scale - _scaleStart;
-		_scaleStart = details.scale;
+	Future<Position> _determinePosition() async {
+		bool serviceEnabled;
+		LocationPermission permission;
 
-		if (scaleDiff > 0) {
-			mapController.zoom += 0.02;
-		} else if (scaleDiff < 0) {
-			mapController.zoom -= 0.02;
-		} else {
-			final now = details.focalPoint;
-			final diff = now - _dragStart;
-			_dragStart = now;
-			mapController.drag(diff.dx, diff.dy);
+		// Test if location services are enabled.
+		serviceEnabled = await Geolocator.isLocationServiceEnabled();
+		if (!serviceEnabled) {
+			return Future.error('Location services are disabled.');
 		}
-	}
 
+		permission = await Geolocator.checkPermission();
+		if (permission == LocationPermission.denied) {
+			permission = await Geolocator.requestPermission();
+			if (permission == LocationPermission.denied) {
+			return Future.error('Location permissions are denied');
+			}
+		}
+		
+		if (permission == LocationPermission.deniedForever) {
+			// Permissions are denied forever, handle appropriately. 
+			return Future.error(
+			'Location permissions are permanently denied, we cannot request permissions.');
+		} 
+
+		return await Geolocator.getCurrentPosition();
+	}
 	@override
 	Widget build(BuildContext context) {
-		return Container(
-			child: GestureDetector(
-				onDoubleTap: _onDoubleTap,
-				onScaleStart: _onScaleStart,
-				onScaleUpdate: _onScaleUpdate,
-				onScaleEnd: (details) {
-					print("Location: ${mapController.center.latitude}, ${mapController.center.longitude}");
-				},
-				child: Stack(
-					children:<Widget> [
-						Map(
-							controller: mapController,
-							builder: (context, x, y, z) {
-								final url = "https://www.google.com/maps/d/edit?mid=1WQa6LtpVTHhe66pS8mxeYu9oIkA-qm20&ll=$x.$y&z=$z";
-								// final url = "https://www.google.com/maps/vt/pb=!1m4!1m3!1i$z!2i$x!3i$y!2m3!1e0!2sm!3i443148310!3m7!2sen!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e1!5m4!1e4!8m2!1e0!1e1!6m7!1e12!2i2!26m1!4b1!39b1!44e1!50e0!23i4111425!23i1358757!23i1358902";
-								return CachedNetworkImage(
-									imageUrl: url,
-									fit: BoxFit.cover,
-								);
-							},
-
-						),
-						// Center(
-						// 	child: Icon(Icons.close, color: Colors.red),
-						// )
-					],
-				),
+		return Scaffold(
+			appBar: AppBar(
+				title: Text("maps"),
+				actions: [
+					IconButton(
+						icon: Icon(Icons.check),
+						iconSize: 30,
+						color: Colors.white,
+						onPressed: () async {
+							Response response = await GeoLocation().getLocation(pinLocation, "en");
+							Address myAddress = Address.fromGeocodejsonToAddress(response.body);
+							GeoPoint firebaseLatLng = GeoPoint(pinLocation.latitude, pinLocation.longitude);
+							myAddress.latlong = firebaseLatLng;
+							widget.property.location = myAddress;
+							Navigator.pop(context);
+						},
+					)
+				],
 			),
-
+			body: FlutterMap(
+				mapController: controller,
+				options: MapOptions(
+					interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+					minZoom: 10.0,
+					maxZoom: 18.4,
+					zoom: zoom,
+					center: center,
+					onTap: (location) {
+						setState(() {
+							pinLocation = location;
+						});
+					}
+				),
+				layers: [
+					TileLayerOptions(
+						urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+						subdomains: ["a", "b", "c"],
+					),
+					MarkerLayerOptions(
+						markers: [
+							Marker(
+								width: 40.0,
+								height: 40.0,
+								point: pinLocation,
+								builder: (context) => Container(
+										child: Icon(
+											Icons.location_on,
+											color: Colors.red,
+											size: 40.0,
+										),
+								),
+							),
+						]
+					),
+				],
+			),
+			floatingActionButton: FloatingActionButton(
+				child: Icon(Icons.my_location),
+				onPressed: () async {
+					Position position = await _determinePosition();
+					setState(() {
+						zoom = 18.4;
+						pinLocation = LatLng(position.latitude, position.longitude);
+						center = LatLng(position.latitude, position.longitude);
+						controller.move(center, zoom);
+					});
+				},
+			),
 		);
 	}
 }

@@ -1,4 +1,6 @@
+import 'package:MyProperty/models/address.dart';
 import 'package:MyProperty/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class Property {
@@ -21,7 +23,7 @@ class Property {
 	String ownerUID;
 	String uid;
 	String propertyType;
-	String location;
+	Address location;
 	DateTime postDate;
 	int size;
 	int price;

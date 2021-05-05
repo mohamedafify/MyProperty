@@ -4,12 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeViewModel {
 	DatabaseService _database = DatabaseService();
-	Future<List<Property>> getAllProperties() async {
-		List<Property> properties = List.empty(growable: true);
+	Future<List> getAllProperties() async {
 		QuerySnapshot query = await _database.getAllProperty();
-		query.docs.forEach((element) {
-			properties.add(_database.propertyFromDocumentSnapshot(element));
-		});
-		return properties;
+		return Future.wait(query.docs.map((element) async {
+			return await _database.getPropertyByID(element.id);
+		}).toList());
 	}
 }

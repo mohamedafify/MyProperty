@@ -1,3 +1,4 @@
+import 'package:MyProperty/models/address.dart';
 import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/models/user.dart';
 import 'package:MyProperty/services/auth.dart';
@@ -56,12 +57,12 @@ class DatabaseService {
 
 	Future updatePropertyData(Property property) async {
 		await addPropertyToCurrentUser(property);
+		await propertyCollection.doc(property.uid).collection("location").doc("1").set(property.location.toJson());
 		return await propertyCollection.doc(property.uid).set({
 			"ownerUID": property.ownerUID,
 			"uid": property.uid,
 			"propertyType": property.propertyType,
 			"adType": property.adType,
-			"location": property.location,
 			"postDate": property.postDate,
 			"negotiatable": property.negotiatable,
 			"size": property.size,
@@ -102,14 +103,13 @@ class DatabaseService {
 		}).then((value) => "success" , onError: (value) => null);
 	}
 
-	Property propertyFromDocumentSnapshot(DocumentSnapshot snap) {
+	Property _propertyFromDocumentSnapshot(DocumentSnapshot snap) {
 		Property property = Property();
 		if (snap.exists) {
 			property.ownerUID = snap.get("ownerUID");
 			property.uid = snap.get("uid");
 			property.propertyType = snap.get("propertyType");
 			property.adType = snap.get("adType");
-			property.location = snap.get("location");
 			property.postDate = snap.get("postDate").toDate();
 			property.negotiatable = snap.get("negotiatable");
 			property.size = snap.get("size");
@@ -154,6 +154,9 @@ class DatabaseService {
 	}
 	Future<Property> getPropertyByID(String uid) async {
 		DocumentSnapshot snap = await propertyCollection.doc(uid).get();
-		return propertyFromDocumentSnapshot(snap);
+		Property property = _propertyFromDocumentSnapshot(snap);
+		var sn = await propertyCollection.doc(uid).collection("location").doc("1").get();
+		property.location = Address.jsonToAddress(sn.data());
+		return property;
 	}
 }

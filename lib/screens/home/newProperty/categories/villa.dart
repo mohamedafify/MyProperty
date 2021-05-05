@@ -16,6 +16,7 @@ class _VillaState extends State<Villa> {
 				mainAxisAlignment: MainAxisAlignment.start,
 				crossAxisAlignment: CrossAxisAlignment.start,
 				children: [
+					// number of floors
 					TextFormField(
 						style: TextStyle(
 							fontSize: 20,
@@ -31,9 +32,7 @@ class _VillaState extends State<Villa> {
 							hintText: "Number of floors"
 						),
 						onChanged: (value) {
-							setState(() {
-								widget._property.floorNumber = int.parse(value);
-							});
+							widget._property.floorNumber = int.parse(value);
 						},
 					),
 					SizedBox(height: 10),

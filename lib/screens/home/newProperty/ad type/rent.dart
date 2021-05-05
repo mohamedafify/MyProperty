@@ -70,9 +70,7 @@ class _RentState extends State<Rent> {
 							hintText: "Max rent"
 						),
 						onChanged: (value) {
-							setState(() {
-								widget._property.maxRent = int.parse(value);
-							});
+							widget._property.maxRent = int.parse(value);
 						},
 					),
 					SizedBox(height: 10),

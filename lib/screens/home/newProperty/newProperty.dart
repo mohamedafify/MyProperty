@@ -31,6 +31,39 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 	List<Asset> _images = <Asset>[];
 	int _index = 0;
 
+	bool _validate() {
+		bool validate = true;
+		String error = "";
+		if (_property.location == null) {
+			error = "Please add property location";
+			validate = false;
+		}
+		if (_images.isEmpty) {
+			error = "Please add property images";
+			validate = false;
+		}
+		if (!_formKey.currentState.validate()) {
+			error = "Please fill required information";
+			validate = false;
+		}
+		// add validations here
+
+		if (!validate) {
+			ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
+				SnackBar(
+					duration: Duration(seconds: 3),
+					content: Text(
+						error,
+						style: TextStyle(
+							color: Colors.red,
+						),
+					)
+				)
+			);
+		}
+		return validate;
+	}
+
 	@override
 	void initState() {
 		propertyTypesPages.add(Apartment(_property));
@@ -76,7 +109,6 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 							),
 							SizedBox(height: 10),
 							// location
-							// TODO make validator
 							TextButton.icon(
 								label: Text(
 									"Add property location",
@@ -90,6 +122,26 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										context,
 										MaterialPageRoute(builder: (context) => LocationPicker(_property))
 									);
+								},
+							),
+							SizedBox(height: 10),
+							// houseNumber in location
+							TextFormField(
+								style: TextStyle(
+									fontSize: 20,
+								),
+								keyboardType: TextInputType.number,
+								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid number" : null,
+								decoration: InputDecoration(
+									border: OutlineInputBorder(
+										borderSide: BorderSide(
+											color: Colors.black,
+										),
+									),
+									hintText: "House number"
+								),
+								onChanged: (value) {
+									_property.location.houseNumber = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -273,13 +325,11 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									suffixText: "m²",
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.size = int.parse(value);
-									});
+									_property.size = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
-							// // price
+							// price
 							TextFormField(
 								style: TextStyle(
 									fontSize: 20,
@@ -296,9 +346,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									hintText: "Price"
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.price = int.parse(value);
-									});
+									_property.price = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -372,9 +420,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									hintText: "Building age"
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.age = int.parse(value);
-									});
+									_property.age = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -394,9 +440,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									hintText: "Bedrooms"
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.bedroom = int.parse(value);
-									});
+									_property.bedroom = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -416,9 +460,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									hintText: "Bathrooms"
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.bathroom = int.parse(value);
-									});
+									_property.bathroom = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -438,9 +480,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									hintText: "Livingroom"
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.livingroom = int.parse(value);
-									});
+									_property.livingroom = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -460,9 +500,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									hintText: "Kitchen"
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.kitchen = int.parse(value);
-									});
+									_property.kitchen = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -482,9 +520,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									hintText: "Balacone"
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.balacone = int.parse(value);
-									});
+									_property.balacone = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -504,9 +540,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									hintText: "Reception"
 								),
 								onChanged: (value) {
-									setState(() {
-										_property.reception = int.parse(value);
-									});
+									_property.reception = int.parse(value);
 								},
 							),
 							SizedBox(height: 10),
@@ -558,9 +592,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										hintText: "Landmarks"
 									),
 									onChanged: (value) {
-										setState(() {
-											_property.landmarks = value; 
-										});
+										_property.landmarks = value; 
 									},
 								),
 							),
@@ -586,9 +618,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										hintText: "Flows"
 									),
 									onChanged: (value) {
-										setState(() {
-											_property.flows = value; 
-										});
+										_property.flows = value; 
 									},
 								),
 							),
@@ -614,9 +644,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										hintText: "Additional information"
 									),
 									onChanged: (value) {
-										setState(() {
-											_property.additionalInformation = value; 
-										});
+										_property.additionalInformation = value; 
 									},
 								),
 							),
@@ -630,21 +658,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									),
 								),
 								onPressed: () async {
-									if(_images.isEmpty) {
-										ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
-											SnackBar(
-												duration: Duration(seconds: 3),
-												content: Text(
-													"Please add images to the property",
-													style: TextStyle(
-														color: Colors.red,
-													),
-												)
-											)
-										);
-										return;
-									}
-									// if (_formKey.currentState.validate()) {
+									if (_validate()) {
 										widget.notifyParent(() {
 											widget.isLoading.myBool = true;
 										});
@@ -672,7 +686,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 													"Property added")
 											)
 										);
-									// }
+									}
 								},
 							),
 						],
