@@ -7,7 +7,7 @@ class DatabaseStorageService {
 
 	Future<List> uploadPropertyImages(String userUID, String propertyUID, List<Asset> imagesPaths) {
 		return Future.wait(imagesPaths.map((element) async {
-			ByteData byteData = await element.getByteData();
+			ByteData byteData = await element.getByteData(quality: 40);
 			List<int> imageData = byteData.buffer.asUint8List();
 			Reference imageRef = root.child(userUID).child(propertyUID).child(element.name);
 			await imageRef.putData(imageData);

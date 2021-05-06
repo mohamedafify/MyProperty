@@ -22,9 +22,7 @@ class _LocationShowerState extends State<LocationShower> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
-			appBar: AppBar(
-				title: Text("maps"),
-			),
+			appBar: AppBar(),
 			body: FlutterMap(
 				options: MapOptions(
 					interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,

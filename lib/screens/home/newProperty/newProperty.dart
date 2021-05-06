@@ -120,7 +120,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								onPressed: () {
 									Navigator.push(
 										context,
-										MaterialPageRoute(builder: (context) => LocationPicker(_property))
+										MaterialPageRoute(builder: (context) => LocationPicker(_property, widget.scaffoldKey))
 									);
 								},
 							),

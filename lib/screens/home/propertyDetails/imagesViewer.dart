@@ -1,85 +1,72 @@
-import 'package:flutter/gestures.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 class ImagesViewer extends StatefulWidget {
 	final List<dynamic> imagesList;
+	final int initIndex;
 	final bool useOnTap;
-	ImagesViewer(this.imagesList, this.useOnTap);
+	ImagesViewer(this.imagesList, this.useOnTap, this.initIndex);
 	@override
 	_ImagesViewerState createState() => _ImagesViewerState();
 }
 
 class _ImagesViewerState extends State<ImagesViewer> {
-	int index = 0;
-	Offset startPoint;
-	Offset endPoint;
+	int currentIndex;
+	@override
+	void initState() {
+		currentIndex = widget.initIndex;
+		super.initState();
+	}
 	@override
 	Widget build(BuildContext context) {
 		return GestureDetector(
 			child: Container(
-				child: Stack(
-					alignment: Alignment.centerLeft,
-					children: [
-						Center(
-							child: Image(
-								image: NetworkImage(widget.imagesList[index]),
-							),
-						),
-						TextButton(
-							child: Icon(
-								Icons.arrow_back_ios,
-								color: Colors.black,
-							),
-							onPressed: () {
-								if (index > 0) {
-									setState(() {
-										index--;
-									});
-								}
+				child: ExtendedImageGesturePageView.builder(
+					itemBuilder: (context, index) {
+						String url = widget.imagesList[index];
+						Widget image = ExtendedImage.network(
+							url,
+							mode: ExtendedImageMode.gesture,
+							fit: BoxFit.contain,
+							cache: true,
+							shape: BoxShape.rectangle,
+							initGestureConfigHandler: (state) {
+								return GestureConfig(
+									inPageView: true,
+									initialScale: 1.0,
+									minScale: 1.0,
+									animationMinScale: 0.8,
+									maxScale: 3.0,
+									animationMaxScale: 3.5,
+									speed: 1.0,
+									inertialSpeed: 100.0,
+									initialAlignment: InitialAlignment.center,
+								);
 							},
-						),
-						Align(
-							alignment: Alignment.centerRight,
-							child: TextButton(
-								child: Icon(
-									Icons.arrow_forward_ios,
-									color: Colors.black,
-								),
-								onPressed: () {
-									if (index < widget.imagesList.length - 1) {
-										setState(() {
-											index++;
-										});
-									}
-								},
-							),
-						)
-					]
+						);
+						if (index == currentIndex) {
+							return Hero(
+								tag: url + index.toString(),
+								child: image,
+							);
+						} else {
+							return image;
+						}
+					},
+					itemCount: widget.imagesList.length,
+					onPageChanged: (index) {
+						currentIndex = index;
+					},
+					controller: PageController(
+						initialPage: currentIndex,
+					),
+					scrollDirection: Axis.horizontal,
 				),
-				color: Colors.white,
 			),
-			onHorizontalDragStart: (drag) {
-				startPoint = drag.globalPosition;
-			},
-			onHorizontalDragDown: (drag) {
-				endPoint = drag.globalPosition;
-			},
-			onHorizontalDragEnd: (drag) {
-					if (startPoint.dx - endPoint.dx > 0 && index > 0) {
-						setState(() {
-							index--;
-						});
-					}
-					else if (startPoint.dx - endPoint.dx < 0 && index < widget.imagesList.length - 1) {
-						setState(() {
-							index++;
-						});
-					}
-			},
 			onTap: () {
 				if (widget.useOnTap) {
 					Navigator.push(context, MaterialPageRoute(builder: (context) {
-						return ImagesViewer(widget.imagesList, false);
+						return ImagesViewer(widget.imagesList, false, currentIndex);
 					}));
 				}
 			},

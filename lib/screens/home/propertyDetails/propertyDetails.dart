@@ -37,7 +37,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 						SizedBox(
 							height: myScreen.height * (1/5),
 							width: myScreen.width,
-							child: ImagesViewer(widget._property.imagesURLs, true),
+							child: ImagesViewer(widget._property.imagesURLs, true, 0),
 						),
 						SizedBox(height: 20),
 						// adType

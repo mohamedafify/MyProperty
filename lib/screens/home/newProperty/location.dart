@@ -10,7 +10,8 @@ import 'package:geolocator/geolocator.dart';
 
 class LocationPicker extends StatefulWidget {
 	final Property property;
-	LocationPicker(this.property);
+	final GlobalKey scaffoldKey;
+	LocationPicker(this.property, this.scaffoldKey);
 	@override
 	_LocationPickerState createState() => _LocationPickerState();
 }
@@ -35,21 +36,49 @@ class _LocationPickerState extends State<LocationPicker> {
 		// Test if location services are enabled.
 		serviceEnabled = await Geolocator.isLocationServiceEnabled();
 		if (!serviceEnabled) {
-			return Future.error('Location services are disabled.');
+			ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
+				SnackBar(
+					duration: Duration(seconds: 3),
+					content: Text(
+						"Please open your GPS",
+						style: TextStyle(
+							color: Colors.red,
+						),
+					)
+				)
+			);
 		}
 
 		permission = await Geolocator.checkPermission();
 		if (permission == LocationPermission.denied) {
 			permission = await Geolocator.requestPermission();
 			if (permission == LocationPermission.denied) {
-			return Future.error('Location permissions are denied');
+				ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
+					SnackBar(
+						duration: Duration(seconds: 3),
+						content: Text(
+							"Please allow the app to use GPS to get your current location",
+							style: TextStyle(
+								color: Colors.red,
+							),
+						)
+					)
+				);
 			}
 		}
 		
 		if (permission == LocationPermission.deniedForever) {
-			// Permissions are denied forever, handle appropriately. 
-			return Future.error(
-			'Location permissions are permanently denied, we cannot request permissions.');
+			ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
+				SnackBar(
+					duration: Duration(seconds: 3),
+					content: Text(
+						"Please allow the app to use GPS",
+						style: TextStyle(
+							color: Colors.red,
+						),
+					)
+				)
+			);
 		} 
 
 		return await Geolocator.getCurrentPosition();
@@ -58,7 +87,6 @@ class _LocationPickerState extends State<LocationPicker> {
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-				title: Text("maps"),
 				actions: [
 					IconButton(
 						icon: Icon(Icons.check),
