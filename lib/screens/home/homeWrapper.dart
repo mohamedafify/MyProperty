@@ -27,7 +27,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
 	bool firstBuild = true;
 	@override
 	void initState() {
-		navigationPages.add(Home());
+		navigationPages.add(Home(_scaffoldKey));
 		navigationPages.add(OwnedPropertiesPage());
 		navigationPages.add(NewPropertyPage(index, refresh, isLoading, _scaffoldKey));
 		navigationPages.add(Settings());

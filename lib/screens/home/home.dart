@@ -4,6 +4,8 @@ import 'package:MyProperty/viewModels/homeViewModel.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
+	final GlobalKey scaffoldKey;
+	Home(this.scaffoldKey);
 	@override
 	_HomeState createState() => _HomeState();
 }
@@ -18,7 +20,7 @@ class _HomeState extends State<Home> {
 				builder: (context, snapshot) {
 					if (snapshot.connectionState == ConnectionState.done) { 
 							return ListView.builder(
-								itemBuilder: (_, index) => PropertyPreview(snapshot.data[index]),
+								itemBuilder: (_, index) => PropertyPreview(snapshot.data[index], widget.scaffoldKey),
 								itemCount: snapshot.data.length,
 							);
 					} else {

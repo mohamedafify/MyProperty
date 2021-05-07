@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId "com.MohamedAfify.MyProperty"
-        minSdkVersion 21
+        minSdkVersion 25
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

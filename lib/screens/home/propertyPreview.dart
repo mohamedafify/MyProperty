@@ -5,11 +5,11 @@ import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:MyProperty/viewModels/propertyPreviewViewModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class PropertyPreview extends StatefulWidget {
 	final Property _property;
-	PropertyPreview(this._property);
+	final GlobalKey scaffoldKey;
+	PropertyPreview(this._property, this.scaffoldKey);
 	@override
 	_PropertyPreviewState createState() => _PropertyPreviewState();
 }
@@ -18,7 +18,6 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 	final PropertyPreviewViewModel _viewModel = PropertyPreviewViewModel();
 	@override
 	Widget build(BuildContext context) {
-		precacheImage(NetworkImage(widget._property.imagesURLs[0]), context);
 		final Screen _screen = Screen(context);
 		return SizedBox(
 			width: _screen.width,
@@ -136,7 +135,7 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 				onTap: () {
 					Navigator.push(
 						context,
-						MaterialPageRoute(builder: (context) => PropertyDetails(widget._property)),
+						MaterialPageRoute(builder: (context) => PropertyDetails(widget._property, widget.scaffoldKey)),
 					);
 				},
 			),

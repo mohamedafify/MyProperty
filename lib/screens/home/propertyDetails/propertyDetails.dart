@@ -11,16 +11,24 @@ import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:MyProperty/viewModels/propertyDetailsViewModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PropertyDetails extends StatefulWidget {
 	final Property _property;
-	PropertyDetails(this._property);
+	final GlobalKey scaffoldKey;
+	PropertyDetails(this._property, this.scaffoldKey);
 	@override
 	_PropertyDetailsState createState() => _PropertyDetailsState();
 }
 class _PropertyDetailsState extends State<PropertyDetails> {
 	final double fontSize = 20;
-	final PropertyDetailsViewModel _viewModel = PropertyDetailsViewModel();
+	PropertyDetailsViewModel _viewModel;
+
+	@override
+	void initState() {
+		_viewModel = PropertyDetailsViewModel(widget.scaffoldKey);
+		super.initState();
+	}
 	@override
 	Widget build(BuildContext context) {
 		final Screen myScreen = Screen(context);
@@ -159,6 +167,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 												),
 												style: ButtonStyle(
 													backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.blue[100]),
+													elevation: MaterialStateProperty.resolveWith((states) => 5.0),
 													tapTargetSize: MaterialTapTargetSize.shrinkWrap,
 												),
 												onPressed: () {
@@ -648,7 +657,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 							child: Row(
 								children: [
 									Text(
-										"Contact info: ",
+										"Contact: ",
 										style: TextStyle(
 											fontSize: fontSize,
 											color: Constant.buttonTextColor,
@@ -661,15 +670,33 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 										future: _viewModel.getUserByUID(widget._property.ownerUID),
 										builder: (context, snapshot) {
 											if (snapshot.connectionState == ConnectionState.done) {
-												return Text(
-													snapshot.data.number.toString(),
-													style: TextStyle(
-														fontSize: fontSize,
-														color: Constant.buttonTextColor,
-														decoration: TextDecoration.none,
-														fontWeight: FontWeight.normal,
-														fontFamily: Constant.font,
+												return TextButton(
+													style: ButtonStyle(
+														backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.blue[100]),
+														elevation: MaterialStateProperty.resolveWith((states) => 5.0),
+														tapTargetSize: MaterialTapTargetSize.shrinkWrap,
 													),
+													child: Row(
+														children: [
+															FaIcon(
+																FontAwesomeIcons.whatsapp,
+																color: Colors.green[600],
+															),
+															SizedBox(width: 10,),
+															Text(snapshot.data.number.toString(),
+																style: TextStyle(
+																	fontSize: fontSize,
+																	color: Constant.buttonTextColor,
+																	decoration: TextDecoration.none,
+																	fontWeight: FontWeight.normal,
+																	fontFamily: Constant.font,
+																),
+															),
+														]
+													),
+													onPressed: () {
+														_viewModel.openWhatsappChat(context, snapshot.data.number.toString());
+													},
 												);
 											} else {
 												return Container();
