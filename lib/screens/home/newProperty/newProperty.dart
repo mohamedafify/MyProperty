@@ -50,7 +50,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 		// add validations here
 
 		if (!validate) {
-			ShowToast(context).popUp(text: error, color: Colors.red);
+			ShowToast(widget.scaffoldKey.currentContext).popUp(text: error, color: Colors.red);
 		}
 		return validate;
 	}
@@ -656,7 +656,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										await propertyViewModel.uploadPropertyImages(_property.ownerUID, _property.uid, _images);
 										_property.imagesRefs = propertyViewModel.storeRefsToProperty(_property.ownerUID, _property.uid, _images);
 										_property.imagesURLs = await propertyViewModel.storeURLsToProperty(_property.imagesRefs);
-										ShowToast(context).popUp(text: "Images added", duration: Duration(milliseconds: 800));
+										ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Images added", duration: Duration(milliseconds: 800));
 										await propertyViewModel.updateProperty(_property);
 										widget.notifyParent(() {
 											// return to homepage
@@ -664,7 +664,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 											// stop loading
 											widget.isLoading.myBool = false;
 										});
-										ShowToast(context).popUp(text: "Property added", duration: Duration(milliseconds: 800));
+										ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Property added", duration: Duration(milliseconds: 800));
 									}
 								},
 							),

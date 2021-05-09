@@ -37,19 +37,19 @@ class _LocationPickerState extends State<LocationPicker> {
 		// Test if location services are enabled.
 		serviceEnabled = await Geolocator.isLocationServiceEnabled();
 		if (!serviceEnabled) {
-			ShowToast(context).popUp(text: "Please open your GPS", color: Colors.red);
+			ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Please open your GPS", color: Colors.red);
 		}
 
 		permission = await Geolocator.checkPermission();
 		if (permission == LocationPermission.denied) {
 			permission = await Geolocator.requestPermission();
 			if (permission == LocationPermission.denied) {
-				ShowToast(context).popUp(text: "Please allow the app to use GPS", color: Colors.red);
+				ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Please allow the app to use GPS", color: Colors.red);
 			}
 		}
 		
 		if (permission == LocationPermission.deniedForever) {
-			ShowToast(context).popUp(text: "Please allow the app to use GPS", color: Colors.red);
+			ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Please allow the app to use GPS", color: Colors.red);
 		} 
 
 		return await Geolocator.getCurrentPosition();
