@@ -15,12 +15,11 @@ class PropertyDetailsViewModel {
 		return await _database.getUserByID(uid);
 	}
 	Future openWhatsappChat(BuildContext context, String number) async {
-		String url = "https://wa.me/2$number";
+		String url = "https://wa.me/$number";
 		if (await DeviceApps.isAppInstalled("com.whatsapp")) {
 			await canLaunch(url) ? await launch(url) : ShowDialog().showDialogOnScreen(scaffoldKey.currentContext, "Couldn't open WhatsApp", "This is a problem please contact us if it keeps showing this error");
 		} else {
 			ShowDialog().showDialogOnScreen(scaffoldKey.currentContext, "WhatsApp is not installed", "Please install WhatsApp first then try again.");
-			print("whatsapp is not installed");
 		}
 	}
 }

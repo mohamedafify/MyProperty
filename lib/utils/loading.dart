@@ -15,7 +15,7 @@ class Loading extends StatelessWidget {
 						height: 30,
 					),
 					Text(
-						"My Property",
+						"MyProperty",
 						style: TextStyle(
 							fontSize: 50,
 							color: Constant.buttonTextColor,

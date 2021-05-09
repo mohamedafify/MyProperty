@@ -6,6 +6,7 @@ import 'package:MyProperty/screens/home/newProperty/ad%20type/rent.dart';
 import 'package:MyProperty/screens/home/newProperty/location.dart';
 import 'package:MyProperty/utils/boolean.dart';
 import 'package:MyProperty/utils/integer.dart';
+import 'package:MyProperty/utils/showToast.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:MyProperty/viewModels/propertyViewModel.dart';
 import 'package:flutter/material.dart';
@@ -49,17 +50,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 		// add validations here
 
 		if (!validate) {
-			ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
-				SnackBar(
-					duration: Duration(seconds: 3),
-					content: Text(
-						error,
-						style: TextStyle(
-							color: Colors.red,
-						),
-					)
-				)
-			);
+			ShowToast(context).popUp(text: error, color: Colors.red);
 		}
 		return validate;
 	}
@@ -665,13 +656,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										await propertyViewModel.uploadPropertyImages(_property.ownerUID, _property.uid, _images);
 										_property.imagesRefs = propertyViewModel.storeRefsToProperty(_property.ownerUID, _property.uid, _images);
 										_property.imagesURLs = await propertyViewModel.storeURLsToProperty(_property.imagesRefs);
-										ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
-											SnackBar(
-												duration: Duration(milliseconds: 800),
-												content: Text(
-													"Images added")
-											)
-										);
+										ShowToast(context).popUp(text: "Images added", duration: Duration(milliseconds: 800));
 										await propertyViewModel.updateProperty(_property);
 										widget.notifyParent(() {
 											// return to homepage
@@ -679,13 +664,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 											// stop loading
 											widget.isLoading.myBool = false;
 										});
-										ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
-											SnackBar(
-												duration: Duration(milliseconds: 800),
-												content: Text(
-													"Property added")
-											)
-										);
+										ShowToast(context).popUp(text: "Property added", duration: Duration(milliseconds: 800));
 									}
 								},
 							),

@@ -1,9 +1,12 @@
+import 'package:MyProperty/models/user.dart';
 import 'package:MyProperty/services/connection.dart';
+import 'package:MyProperty/utils/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:MyProperty/utils/constant.dart';
 import 'package:MyProperty/services/auth.dart';
-import 'package:MyProperty/utils/show_dialog.dart';
 import 'package:MyProperty/utils/loading.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
@@ -18,6 +21,7 @@ class _SignInState extends State<SignIn> {
 
 	String _email = "";
 	String _password = "";
+	bool _obscurePassword = true;
 
 	@override
 	Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class _SignInState extends State<SignIn> {
 		return loading ? Loading(Colors.blue) : Scaffold(
 			backgroundColor: Constant.backgroundColor,
 			appBar: AppBar(
+				centerTitle: true,
 				leading: BackButton(
 					color: Constant.buttonTextColor,
 					onPressed: () => Navigator.of(context).pop(),
@@ -32,84 +37,102 @@ class _SignInState extends State<SignIn> {
 				backgroundColor: Constant.backgroundColor,
 				elevation: 0.0,
 				title: Text(
-					"SignIn to MyProperty",
+					"Sign In",
 					style: TextStyle(
 						color: Constant.buttonTextColor
 					)
 				),
 			),
-			body: Center(
-				child: Container(
+			body: Container(
+				child: SingleChildScrollView(
 					padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
-					child: Form(
-						key: _formKey,
-						child: Column(
-							children:<Widget> [
-								SizedBox(height: 20.0),
-								// email
-								TextFormField(
-									// TODO make an email validator
-									validator: (val) => val.isEmpty ? "Enter valid email" : null,
-									keyboardType: TextInputType.emailAddress,
-									decoration: InputDecoration(
-										hintText: "Email"
-									),
-									onChanged: (val) {
-										setState(() => _email = val);
-									},
-								),
-								SizedBox(height: 20.0),
-								// password
-								TextFormField(
-									// TODO make a password validator
-									validator: (val) => val.length < 8 ? "Enter valid password" : null,
-									obscureText: true,
-									decoration: InputDecoration(
-									hintText: "Password"
-									),
-									onChanged: (val) {
-										setState(() => _password = val);
-									},
-								),
-								SizedBox(height: 20.0),
-								TextButton(
-									child: Text(
-										"Sign In",
-										style: TextStyle(
-											color: Constant.buttonTextColor
+					child: AutofillGroup(
+						child: Form(
+							key: _formKey,
+							child: Column(
+								children:<Widget> [
+									SizedBox(height: 20.0),
+									// email
+									TextFormField(
+										validator: (val) => val.isEmpty ? "Enter valid email" : null,
+										keyboardType: TextInputType.emailAddress,
+										autofillHints: [AutofillHints.email],
+										autovalidateMode: AutovalidateMode.onUserInteraction,
+										decoration: InputDecoration(
+											labelText: "Email",
+											border: OutlineInputBorder(
+												borderSide: BorderSide(
+													color: Colors.black,
+												),
 											),
+										),
+										onChanged: (val) {
+											setState(() => _email = val.trim());
+										},
 									),
-									onPressed: () async {
-										if (_formKey.currentState.validate()) {
-											await connection.checkConnection();
-											if (Connection.hasInternet) {
-												setState(() => loading = true);
-												dynamic user = await _auth.signInEmailandPassword(email: this._email, password: this._password);
-												ShowDialog signInDialog = ShowDialog();
-												// pop the signIn widget from authentication push
-												if (user == null) {
-													print("Error Siging in");
-													signInDialog.showDialogOnScreen(context, "SignIn", "SignInError");
+									SizedBox(height: 20.0),
+									// password
+									TextFormField(
+										validator: (val) => val.length < 8 ? "Enter valid password" : null,
+										obscureText: _obscurePassword,
+										autovalidateMode: AutovalidateMode.onUserInteraction,
+										autofillHints: [AutofillHints.password],
+										decoration: InputDecoration(
+											labelText: "Password",
+											suffixIcon: IconButton(
+												icon: _obscurePassword ? FaIcon(FontAwesomeIcons.eyeSlash) : FaIcon(FontAwesomeIcons.eye),
+												onPressed: () {
+													setState(() {
+														_obscurePassword = !_obscurePassword;
+													});
+												},
+											),
+											border: OutlineInputBorder(
+												borderSide: BorderSide(
+													color: Colors.black,
+												),
+											),
+										),
+										onChanged: (val) {
+											setState(() => _password = val);
+										},
+									),
+									SizedBox(height: 20.0),
+									TextButton(
+										style: ButtonStyle(
+											backgroundColor: MaterialStateColor.resolveWith((states) => Colors.blue[400]),
+											minimumSize: MaterialStateProperty.resolveWith((states) => Size(100, 40)),
+											elevation: MaterialStateProperty.resolveWith((states) => 2)
+										),
+										child: Text(
+											"Sign In",
+											style: TextStyle(
+												fontSize: 17,
+												color: Constant.buttonTextColor
+											),
+										),
+										onPressed: () async {
+											if (_formKey.currentState.validate()) {
+												await connection.checkConnection();
+												if (Connection.hasInternet) {
+													setState(() => loading = true);
+													dynamic user = await _auth.signInEmailandPassword(email: this._email, password: this._password);
+													if (user is MyUser) {
+														Navigator.pop(context);
+													} else {
+														ShowToast(context).popUp(text: user, color: Colors.red);
+													}
+													setState(() => loading = false);
 												} else {
-													print("Signed In Succesfully");
-													Navigator.pop(context);
-													signInDialog.showDialogOnScreen(context, "SignIn", "SignedInSuccessfully");
+													connection.checkConnection();
+													ShowToast(context).popUp(text:"No Internet Connection", color: Colors.red);
 												}
-												setState(() => loading = false);
-											} else {
-												connection.checkConnection();
-												ScaffoldMessenger.of(context).showSnackBar(
-													SnackBar(
-														content: Text(
-															"No Internet Connection")
-													)
-												);
 											}
-										}
-									},
-								),
-							],
-						)
+										},
+									),
+								],
+							)
+						),
 					),
 				),
 			) 

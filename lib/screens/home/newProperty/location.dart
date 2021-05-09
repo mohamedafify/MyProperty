@@ -1,6 +1,7 @@
 import 'package:MyProperty/models/address.dart';
 import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/services/geolocation.dart';
+import 'package:MyProperty/utils/showToast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -36,49 +37,19 @@ class _LocationPickerState extends State<LocationPicker> {
 		// Test if location services are enabled.
 		serviceEnabled = await Geolocator.isLocationServiceEnabled();
 		if (!serviceEnabled) {
-			ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
-				SnackBar(
-					duration: Duration(seconds: 3),
-					content: Text(
-						"Please open your GPS",
-						style: TextStyle(
-							color: Colors.red,
-						),
-					)
-				)
-			);
+			ShowToast(context).popUp(text: "Please open your GPS", color: Colors.red);
 		}
 
 		permission = await Geolocator.checkPermission();
 		if (permission == LocationPermission.denied) {
 			permission = await Geolocator.requestPermission();
 			if (permission == LocationPermission.denied) {
-				ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
-					SnackBar(
-						duration: Duration(seconds: 3),
-						content: Text(
-							"Please allow the app to use GPS to get your current location",
-							style: TextStyle(
-								color: Colors.red,
-							),
-						)
-					)
-				);
+				ShowToast(context).popUp(text: "Please allow the app to use GPS", color: Colors.red);
 			}
 		}
 		
 		if (permission == LocationPermission.deniedForever) {
-			ScaffoldMessenger.of(widget.scaffoldKey.currentContext).showSnackBar(
-				SnackBar(
-					duration: Duration(seconds: 3),
-					content: Text(
-						"Please allow the app to use GPS",
-						style: TextStyle(
-							color: Colors.red,
-						),
-					)
-				)
-			);
+			ShowToast(context).popUp(text: "Please allow the app to use GPS", color: Colors.red);
 		} 
 
 		return await Geolocator.getCurrentPosition();

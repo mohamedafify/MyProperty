@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'package:MyProperty/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:MyProperty/models/user.dart';
@@ -27,11 +25,22 @@ class AuthService {
 	Future signInEmailandPassword({String email, String password}) async {
 		try {
 		   await _auth.signInWithEmailAndPassword(email: email, password: password);
-		   developer.log("signedIn Successfully", name: "auth_signIn");
 		   return _userFromFirebaseUser(FirebaseAuth.instance.currentUser);
 		} catch (e) {
-			developer.log(e.toString(), name: "auth_signInERROR");
-			return null;
+			switch(e.code) {
+				case "invalid-email":
+					return "Email in not valid";
+				break;
+				case "user-disabled":
+					return "this Email is banned";
+				break;
+				case "user-not-found":
+					return "Email not found";
+				break;
+				case "wrong-password":
+					return "Wrong password";
+				break;
+			}
 		}
 	}
 
@@ -39,26 +48,31 @@ class AuthService {
 	Future registerWithEmailandPassword(String email, String password, String name, String number) async {
 		try {
 			await _auth.createUserWithEmailAndPassword(email: email, password: password);
-			developer.log("registered Successfully", name: "auth_register");
 			MyUser myUser = _userFromFirebaseUser(FirebaseAuth.instance.currentUser);
 			myUser.name = name;
 			myUser.number = number;
 			await DatabaseService().updateUserData(myUser);
 			return myUser;
 		} catch (e) {
-			developer.log(e.toString(), name: "auth_registerERROR");
-			return null;
+			switch(e.code) {
+				case "email-already-in-use":
+					return "Email already in use";
+				break;
+				case "invalid-email":
+					return "Email in not valid";
+				break;
+				case "operation-not-allowed":
+					return "this Email is banned";
+				break;
+				case "weak-password":
+					return "Password is weak";
+				break;
+			}
 		}
 	}
 
 	// Sign out
 	Future signOut() async {
-		try {
-			developer.log("Signed Out Successfully", name: "auth_signOut");
-			return await _auth.signOut();
-		} catch (e) {
-			developer.log(e.toString(), name: "auth_signOutERROR");
-			return null;
-		}
+		await _auth.signOut();
 	}
 }
