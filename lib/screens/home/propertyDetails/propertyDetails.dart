@@ -706,6 +706,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 								],
 							),
 						),
+						SizedBox(height: 10)
 						/* ------------------ Bottom -------------------- */
 					],
 				),

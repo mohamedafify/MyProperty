@@ -137,7 +137,6 @@ class DatabaseService {
 			property.garage = snap.get("garage");
 			property.numberOfFloors = snap.get("numberOfFloors");
 			property.swimmingPool = snap.get("swimmingPool");
-			property.rentableAt = snap.get("rentableAt");
 			property.maxRent = snap.get("maxRent");
 			property.rented = snap.get("rented");
 			property.petFriendly = snap.get("petFriendly");
@@ -147,6 +146,9 @@ class DatabaseService {
 			property.hasInsurance = snap.get("hasInsurance");
 			property.imagesRefs = snap.get("imagesRefs");
 			property.imagesURLs = snap.get("imagesURLs");
+			if (snap.get("rentableAt") != null) {
+				property.rentableAt = snap.get("rentableAt").toDate();
+			}
 			return property;
 		} else {
 			return null;

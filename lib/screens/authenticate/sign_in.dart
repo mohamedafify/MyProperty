@@ -17,7 +17,6 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
 	final AuthService _auth = AuthService();
 	final _formKey = GlobalKey<FormState>();
-	bool loading = false;
 
 	String _email = "";
 	String _password = "";
@@ -26,7 +25,7 @@ class _SignInState extends State<SignIn> {
 	@override
 	Widget build(BuildContext context) {
 		final connection = context.watch<Connection>();
-		return loading ? Loading(Colors.blue) : Scaffold(
+		return Scaffold(
 			backgroundColor: Constant.backgroundColor,
 			appBar: AppBar(
 				centerTitle: true,
@@ -115,14 +114,17 @@ class _SignInState extends State<SignIn> {
 											if (_formKey.currentState.validate()) {
 												await connection.checkConnection();
 												if (Connection.hasInternet) {
-													setState(() => loading = true);
+													Navigator.push(
+														context,
+														MaterialPageRoute(builder: (context) => Loading(Colors.blue)),
+													);
 													dynamic user = await _auth.signInEmailandPassword(email: this._email, password: this._password);
 													if (user is MyUser) {
 														Navigator.pop(context);
 													} else {
 														ShowToast(context).popUp(text: user, color: Colors.red);
 													}
-													setState(() => loading = false);
+													Navigator.pop(context);
 												} else {
 													connection.checkConnection();
 													ShowToast(context).popUp(text:"No Internet Connection", color: Colors.red);

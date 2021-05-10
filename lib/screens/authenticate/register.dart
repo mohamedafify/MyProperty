@@ -19,7 +19,6 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
 	final AuthService _auth = AuthService();
 	final _formKey = GlobalKey<FormState>();
-	bool loading = false;
 
 	String _name = "";
 	String _email = "";
@@ -28,10 +27,14 @@ class _RegisterState extends State<Register> {
 	bool _obscurePassword = true;
 	String _countryCode = "+20";
 
+	bool haveWrongInputNumber(String number) { 
+		return number[0] == '0' ? true : false;
+	}
+
 	@override
 	Widget build(BuildContext context) {
 		final connection = context.watch<Connection>();
-		return loading ? Loading(Colors.blue) : Scaffold(
+		return Scaffold(
 			backgroundColor: Constant.backgroundColor,
 			appBar: AppBar(
 				centerTitle: true,
@@ -134,8 +137,11 @@ class _RegisterState extends State<Register> {
 										decoration: InputDecoration(
 											prefixIcon: CountryCodePicker(
 												flagWidth: 30,
-												enabled: false,
-												initialSelection: _countryCode,
+												enabled: true,
+												initialSelection: "+20",
+												onChanged: (value) {
+													_countryCode = value.dialCode;
+												},
 											),
 											labelText: "Phone number",
 											border: OutlineInputBorder(
@@ -167,14 +173,14 @@ class _RegisterState extends State<Register> {
 											if (_formKey.currentState.validate()) {
 												await connection.checkConnection();
 												if (Connection.hasInternet) {
-													setState(() => loading = true);
-													dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._name, "+2" + this._number);
+													Navigator.push(context, MaterialPageRoute(builder: (context) => Loading(Colors.blue)));
+													dynamic user = await _auth.registerWithEmailandPassword(this._email, this._password, this._name, haveWrongInputNumber(this._number) ? _countryCode + this._number.substring(1) : _countryCode + this._number);
 													if (user is MyUser) {
 														Navigator.pop(context);
 													} else {
 														ShowToast(context).popUp(text: user, color: Colors.red);
 													}
-													setState(() => loading = false);
+													Navigator.pop(context);
 												} else {
 													connection.checkConnection();
 													ShowToast(context).popUp(text:"No Internet Connection", color: Colors.red);

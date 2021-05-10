@@ -4,6 +4,7 @@ import 'package:MyProperty/utils/screen.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:MyProperty/viewModels/propertyPreviewViewModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class PropertyPreview extends StatefulWidget {
@@ -35,8 +36,7 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 									Image(
 										width: _screen.width * (2/3),
 										filterQuality: FilterQuality.none,
-										image: NetworkImage(widget._property.imagesURLs[0]),
-										// image: CachedNetworkImageProvider(widget._property.imagesURLs[0]),
+										image: CachedNetworkImageProvider(widget._property.imagesURLs[0]),
 										fit: BoxFit.contain,
 										frameBuilder: (context, child, frame, wasSync) {
 											return Center(child: child);

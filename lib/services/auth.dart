@@ -29,7 +29,7 @@ class AuthService {
 		} catch (e) {
 			switch(e.code) {
 				case "invalid-email":
-					return "Email in not valid";
+					return "Email is not valid";
 				break;
 				case "user-disabled":
 					return "this Email is banned";
@@ -59,7 +59,7 @@ class AuthService {
 					return "Email already in use";
 				break;
 				case "invalid-email":
-					return "Email in not valid";
+					return "Email is not valid";
 				break;
 				case "operation-not-allowed":
 					return "this Email is banned";

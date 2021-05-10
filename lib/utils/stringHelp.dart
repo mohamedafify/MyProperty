@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:MyProperty/models/address.dart';
-
 class StringHelp {
 	static bool isNumeric(String s) {
 		if (s == null) {
