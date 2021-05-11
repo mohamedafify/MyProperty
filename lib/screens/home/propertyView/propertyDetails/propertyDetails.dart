@@ -1,10 +1,10 @@
 import 'package:MyProperty/models/property.dart';
-import 'package:MyProperty/screens/home/propertyDetails/ad%20type/buy.dart';
-import 'package:MyProperty/screens/home/propertyDetails/ad%20type/rent.dart';
-import 'package:MyProperty/screens/home/propertyDetails/categories/apartment.dart';
-import 'package:MyProperty/screens/home/propertyDetails/categories/villa.dart';
-import 'package:MyProperty/screens/home/propertyDetails/imagesViewer.dart';
-import 'package:MyProperty/screens/home/propertyDetails/location.dart';
+import 'package:MyProperty/screens/home/propertyView/propertyDetails/ad%20type/buy.dart';
+import 'package:MyProperty/screens/home/propertyView/propertyDetails/ad%20type/rent.dart';
+import 'package:MyProperty/screens/home/propertyView/propertyDetails/categories/apartment.dart';
+import 'package:MyProperty/screens/home/propertyView/propertyDetails/categories/villa.dart';
+import 'package:MyProperty/screens/home/propertyView/propertyDetails/imagesViewer.dart';
+import 'package:MyProperty/screens/home/propertyView/propertyDetails/location.dart';
 import 'package:MyProperty/utils/constant.dart';
 import 'package:MyProperty/utils/screen.dart';
 import 'package:MyProperty/utils/stringHelp.dart';

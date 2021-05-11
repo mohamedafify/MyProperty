@@ -1,4 +1,3 @@
-import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

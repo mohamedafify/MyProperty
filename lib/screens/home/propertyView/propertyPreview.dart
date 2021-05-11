@@ -1,5 +1,5 @@
 import 'package:MyProperty/models/property.dart';
-import 'package:MyProperty/screens/home/propertyDetails/propertyDetails.dart';
+import 'package:MyProperty/screens/home/propertyView/propertyDetails/propertyDetails.dart';
 import 'package:MyProperty/utils/screen.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:MyProperty/viewModels/propertyPreviewViewModel.dart';
@@ -20,9 +20,10 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 	@override
 	Widget build(BuildContext context) {
 		final Screen _screen = Screen(context);
+		final double fontSize = 12;
 		return SizedBox(
 			width: _screen.width,
-			height: _screen.height / 5,
+			height: _screen.height / 6,
 			child: GestureDetector(
 				child: Row(
 					mainAxisAlignment: MainAxisAlignment.center,
@@ -94,35 +95,31 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 										mainAxisAlignment: MainAxisAlignment.start,
 										crossAxisAlignment: CrossAxisAlignment.start,
 										children:<Widget> [
-											AutoSizeText(
+											Text(
 												widget._property.propertyType,
-												maxLines: 1,
 												style: TextStyle(
-													fontSize: 25,
+													fontSize: fontSize,
 												),
 											),
 											SizedBox(height: 5),
-											AutoSizeText(
+											Text(
 												widget._property.adType,
-												maxLines: 1,
 												style: TextStyle(
-													fontSize: 25,
+													fontSize: fontSize,
 												),
 											),
 											SizedBox(height: 5),
-											AutoSizeText(
+											Text(
 												widget._property.price.toString(),
-												maxLines: 1,
 												style: TextStyle(
-													fontSize: 25,
+													fontSize: fontSize,
 												),
 											),
 											SizedBox(height: 5),
-											AutoSizeText(
+											Text(
 												StringHelp.dateToString(widget._property.postDate),
-												maxLines: 1,
 												style: TextStyle(
-													fontSize: 25,
+													fontSize: fontSize,
 												),
 											),
 										],

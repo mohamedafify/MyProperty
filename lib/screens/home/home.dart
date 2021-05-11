@@ -1,4 +1,4 @@
-import 'package:MyProperty/screens/home/propertyPreview.dart';
+import 'package:MyProperty/screens/home/propertyView/propertyPreview.dart';
 import 'package:MyProperty/utils/loading.dart';
 import 'package:MyProperty/viewModels/homeViewModel.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,8 @@ class _HomeState extends State<Home> {
 				future: _homeViewModel.getAllProperties(),
 				builder: (context, snapshot) {
 					if (snapshot.connectionState == ConnectionState.done) { 
-							return ListView.builder(
+							return ListView.separated(
+								separatorBuilder: (context, index) => Divider(color: Colors.black54),
 								itemBuilder: (_, index) => PropertyPreview(snapshot.data[index], widget.scaffoldKey),
 								itemCount: snapshot.data.length,
 							);

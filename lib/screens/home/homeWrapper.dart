@@ -1,5 +1,5 @@
-import 'package:MyProperty/screens/home/favouriteProperties.dart';
-import 'package:MyProperty/screens/home/ownedProperties.dart';
+import 'package:MyProperty/screens/home/favouriteProperty/favouriteProperties.dart';
+import 'package:MyProperty/screens/home/ownedProperty/ownedProperties.dart';
 import 'package:MyProperty/screens/home/search.dart';
 import 'package:MyProperty/utils/boolean.dart';
 import 'package:MyProperty/utils/integer.dart';
@@ -7,8 +7,8 @@ import 'package:MyProperty/utils/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:MyProperty/screens/home/home.dart';
 import 'package:MyProperty/screens/home/newProperty/newProperty.dart';
-import 'package:MyProperty/screens/home/profile.dart';
-import 'package:MyProperty/screens/home/settings.dart';
+import 'package:MyProperty/screens/home/profile/profile.dart';
+import 'package:MyProperty/screens/home/settings/settings.dart';
 
 class HomeWrapper extends StatefulWidget {
 	@override
@@ -28,7 +28,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
 	@override
 	void initState() {
 		navigationPages.add(Home(_scaffoldKey));
-		navigationPages.add(OwnedPropertiesPage());
+		navigationPages.add(OwnedPropertiesPage(_scaffoldKey));
 		navigationPages.add(NewPropertyPage(index, refresh, isLoading, _scaffoldKey));
 		navigationPages.add(Settings());
 		navigationPages.add(FavouritePropertiesPage());
