@@ -10,7 +10,10 @@ import 'package:flutter/material.dart';
 class PropertyPreview extends StatefulWidget {
 	final Property _property;
 	final GlobalKey scaffoldKey;
-	PropertyPreview(this._property, this.scaffoldKey);
+	Function refresh;
+	PropertyPreview(this._property, this.scaffoldKey, {Function refresh}) {
+		this.refresh = refresh;
+	}
 	@override
 	_PropertyPreviewState createState() => _PropertyPreviewState();
 }
@@ -64,10 +67,15 @@ class _PropertyPreviewState extends State<PropertyPreview> {
 															await _viewModel.removePropertyToFavourites(widget._property).then((value) {
 																setState((){});
 															});
+															await _viewModel.removeOwnerIdToProperty(widget._property);
 														} else {
 															await _viewModel.addPropertyToFavourites(widget._property).then((value) {
 																setState((){});
 															});
+															await _viewModel.addOwnerIdToProperty(widget._property);
+														}
+														if (widget.refresh != null) {
+															widget.refresh((){});
 														}
 													},
 												);

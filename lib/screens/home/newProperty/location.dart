@@ -1,13 +1,14 @@
 import 'package:MyProperty/models/address.dart';
 import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/services/geolocation.dart';
-import 'package:MyProperty/utils/showToast.dart';
+import 'package:MyProperty/utils/show_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart';
 import 'package:latlong/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location_permissions/location_permissions.dart';
 
 class LocationPicker extends StatefulWidget {
 	final Property property;
@@ -31,28 +32,24 @@ class _LocationPickerState extends State<LocationPicker> {
 	}
 
 	Future<Position> _determinePosition() async {
-		bool serviceEnabled;
-		LocationPermission permission;
-
-		// Test if location services are enabled.
-		serviceEnabled = await Geolocator.isLocationServiceEnabled();
-		if (!serviceEnabled) {
-			ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Please open your GPS", color: Colors.red);
-		}
-
-		permission = await Geolocator.checkPermission();
-		if (permission == LocationPermission.denied) {
-			permission = await Geolocator.requestPermission();
-			if (permission == LocationPermission.denied) {
-				ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Please allow the app to use GPS", color: Colors.red);
+		ServiceStatus serviceStatus;
+		PermissionStatus permission;
+		serviceStatus = await LocationPermissions().checkServiceStatus();
+		if (serviceStatus == ServiceStatus.disabled) {
+			ShowDialog().showDialogOnScreen(widget.scaffoldKey.currentContext, "Can't use GPS", "Please open your GPS");
+		} else {
+			permission = await LocationPermissions().checkPermissionStatus();
+			if (permission == PermissionStatus.denied) {
+				permission = await LocationPermissions().requestPermissions(permissionLevel: LocationPermissionLevel.locationWhenInUse);
+				if (permission == PermissionStatus.denied) {
+					ShowDialog().showDialogOnScreen(widget.scaffoldKey.currentContext, "Can't use GPS", "Please allow the app to use GPS");
+				}
+			}
+			if (permission == PermissionStatus.granted) {
+				return await Geolocator.getCurrentPosition();
 			}
 		}
-		
-		if (permission == LocationPermission.deniedForever) {
-			ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Please allow the app to use GPS", color: Colors.red);
-		} 
-
-		return await Geolocator.getCurrentPosition();
+		return null;
 	}
 	@override
 	Widget build(BuildContext context) {
@@ -115,12 +112,14 @@ class _LocationPickerState extends State<LocationPicker> {
 				child: Icon(Icons.my_location),
 				onPressed: () async {
 					Position position = await _determinePosition();
-					setState(() {
-						zoom = 18.4;
-						pinLocation = LatLng(position.latitude, position.longitude);
-						center = LatLng(position.latitude, position.longitude);
-						controller.move(center, zoom);
-					});
+					if (position != null) {
+						setState(() {
+								zoom = 18.4;
+								pinLocation = LatLng(position.latitude, position.longitude);
+								center = LatLng(position.latitude, position.longitude);
+								controller.move(center, zoom);
+						});
+					}
 				},
 			),
 		);

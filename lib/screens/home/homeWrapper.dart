@@ -31,7 +31,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
 		navigationPages.add(OwnedPropertiesPage(_scaffoldKey));
 		navigationPages.add(NewPropertyPage(index, refresh, isLoading, _scaffoldKey));
 		navigationPages.add(Settings());
-		navigationPages.add(FavouritePropertiesPage());
+		navigationPages.add(FavouritePropertiesPage(_scaffoldKey));
 		super.initState();
 	}
 	@override

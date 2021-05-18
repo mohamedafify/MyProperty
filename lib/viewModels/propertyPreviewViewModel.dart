@@ -5,6 +5,7 @@ import 'package:MyProperty/services/database.dart';
 class PropertyPreviewViewModel {
 	final DatabaseService _database = DatabaseService();
 	MyUser currentUser;
+
 	Future<bool> isFavourite(Property property) async {
 		currentUser = await _database.currentUser;
 		if (currentUser.favouritePropertiesUIDs.contains(property.uid)) {
@@ -15,14 +16,22 @@ class PropertyPreviewViewModel {
 	}
 	Future addPropertyToFavourites(Property property) async {
 		currentUser = await _database.currentUser;
-		MyUser user = currentUser;
-		user.favouritePropertiesUIDs.add(property.uid);
-		return await _database.updateUserData(user);
+		currentUser.favouritePropertiesUIDs.add(property.uid);
+		return await _database.updateUserData(currentUser);
 	}
 	Future removePropertyToFavourites(Property property) async {
 		currentUser = await _database.currentUser;
-		MyUser user = currentUser;
-		user.favouritePropertiesUIDs.remove(property.uid);
-		return await _database.updateUserData(user);
+		currentUser.favouritePropertiesUIDs.remove(property.uid);
+		return await _database.updateUserData(currentUser);
+	}
+	Future addOwnerIdToProperty(Property property) async {
+		currentUser = await _database.currentUser;
+		property.favouritedByUsersUIDs.add(currentUser.uid);
+		await _database.updatePropertyData(property);
+	}
+	Future removeOwnerIdToProperty(Property property) async {
+		currentUser = await _database.currentUser;
+		property.favouritedByUsersUIDs.remove(currentUser.uid);
+		await _database.updatePropertyData(property);
 	}
 }

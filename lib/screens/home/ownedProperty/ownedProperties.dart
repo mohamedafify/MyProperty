@@ -12,6 +12,10 @@ class OwnedPropertiesPage extends StatefulWidget {
 
 class _OwnedPropertiesPageState extends State<OwnedPropertiesPage> {
 	final OwnedPropertyViewModel _viewModel = OwnedPropertyViewModel();
+
+	void refresh(Function fn) {
+		setState(fn);
+	}
 	@override
 	Widget build(BuildContext context) {
 		return Container(
@@ -21,7 +25,7 @@ class _OwnedPropertiesPageState extends State<OwnedPropertiesPage> {
 					if (snapshot.connectionState == ConnectionState.done) { 
 							return ListView.separated(
 								separatorBuilder: (context, index) => Divider(color: Colors.black54),
-								itemBuilder: (_, index) => PropertyPreviewEdit(snapshot.data[index], widget.scaffoldKey),
+								itemBuilder: (_, index) => PropertyPreviewEdit(snapshot.data[index], widget.scaffoldKey, refresh),
 								itemCount: snapshot.data.length,
 							);
 					} else {

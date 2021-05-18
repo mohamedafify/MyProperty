@@ -13,19 +13,16 @@ class DatabaseService {
 	Future<MyUser> get currentUser async {
 		return await getUserByID(uid);
 	}
-
 	Future updateUserData(MyUser user) async {
-		return await userCollection.doc(uid).set({
+		return await userCollection.doc(user.uid).set({
 			"uid":user.uid,
 			"name":user.name,
 			"email":user.email,
 			"number": user.number,
-			"profilePictureURL":user.profilePictureURL,
 			"ownedPropertiesUIDs":user.ownedPropertiesUIDs,
 			"favouritePropertiesUIDs":user.favouritePropertiesUIDs,
 		}).then((value) => "success" , onError: (value) => null);
 	}
-
 	Future<MyUser> getUserByID(String uid) async {
 		MyUser user = MyUser(uid, "");
 		DocumentSnapshot snap = await userCollection.doc(uid).get();
@@ -35,28 +32,15 @@ class DatabaseService {
 			user.number = snap.get("number");
 			user.favouritePropertiesUIDs = snap.get("favouritePropertiesUIDs");
 			user.ownedPropertiesUIDs = snap.get("ownedPropertiesUIDs");
-			user.profilePictureURL = snap.get("profilePictureURL");
 			return user;
 		} else {
 			return null;
 		}
 	}
-
-	Future<void> addPropertyToCurrentUser(Property property) async {
-		MyUser user = await getUserByID(uid);
-		// checks if this property is being edited or newly created
-		if (!user.ownedPropertiesUIDs.contains(property.uid)) {
-			user.ownedPropertiesUIDs.add(property.uid);
-			await updateUserData(user);
-		}
-	}
-
 	Future<QuerySnapshot> getAllProperty() async {
 		return await propertyCollection.get();
 	}
-
 	Future updatePropertyData(Property property) async {
-		await addPropertyToCurrentUser(property);
 		await propertyCollection.doc(property.uid).collection("location").doc("1").set(property.location.toJson());
 		return await propertyCollection.doc(property.uid).set({
 			"ownerUID": property.ownerUID,
@@ -100,6 +84,7 @@ class DatabaseService {
 			"hasInsurance": property.hasInsurance,
 			"imagesRefs": property.imagesRefs,
 			"imagesURLs": property.imagesURLs,
+			"favouritedByUsersUIDs": property.favouritedByUsersUIDs,
 		}).then((value) => "success" , onError: (value) => null);
 	}
 
@@ -146,6 +131,7 @@ class DatabaseService {
 			property.hasInsurance = snap.get("hasInsurance");
 			property.imagesRefs = snap.get("imagesRefs");
 			property.imagesURLs = snap.get("imagesURLs");
+			property.favouritedByUsersUIDs = snap.get("favouritedByUsersUIDs");
 			if (snap.get("rentableAt") != null) {
 				property.rentableAt = snap.get("rentableAt").toDate();
 			}
@@ -160,5 +146,9 @@ class DatabaseService {
 		var sn = await propertyCollection.doc(uid).collection("location").doc("1").get();
 		property.location = Address.jsonToAddress(sn.data());
 		return property;
+	}
+	Future<void> deletePropertyByID(String uid) async {
+		await propertyCollection.doc(uid).collection("location").doc("1").delete();
+		await propertyCollection.doc(uid).delete();
 	}
 }

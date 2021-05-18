@@ -31,4 +31,11 @@ class DatabaseStorageService {
 		}));
 		return urls;
 	}
+
+	Future deletePropertyImages(List propertiesRefs) async {
+		propertiesRefs.forEach((element) async { 
+			Reference imagesRefs = root.child(element);
+			await imagesRefs.delete();
+		});
+	}
 }

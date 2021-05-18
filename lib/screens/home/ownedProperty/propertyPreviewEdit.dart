@@ -1,10 +1,10 @@
 import 'package:MyProperty/models/property.dart';
+import 'package:MyProperty/screens/home/ownedProperty/ownedProperties.dart';
 import 'package:MyProperty/screens/home/ownedProperty/propertyDetailsEdit.dart';
-import 'package:MyProperty/screens/home/propertyView/propertyDetails/propertyDetails.dart';
 import 'package:MyProperty/utils/screen.dart';
+import 'package:MyProperty/utils/show_dialog.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
-import 'package:MyProperty/viewModels/propertyPreviewViewModel.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:MyProperty/viewModels/ownedPropertyViewModel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,12 +12,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class PropertyPreviewEdit extends StatefulWidget {
 	final Property _property;
 	final GlobalKey scaffoldKey;
-	PropertyPreviewEdit(this._property, this.scaffoldKey);
+	// refresh the list of owned properties
+	final Function refresh;
+	PropertyPreviewEdit(this._property, this.scaffoldKey, this.refresh);
 	@override
 	_PropertyPreviewEditState createState() => _PropertyPreviewEditState();
 }
 
 class _PropertyPreviewEditState extends State<PropertyPreviewEdit> {
+	final OwnedPropertyViewModel _viewModel = OwnedPropertyViewModel();
 	@override
 	Widget build(BuildContext context) {
 		final Screen _screen = Screen(context);
@@ -124,7 +127,10 @@ class _PropertyPreviewEditState extends State<PropertyPreviewEdit> {
 											],
 										),
 										onPressed: () {
-
+											Navigator.push(
+												context,
+												MaterialPageRoute(builder: (context) => PropertyDetailsEdit(widget._property, widget.scaffoldKey))
+											);
 										},
 									),
 									// delete
@@ -143,8 +149,12 @@ class _PropertyPreviewEditState extends State<PropertyPreviewEdit> {
 												),
 											],
 										),
-										onPressed: () {
-
+										onPressed: () async {
+												bool confirmed = await ShowDialog().askForConfirmation(context, "Are you sure you want to delete ?");
+												if (confirmed) {
+													await _viewModel.deleteProperty(widget._property.uid, widget._property.imagesRefs, widget._property.favouritedByUsersUIDs);
+													widget.refresh((){});
+												}
 										},
 									),
 									TextButton(
@@ -172,12 +182,6 @@ class _PropertyPreviewEditState extends State<PropertyPreviewEdit> {
 						),
 					],
 				),
-				onTap: () {
-					Navigator.push(
-						context,
-						MaterialPageRoute(builder: (context) => PropertyDetailsEdit(widget._property, widget.scaffoldKey)),
-					);
-				},
 			),
 		);
 	}

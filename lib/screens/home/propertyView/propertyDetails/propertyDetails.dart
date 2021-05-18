@@ -147,7 +147,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 									Row(
 										children: [
 											Text(
-												"Location: ",
+												"Address: ",
 												style: TextStyle(
 													fontSize: fontSize,
 													color: Constant.buttonTextColor,
@@ -158,7 +158,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 											),
 											OutlinedButton(
 												child: Text(
-													"show location on map",
+													"Location",
 													style: TextStyle(
 														fontSize: fontSize,
 														fontWeight: FontWeight.normal,
@@ -682,7 +682,7 @@ class _PropertyDetailsState extends State<PropertyDetails> {
 																FontAwesomeIcons.whatsapp,
 																color: Colors.green[600],
 															),
-															SizedBox(width: 10,),
+															SizedBox(width: 10),
 															Text(snapshot.data.number.toString(),
 																style: TextStyle(
 																	fontSize: fontSize,

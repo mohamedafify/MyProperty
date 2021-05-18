@@ -1,6 +1,5 @@
 import 'package:MyProperty/models/address.dart';
 import 'package:MyProperty/services/auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class Property {
@@ -20,6 +19,7 @@ class Property {
 	String adType;
 	List<dynamic> imagesRefs;
 	List<dynamic> imagesURLs;
+	List<dynamic> favouritedByUsersUIDs;
 	String ownerUID;
 	String uid;
 	String propertyType;
@@ -60,6 +60,7 @@ class Property {
 	bool negotiatable;
 	bool swimmingPool;
 	Property() {
+		favouritedByUsersUIDs = List.filled(0, "", growable: true);
 		postDate = DateTime.now();
 		ownerUID = AuthService().currentUser.uid;
 		adType = "Buy";
