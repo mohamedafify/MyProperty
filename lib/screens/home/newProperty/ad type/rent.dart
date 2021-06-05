@@ -25,12 +25,12 @@ class _RentState extends State<Rent> {
 							text: StringHelp.dateToString(widget._property.rentableAt),
 						),
 						decoration: InputDecoration(
+							labelText: "Avalible rent date",
 							border: OutlineInputBorder(
 								borderSide: BorderSide(
 									color: Colors.black,
 								),
 							),
-							hintText: "choose avalible rent date",
 						),
 						onTap: () {
 							DatePicker.showDatePicker(
@@ -55,19 +55,20 @@ class _RentState extends State<Rent> {
 					SizedBox(height: 10),
 					// max rent
 					TextFormField(
+						controller: TextEditingController(text: widget._property.maxRent == null ? "" : widget._property.maxRent.toString()),
 						style: TextStyle(
 							fontSize: 20,
 						),
 						keyboardType: TextInputType.number,
 						validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid number" : null,
 						decoration: InputDecoration(
+							labelText: "Max rent",
 							border: OutlineInputBorder(
 								borderSide: BorderSide(
 									color: Colors.black,
 								),
 							),
 							suffixText: "Month",
-							hintText: "Max rent"
 						),
 						onChanged: (value) {
 							widget._property.maxRent = int.parse(value);
@@ -158,18 +159,19 @@ class _RentState extends State<Rent> {
 									crossAxisAlignment: CrossAxisAlignment.start,
 									children: [
 										TextFormField(
+											controller: TextEditingController(text: widget._property.insurance == null ? "" : widget._property.insurance.toString()),
 											style: TextStyle(
 												fontSize: 20,
 											),
 											keyboardType: TextInputType.number,
 											validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid number" : null,
 											decoration: InputDecoration(
+												labelText: "Insurance",
 												border: OutlineInputBorder(
 													borderSide: BorderSide(
 														color: Colors.black,
 													),
 												),
-												hintText: "Insurance"
 											),
 											onChanged: (value) {
 												setState(() {

@@ -18,18 +18,19 @@ class _VillaState extends State<Villa> {
 				children: [
 					// number of floors
 					TextFormField(
+						controller: TextEditingController(text: widget._property.numberOfFloors == null ? "" : widget._property.numberOfFloors.toString()),
 						style: TextStyle(
 							fontSize: 20,
 						),
 						keyboardType: TextInputType.number,
 						validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid number" : null,
 						decoration: InputDecoration(
+							labelText: "Number of floors",
 							border: OutlineInputBorder(
 								borderSide: BorderSide(
 									color: Colors.black,
 								),
 							),
-							hintText: "Number of floors"
 						),
 						onChanged: (value) {
 							widget._property.floorNumber = int.parse(value);

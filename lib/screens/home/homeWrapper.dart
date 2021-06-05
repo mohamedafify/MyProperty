@@ -24,7 +24,6 @@ class _HomeWrapperState extends State<HomeWrapper> {
 	final List<String> navigationPagesNames = ["Home", "Owned Properties", "Add new property", "Settings", "Favourite properties"];
 	final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 	Boolean isLoading = Boolean(false);
-	bool firstBuild = true;
 	@override
 	void initState() {
 		navigationPages.add(Home(_scaffoldKey));

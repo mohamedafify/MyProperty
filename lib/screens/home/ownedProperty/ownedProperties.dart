@@ -13,8 +13,8 @@ class OwnedPropertiesPage extends StatefulWidget {
 class _OwnedPropertiesPageState extends State<OwnedPropertiesPage> {
 	final OwnedPropertyViewModel _viewModel = OwnedPropertyViewModel();
 
-	void refresh(Function fn) {
-		setState(fn);
+	void refresh() {
+		setState((){});
 	}
 	@override
 	Widget build(BuildContext context) {

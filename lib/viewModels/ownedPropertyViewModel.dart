@@ -1,3 +1,4 @@
+import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/models/user.dart';
 import 'package:MyProperty/services/database.dart';
 import 'package:MyProperty/services/databaseStorage.dart';
@@ -28,6 +29,16 @@ class OwnedPropertyViewModel {
 		MyUser currentUser = await _database.currentUser;
 		currentUser.ownedPropertiesUIDs.remove(propertyUID);
 		await _database.updateUserData(currentUser);
+	}
 
+	String tempDeletePropertyImage(Property property, int index) {
+		String ref = property.imagesRefs.elementAt(index);
+		property.imagesRefs.removeAt(index);
+		property.imagesURLs.removeAt(index);
+		return ref;
+	}
+
+	Future permDeletePropertyImage(List refs) async {
+		await _storage.deletePropertyImages(refs);
 	}
 }

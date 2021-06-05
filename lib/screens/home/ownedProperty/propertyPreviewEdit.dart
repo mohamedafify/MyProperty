@@ -129,7 +129,7 @@ class _PropertyPreviewEditState extends State<PropertyPreviewEdit> {
 										onPressed: () {
 											Navigator.push(
 												context,
-												MaterialPageRoute(builder: (context) => PropertyDetailsEdit(widget._property, widget.scaffoldKey))
+												MaterialPageRoute(builder: (context) => PropertyDetailsEdit(widget._property, widget.scaffoldKey, widget.refresh))
 											);
 										},
 									),
@@ -153,7 +153,7 @@ class _PropertyPreviewEditState extends State<PropertyPreviewEdit> {
 												bool confirmed = await ShowDialog().askForConfirmation(context, "Are you sure you want to delete ?");
 												if (confirmed) {
 													await _viewModel.deleteProperty(widget._property.uid, widget._property.imagesRefs, widget._property.favouritedByUsersUIDs);
-													widget.refresh((){});
+													widget.refresh();
 												}
 										},
 									),

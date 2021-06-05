@@ -8,7 +8,7 @@ import 'package:MyProperty/utils/boolean.dart';
 import 'package:MyProperty/utils/integer.dart';
 import 'package:MyProperty/utils/showToast.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
-import 'package:MyProperty/viewModels/propertyViewModel.dart';
+import 'package:MyProperty/viewModels/newPropertyViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -24,7 +24,7 @@ class NewPropertyPage extends StatefulWidget {
 }
 
 class _NewPropertyPageState extends State<NewPropertyPage> {
-	final PropertyViewModel propertyViewModel = PropertyViewModel();
+	final NewPropertyViewModel propertyViewModel = NewPropertyViewModel();
 	final _formKey = GlobalKey<FormState>();
 	final Property _property = Property();
 	final List<Widget> propertyTypesPages = [Container()];
@@ -39,11 +39,11 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 			error = "Please add property location";
 			validate = false;
 		}
-		if (_images.isEmpty) {
+		else if (_images.isEmpty) {
 			error = "Please add property images";
 			validate = false;
 		}
-		if (!_formKey.currentState.validate()) {
+		else if (!_formKey.currentState.validate()) {
 			error = "Please fill required information";
 			validate = false;
 		}
@@ -121,18 +121,17 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								style: TextStyle(
 									fontSize: 20,
 								),
-								keyboardType: TextInputType.number,
-								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid number" : null,
+								validator: (val) => val.isEmpty ? "Please enter a valid house id": null,
 								decoration: InputDecoration(
+									labelText: "House id",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "House number"
 								),
 								onChanged: (value) {
-									_property.location.houseNumber = int.parse(value);
+									_property.location.houseNumber = value;
 								},
 							),
 							SizedBox(height: 10),
@@ -143,12 +142,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									text: _property.propertyType,
 								),
 								decoration: InputDecoration(
+									labelText: "Property type",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Choose the property type",
 								),
 								onTap: () {
 									showModalBottomSheet(
@@ -307,12 +306,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid size" : null,
 								decoration: InputDecoration(
+									labelText: "Size",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Size",
 									suffixText: "m²",
 								),
 								onChanged: (value) {
@@ -328,13 +327,13 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid price" : null,
 								decoration: InputDecoration(
+									labelText: "Price",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
 									suffixText: "EGP",
-									hintText: "Price"
 								),
 								onChanged: (value) {
 									_property.price = int.parse(value);
@@ -348,12 +347,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									text: _property.finish,
 								),
 								decoration: InputDecoration(
+									labelText: "Property finish degree",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Choose the property finish degree",
 								),
 								onTap: () {
 									showModalBottomSheet(
@@ -402,13 +401,13 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a number" : null,
 								decoration: InputDecoration(
+									labelText: "Building age",
 									suffixText: "Years",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Building age"
 								),
 								onChanged: (value) {
 									_property.age = int.parse(value);
@@ -423,12 +422,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a number" : null,
 								decoration: InputDecoration(
+									labelText: "Bedrooms",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Bedrooms"
 								),
 								onChanged: (value) {
 									_property.bedroom = int.parse(value);
@@ -443,12 +442,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a number" : null,
 								decoration: InputDecoration(
+									labelText: "Bathrooms",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Bathrooms"
 								),
 								onChanged: (value) {
 									_property.bathroom = int.parse(value);
@@ -463,12 +462,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a number" : null,
 								decoration: InputDecoration(
+									labelText: "Livingroom",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Livingroom"
 								),
 								onChanged: (value) {
 									_property.livingroom = int.parse(value);
@@ -483,12 +482,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a number" : null,
 								decoration: InputDecoration(
+									labelText: "Kitchen",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Kitchen"
 								),
 								onChanged: (value) {
 									_property.kitchen = int.parse(value);
@@ -503,12 +502,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a number" : null,
 								decoration: InputDecoration(
+									labelText: "Balacone",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Balacone"
 								),
 								onChanged: (value) {
 									_property.balacone = int.parse(value);
@@ -523,12 +522,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								keyboardType: TextInputType.number,
 								validator: (val) => !StringHelp.isNumeric(val) ? "please enter a number" : null,
 								decoration: InputDecoration(
+									labelText: "Reception",
 									border: OutlineInputBorder(
 										borderSide: BorderSide(
 											color: Colors.black,
 										),
 									),
-									hintText: "Reception"
 								),
 								onChanged: (value) {
 									_property.reception = int.parse(value);
@@ -575,12 +574,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									),
 									keyboardType: TextInputType.multiline,
 									decoration: InputDecoration(
-									border: OutlineInputBorder(
-										borderSide: BorderSide(
-											color: Colors.black,
+										labelText: "Landmarks",
+										border: OutlineInputBorder(
+											borderSide: BorderSide(
+												color: Colors.black,
+											),
 										),
-									),
-										hintText: "Landmarks"
 									),
 									onChanged: (value) {
 										_property.landmarks = value; 
@@ -601,12 +600,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									),
 									keyboardType: TextInputType.multiline,
 									decoration: InputDecoration(
-									border: OutlineInputBorder(
-										borderSide: BorderSide(
-											color: Colors.black,
+										labelText: "Flows",
+										border: OutlineInputBorder(
+											borderSide: BorderSide(
+												color: Colors.black,
+											),
 										),
-									),
-										hintText: "Flows"
 									),
 									onChanged: (value) {
 										_property.flows = value; 
@@ -627,12 +626,12 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									),
 									keyboardType: TextInputType.multiline,
 									decoration: InputDecoration(
-									border: OutlineInputBorder(
-										borderSide: BorderSide(
-											color: Colors.black,
+										labelText: "Additional information",
+										border: OutlineInputBorder(
+											borderSide: BorderSide(
+												color: Colors.black,
+											),
 										),
-									),
-										hintText: "Additional information"
 									),
 									onChanged: (value) {
 										_property.additionalInformation = value; 
@@ -657,7 +656,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										_property.imagesRefs = propertyViewModel.storeRefsToProperty(_property.ownerUID, _property.uid, _images);
 										_property.imagesURLs = await propertyViewModel.storeURLsToProperty(_property.imagesRefs);
 										ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Images added", duration: Duration(milliseconds: 800));
-										await propertyViewModel.updateProperty(_property);
+										await propertyViewModel.createProperty(_property);
 										widget.notifyParent(() {
 											// return to homepage
 											widget.homePageIndex.myNum = 0;

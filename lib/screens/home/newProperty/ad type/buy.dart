@@ -43,19 +43,21 @@ class _BuyState extends State<Buy> {
 									mainAxisAlignment: MainAxisAlignment.start,
 									crossAxisAlignment: CrossAxisAlignment.start,
 									children: [
+										// installemnt premium
 										TextFormField(
+											controller: TextEditingController(text: widget._property.installmentPremium == null ? "" : widget._property.installmentPremium.toString()),
 											style: TextStyle(
 												fontSize: 20,
 											),
 											keyboardType: TextInputType.number,
 											validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid number" : null,
 											decoration: InputDecoration(
+												labelText: "Installment premium",
 												border: OutlineInputBorder(
 													borderSide: BorderSide(
 														color: Colors.black,
 													),
 												),
-												hintText: "Installment premium"
 											),
 											onChanged: (value) {
 												setState(() {
@@ -64,19 +66,21 @@ class _BuyState extends State<Buy> {
 											},
 										),
 										SizedBox(height: 10,),
+										// installment per month
 										TextFormField(
+											controller: TextEditingController(text: widget._property.installmentPerMonth == null ? "" : widget._property.installmentPerMonth.toString()),
 											style: TextStyle(
 												fontSize: 20,
 											),
 											keyboardType: TextInputType.number,
 											validator: (val) => !StringHelp.isNumeric(val) ? "please enter a valid number" : null,
 											decoration: InputDecoration(
+												labelText: "Installment per month",
 												border: OutlineInputBorder(
 													borderSide: BorderSide(
 														color: Colors.black,
 													),
 												),
-												hintText: "Installment per month"
 											),
 											onChanged: (value) {
 												setState(() {

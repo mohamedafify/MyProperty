@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Address {
-	int houseNumber;
+	String houseNumber;
 	String country;
 	String city;
 	String locality;
