@@ -24,6 +24,7 @@ class _OwnedPropertiesPageState extends State<OwnedPropertiesPage> {
 				builder: (context, snapshot) {
 					if (snapshot.connectionState == ConnectionState.done) { 
 							return ListView.separated(
+								padding: EdgeInsets.only(top: 0),
 								separatorBuilder: (context, index) => Divider(color: Colors.black54),
 								itemBuilder: (_, index) => PropertyPreviewEdit(snapshot.data[index], widget.scaffoldKey, refresh),
 								itemCount: snapshot.data.length,

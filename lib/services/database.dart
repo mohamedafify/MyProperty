@@ -2,10 +2,10 @@ import 'package:MyProperty/models/address.dart';
 import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/models/user.dart';
 import 'package:MyProperty/services/auth.dart';
+import 'package:MyProperty/utils/comparisonType.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
-
 	final String uid = AuthService().currentUser.uid;
 	final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
 	final CollectionReference propertyCollection = FirebaseFirestore.instance.collection("properties");
@@ -39,6 +39,15 @@ class DatabaseService {
 	}
 	Future<QuerySnapshot> getAllProperty() async {
 		return await propertyCollection.get();
+	}
+	Future<QuerySnapshot> getAllPropertiesByField(String name, String value, ComparisonType comparisonType) async {
+		if (comparisonType == ComparisonType.EqualTo) {
+			return await propertyCollection.where(name, isEqualTo: value).get();
+		} else if (comparisonType == ComparisonType.Contains) {
+			return await propertyCollection.where(name, arrayContains: value).get();
+		} else {
+			return null;
+		}
 	}
 	Future updatePropertyData(Property property) async {
 		await propertyCollection.doc(property.uid).collection("location").doc("1").set(property.location.toJson());
@@ -88,63 +97,11 @@ class DatabaseService {
 		}).then((value) => "success" , onError: (value) => null);
 	}
 
-	Property _propertyFromDocumentSnapshot(DocumentSnapshot snap) {
-		Property property = Property();
-		if (snap.exists) {
-			property.ownerUID = snap.get("ownerUID");
-			property.uid = snap.get("uid");
-			property.propertyType = snap.get("propertyType");
-			property.adType = snap.get("adType");
-			property.postDate = snap.get("postDate").toDate();
-			property.negotiatable = snap.get("negotiatable");
-			property.size = snap.get("size");
-			property.price = snap.get("price");
-			property.finish = snap.get("finish");
-			property.flows = snap.get("flows");
-			property.landmarks = snap.get("landmarks");
-			property.age = snap.get("age");
-			property.additionalInformation = snap.get("additionalInformation");
-			property.bedroom = snap.get("bedroom");
-			property.bathroom = snap.get("bathroom");
-			property.livingroom = snap.get("livingroom");
-			property.kitchen = snap.get("kitchen");
-			property.balacone = snap.get("balacone");
-			property.reception = snap.get("reception");
-			property.sold = snap.get("sold");
-			property.installments = snap.get("installments");
-			property.installmentPerMonth = snap.get("installmentsPerMonth");
-			property.installmentPremium = snap.get("installmentsPremium");
-			property.floorNumber = snap.get("floorNumber");
-			property.elevator = snap.get("elevator");
-			property.security = snap.get("security");
-			property.yard = snap.get("yard");
-			property.roof = snap.get("roof");
-			property.garage = snap.get("garage");
-			property.numberOfFloors = snap.get("numberOfFloors");
-			property.swimmingPool = snap.get("swimmingPool");
-			property.maxRent = snap.get("maxRent");
-			property.rented = snap.get("rented");
-			property.petFriendly = snap.get("petFriendly");
-			property.modifiable = snap.get("modifiable");
-			property.rentedBefore = snap.get("rentedBefore");
-			property.insurance = snap.get("insurance");
-			property.hasInsurance = snap.get("hasInsurance");
-			property.imagesRefs = snap.get("imagesRefs");
-			property.imagesURLs = snap.get("imagesURLs");
-			property.favouritedByUsersUIDs = snap.get("favouritedByUsersUIDs");
-			if (snap.get("rentableAt") != null) {
-				property.rentableAt = snap.get("rentableAt").toDate();
-			}
-			return property;
-		} else {
-			return null;
-		}
-	}
 	Future<Property> getPropertyByID(String uid) async {
 		DocumentSnapshot snap = await propertyCollection.doc(uid).get();
-		Property property = _propertyFromDocumentSnapshot(snap);
+		Property property = Property.fromDocumentSnapshot(snap);
 		var sn = await propertyCollection.doc(uid).collection("location").doc("1").get();
-		property.location = Address.jsonToAddress(sn.data());
+		property.location = Address.fromJson(sn.data());
 		return property;
 	}
 	Future<void> deletePropertyByID(String uid) async {

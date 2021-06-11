@@ -1,6 +1,7 @@
 import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/screens/home/ownedProperty/imageEditor.dart';
-import 'package:MyProperty/screens/home/propertyView/propertyDetails/imagesViewer.dart';
+import 'package:MyProperty/utils/boolean.dart';
+import 'package:MyProperty/utils/loading.dart';
 import 'package:MyProperty/utils/show_dialog.dart';
 import 'package:MyProperty/viewModels/ownedPropertyViewModel.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _PropertyDetailsEditState extends State<PropertyDetailsEdit> {
 	final OwnedPropertyViewModel ownedViewModel = OwnedPropertyViewModel();
 	final ScrollController scrollController = ScrollController();
 	final List<Widget> propertyTypesPages = [Container()];
+	final Boolean isLoading = Boolean(false);
 	List imagesToDelete = List.empty(growable: true);
 	List<Asset> _images = <Asset>[];
 	int _index = 0;
@@ -56,7 +58,7 @@ class _PropertyDetailsEditState extends State<PropertyDetailsEdit> {
 				}
 				return confirmation;
 			},
-			child: Scaffold(
+			child: isLoading.myBool ? Loading(Colors.blue) : Scaffold(
 				appBar: AppBar(),
 				body:Form(
 					key: _formKey,
@@ -554,6 +556,9 @@ class _PropertyDetailsEditState extends State<PropertyDetailsEdit> {
 										),
 									),
 									onPressed: () async {
+										setState(() {
+											isLoading.myBool = true;
+										});
 										if (_validate()) {
 											if (_images.isNotEmpty) {
 												await propertyViewModel.uploadPropertyImages(widget._property.ownerUID, widget._property.uid, _images);
@@ -562,6 +567,9 @@ class _PropertyDetailsEditState extends State<PropertyDetailsEdit> {
 											}
 											await ownedViewModel.permDeletePropertyImage(imagesToDelete);
 											await propertyViewModel.updateProperty(widget._property);
+											setState(() {
+												isLoading.myBool = false;
+											});
 											widget.refreshOwnedProperties();
 											Navigator.pop(context);
 											ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Property updated", duration: Duration(milliseconds: 800));

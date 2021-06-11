@@ -354,6 +354,14 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										),
 									),
 								),
+								enableInteractiveSelection: false,
+								readOnly: true,
+								textAlign: TextAlign.left,
+								style: TextStyle(
+									color: Colors.black,
+									fontWeight: FontWeight.normal,
+									fontSize: 20,
+								),
 								onTap: () {
 									showModalBottomSheet(
 										context: context,
@@ -383,14 +391,6 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 										}
 									);
 								},
-								enableInteractiveSelection: false,
-								readOnly: true,
-								textAlign: TextAlign.left,
-								style: TextStyle(
-									color: Colors.black,
-									fontWeight: FontWeight.normal,
-									fontSize: 20,
-								),
 							),
 							SizedBox(height: 10),
 							// age

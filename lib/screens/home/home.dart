@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:MyProperty/screens/home/propertyView/propertyPreview.dart';
 import 'package:MyProperty/utils/loading.dart';
 import 'package:MyProperty/utils/show_dialog.dart';
@@ -19,7 +18,7 @@ class _HomeState extends State<Home> {
 	Widget build(BuildContext context) {
 		return WillPopScope(
 			onWillPop: () async{
-				bool confirmation = await ShowDialog().askForConfirmation(context, "Are you sure you want to exit");
+				bool confirmation = await ShowDialog().askForConfirmation(context, "Are you sure you want to exit?");
 				if (confirmation) {
 					exit(0);
 				}
@@ -30,11 +29,12 @@ class _HomeState extends State<Home> {
 					future: _homeViewModel.getAllProperties(),
 					builder: (context, snapshot) {
 						if (snapshot.connectionState == ConnectionState.done) { 
-								return ListView.separated(
-									separatorBuilder: (context, index) => Divider(color: Colors.black54),
-									itemBuilder: (_, index) => PropertyPreview(snapshot.data[index], widget.scaffoldKey),
-									itemCount: snapshot.data.length,
-								);
+							return ListView.separated(
+								padding: EdgeInsets.only(top: 0),
+								separatorBuilder: (context, index) => Divider(color: Colors.black54),
+								itemBuilder: (_, index) => PropertyPreview(snapshot.data[index], widget.scaffoldKey),
+								itemCount: snapshot.data.length,
+							);
 						} else {
 							return Loading(Colors.blue);
 						}

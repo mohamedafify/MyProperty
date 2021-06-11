@@ -23,7 +23,7 @@ class Address {
 		"latlong": latlong,
 		"houseNumber": houseNumber,
 	};
-	static Address jsonToAddress(Map<String, dynamic> location) {
+	static Address fromJson(Map<String, dynamic> location) {
 		Address address = Address();
 		location.entries.forEach((element) {
 			switch (element.key) {
@@ -49,7 +49,7 @@ class Address {
 		});
 		return address;
 	}
-	static Address fromGeocodejsonToAddress(String location) {
+	static Address fromGeocodejson(String location) {
 		Address myAddress = Address();
 		jsonDecode(location, reviver: (key, value) { 
 			switch (key.toString()) {

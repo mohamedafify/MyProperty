@@ -37,37 +37,6 @@ class _HomeWrapperState extends State<HomeWrapper> {
 	Widget build(BuildContext context) {
 		return Scaffold(
 			key: _scaffoldKey,
-			appBar: AppBar(
-				title: Text(navigationPagesNames[index.myNum]),
-				actions: [
-					TextButton.icon(
-						icon: Icon(
-							Icons.search,
-							color: Colors.black,
-						),
-						label: Container(),
-						onPressed: () {
-							Navigator.push(
-								context,
-								MaterialPageRoute(builder: (context) => SearchPage()),
-							);
-						},
-					),
-					TextButton.icon(
-						icon: Icon(
-							Icons.face,
-							color: Colors.black,
-						),
-						label: Container(),
-						onPressed: () {
-							Navigator.push(
-								context,
-								MaterialPageRoute(builder: (context) => Profile())
-							);
-						},
-					),
-				],
-			),
 			bottomNavigationBar: BottomNavigationBar(
 				currentIndex: index.myNum,
 				iconSize: 30.0,
@@ -102,7 +71,46 @@ class _HomeWrapperState extends State<HomeWrapper> {
 					});
 				},
 			),
-			body: isLoading.myBool ? Loading(Colors.blue) : navigationPages[index.myNum]
+			body: isLoading.myBool ? Loading(Colors.blue) : NestedScrollView(
+				headerSliverBuilder: (context, isScrolled) {
+					return <Widget> [
+						SliverAppBar(
+							title: Text(navigationPagesNames[index.myNum]),
+							floating: true,
+							forceElevated: isScrolled,
+							actions: [
+								TextButton.icon(
+									icon: Icon(
+										Icons.search,
+										color: Colors.black,
+									),
+									label: Container(),
+									onPressed: () {
+										Navigator.push(
+											context,
+											MaterialPageRoute(builder: (context) => SearchPage()),
+										);
+									},
+								),
+								TextButton.icon(
+									icon: Icon(
+										Icons.face,
+										color: Colors.black,
+									),
+									label: Container(),
+									onPressed: () {
+										Navigator.push(
+											context,
+											MaterialPageRoute(builder: (context) => Profile())
+										);
+									},
+								),
+							],
+						)
+					];
+				},
+				body: navigationPages[index.myNum],
+			),
 		);
 	}
 }

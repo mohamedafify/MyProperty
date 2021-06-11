@@ -1,5 +1,4 @@
 import 'package:MyProperty/models/property.dart';
-import 'package:MyProperty/screens/home/ownedProperty/ownedProperties.dart';
 import 'package:MyProperty/screens/home/ownedProperty/propertyDetailsEdit.dart';
 import 'package:MyProperty/utils/screen.dart';
 import 'package:MyProperty/utils/show_dialog.dart';
@@ -12,7 +11,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class PropertyPreviewEdit extends StatefulWidget {
 	final Property _property;
 	final GlobalKey scaffoldKey;
-	// refresh the list of owned properties
 	final Function refresh;
 	PropertyPreviewEdit(this._property, this.scaffoldKey, this.refresh);
 	@override

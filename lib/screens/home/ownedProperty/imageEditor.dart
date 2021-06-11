@@ -49,10 +49,11 @@ class _ImageEditorState extends State<ImageEditor> {
 							),
 							Positioned(
 								top: 50,
-								right: 30,
+								right: 10,
 								width: 50,
 								height: 50,
 								child: MaterialButton(
+									padding: EdgeInsets.only(right: 20),
 									child: Icon(
 										Icons.delete,
 										size: 50,

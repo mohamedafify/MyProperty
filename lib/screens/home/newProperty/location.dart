@@ -36,7 +36,10 @@ class _LocationPickerState extends State<LocationPicker> {
 		PermissionStatus permission;
 		serviceStatus = await LocationPermissions().checkServiceStatus();
 		if (serviceStatus == ServiceStatus.disabled) {
-			ShowDialog().showDialogOnScreen(widget.scaffoldKey.currentContext, "Can't use GPS", "Please open your GPS");
+			bool allowOpenSetting = await ShowDialog().askForConfirmation(widget.scaffoldKey.currentContext, "Location service is off, open location setting?");
+			if (allowOpenSetting) {
+				Geolocator.openLocationSettings();
+			}
 		} else {
 			permission = await LocationPermissions().checkPermissionStatus();
 			if (permission == PermissionStatus.denied) {
@@ -62,7 +65,7 @@ class _LocationPickerState extends State<LocationPicker> {
 						color: Colors.white,
 						onPressed: () async {
 							Response response = await GeoLocation().getLocation(pinLocation, "en");
-							Address myAddress = Address.fromGeocodejsonToAddress(response.body);
+							Address myAddress = Address.fromGeocodejson(response.body);
 							GeoPoint firebaseLatLng = GeoPoint(pinLocation.latitude, pinLocation.longitude);
 							myAddress.latlong = firebaseLatLng;
 							widget.property.location = myAddress;
