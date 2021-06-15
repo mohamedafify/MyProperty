@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Address {
-	String houseNumber;
+	String houseID;
 	String country;
 	String city;
 	String locality;
@@ -12,7 +12,7 @@ class Address {
 
 	@override
 	toString() {
-		return "$houseNumber, $street, $locality, $city, $country";
+		return "$houseID, $street, $locality, $city, $country";
 	}
 
 	Map<String, dynamic> toJson() => {
@@ -21,7 +21,7 @@ class Address {
 		"locality": locality,
 		"street": street,
 		"latlong": latlong,
-		"houseNumber": houseNumber,
+		"houseNumber": houseID,
 	};
 	static Address fromJson(Map<String, dynamic> location) {
 		Address address = Address();
@@ -34,7 +34,7 @@ class Address {
 				address.country = element.value;
 				break;
 			  case "houseNumber":
-				address.houseNumber = element.value;
+				address.houseID = element.value;
 				break;
 			  case "locality":
 				address.locality = element.value;

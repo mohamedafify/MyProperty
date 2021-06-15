@@ -131,7 +131,7 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 									),
 								),
 								onChanged: (value) {
-									_property.location.houseNumber = value;
+									_property.location.houseID = value;
 								},
 							),
 							SizedBox(height: 10),

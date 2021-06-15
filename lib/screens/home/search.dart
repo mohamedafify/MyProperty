@@ -1,6 +1,8 @@
+import 'package:MyProperty/services/database.dart';
 import 'package:MyProperty/utils/filterCheckBox.dart';
 import 'package:MyProperty/utils/screen.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
+import 'package:MyProperty/viewModels/searchViewModel.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
@@ -10,9 +12,9 @@ class SearchPage extends StatefulWidget {
 
 enum sort { MostRecent, HighToLow, LowToHigh }
 class _SearchPageState extends State<SearchPage> {
-	void refresh() {
-		setState((){});
-	}
+	Map<String, String> filterValues = Map<String, String>();
+	final DatabaseService _database = DatabaseService();
+	final SearchViewModel _searchViewModel = SearchViewModel();
 	final Map<String, bool> adTypes = {
 		"All" : true,
 		"Rent" : false,
@@ -33,6 +35,34 @@ class _SearchPageState extends State<SearchPage> {
 		"UltraLux" : false,
 		"SuperDelux" : false,
 	};
+	@override
+	initState() {
+		filterValues = {
+			"adType" : "All",
+			"propertyType" : "All",
+			"size" : "All",
+			"finishingDegree" : "All",
+			// "startPrice" : "0",
+			// "endPrice" : "1000000000",
+			"buildingAge" : "All",
+			"bedroom" : "All",
+			"bathroom" : "All",
+			"livingroom" : "All",
+			"kitchen" : "All",
+			"balacone" : "All",
+			"reception" : "All",
+			"installments" : "All",
+			"negotiatable" : "All",
+			"city" : "All",
+		};
+		super.initState();
+	}	
+	void refresh() {
+		setState((){});
+	}
+	void updateFilterValues() {
+		// filterValues[]
+	}
 	@override
 	Widget build(BuildContext context) {
 		sort mySort = sort.MostRecent;
@@ -265,8 +295,9 @@ class _SearchPageState extends State<SearchPage> {
 									fontSize: 20
 								)
 							),
-							onPressed: () {
+							onPressed: () async {
 								// apply the filters and sort
+								await _database.filterPropertiesBy(filterValues);
 								Navigator.pop(context);
 							},
 						),

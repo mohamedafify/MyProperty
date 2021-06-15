@@ -1,4 +1,3 @@
-import 'package:MyProperty/models/address.dart';
 import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/models/user.dart';
 import 'package:MyProperty/services/auth.dart';
@@ -37,7 +36,7 @@ class DatabaseService {
 			return null;
 		}
 	}
-	Future<QuerySnapshot> getAllProperty() async {
+	Future<QuerySnapshot> getAllProperties() async {
 		return await propertyCollection.get();
 	}
 	Future<QuerySnapshot> getAllPropertiesByField(String name, String value, ComparisonType comparisonType) async {
@@ -49,8 +48,16 @@ class DatabaseService {
 			return null;
 		}
 	}
+	Future<QuerySnapshot> filterPropertiesBy(Map<String, String> filters) {
+		Query query = propertyCollection;
+		filters.forEach((key, value) { 
+			if (value != "All") {
+				query = query.where(key, isEqualTo: value);
+			}
+		});
+		return query.get();
+	}
 	Future updatePropertyData(Property property) async {
-		await propertyCollection.doc(property.uid).collection("location").doc("1").set(property.location.toJson());
 		return await propertyCollection.doc(property.uid).set({
 			"ownerUID": property.ownerUID,
 			"uid": property.uid,
@@ -94,18 +101,20 @@ class DatabaseService {
 			"imagesRefs": property.imagesRefs,
 			"imagesURLs": property.imagesURLs,
 			"favouritedByUsersUIDs": property.favouritedByUsersUIDs,
+			"houseID": property.location.houseID,
+			"country": property.location.country,
+			"locality": property.location.locality,
+			"street": property.location.street,
+			"latlong": property.location.latlong,
+			"city": property.location.city,
 		}).then((value) => "success" , onError: (value) => null);
 	}
-
 	Future<Property> getPropertyByID(String uid) async {
 		DocumentSnapshot snap = await propertyCollection.doc(uid).get();
 		Property property = Property.fromDocumentSnapshot(snap);
-		var sn = await propertyCollection.doc(uid).collection("location").doc("1").get();
-		property.location = Address.fromJson(sn.data());
 		return property;
 	}
 	Future<void> deletePropertyByID(String uid) async {
-		await propertyCollection.doc(uid).collection("location").doc("1").delete();
 		await propertyCollection.doc(uid).delete();
 	}
 }

@@ -128,6 +128,14 @@ class Property {
 			if (snap.get("rentableAt") != null) {
 				property.rentableAt = snap.get("rentableAt").toDate();
 			}
+			Address myAddress = Address();
+			myAddress.city = snap.get("city");
+			myAddress.houseID = snap.get("houseID");
+			myAddress.country = snap.get("country");
+			myAddress.latlong = snap.get("latlong");
+			myAddress.locality = snap.get("locality");
+			myAddress.street = snap.get("street");
+			property.location = myAddress;
 			return property;
 		} else {
 			return null;
