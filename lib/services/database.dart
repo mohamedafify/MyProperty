@@ -48,7 +48,7 @@ class DatabaseService {
 			return null;
 		}
 	}
-	Future<QuerySnapshot> filterPropertiesBy(Map<String, String> filters) {
+	Future<QuerySnapshot> filterSingleFieldPropertiesBy(Map<String, dynamic> filters) {
 		Query query = propertyCollection;
 		filters.forEach((key, value) { 
 			if (value != "All") {

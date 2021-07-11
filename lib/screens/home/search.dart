@@ -1,67 +1,30 @@
-import 'package:MyProperty/services/database.dart';
-import 'package:MyProperty/utils/filterCheckBox.dart';
-import 'package:MyProperty/utils/screen.dart';
+import 'package:MyProperty/utils/pagesRefresher.dart';
+import 'package:MyProperty/utils/search/filterCheckBox.dart';
+import 'package:MyProperty/utils/search/searchCategories.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:MyProperty/viewModels/searchViewModel.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
+	final SearchCategories searchUtils;
+	final PagesRefresher pagesRefresher;
+	SearchPage(this.searchUtils, this.pagesRefresher);
 	@override
 	_SearchPageState createState() => _SearchPageState();
 }
 
-enum sort { MostRecent, HighToLow, LowToHigh }
+
 class _SearchPageState extends State<SearchPage> {
-	Map<String, String> filterValues = Map<String, String>();
-	final DatabaseService _database = DatabaseService();
-	final SearchViewModel _searchViewModel = SearchViewModel();
-	final Map<String, bool> adTypes = {
-		"All" : true,
-		"Rent" : false,
-		"Buy" : false,
-	};
-	final Map<String, bool> propertyType = {
-		"All" : true,
-		"Apartment" : false,
-		"Villa" : false,
-	};
-	final Map<String, bool> finishingDegree = {
-		"All" : true,
-		"None" : false,
-		"Half" : false,
-		"Full" : false,
-		"Lux" : false,
-		"SuperLux" : false,
-		"UltraLux" : false,
-		"SuperDelux" : false,
-	};
-	@override
-	initState() {
-		filterValues = {
-			"adType" : "All",
-			"propertyType" : "All",
-			"size" : "All",
-			"finishingDegree" : "All",
-			// "startPrice" : "0",
-			// "endPrice" : "1000000000",
-			"buildingAge" : "All",
-			"bedroom" : "All",
-			"bathroom" : "All",
-			"livingroom" : "All",
-			"kitchen" : "All",
-			"balacone" : "All",
-			"reception" : "All",
-			"installments" : "All",
-			"negotiatable" : "All",
-			"city" : "All",
-		};
-		super.initState();
-	}	
+	SearchViewModel viewModel;
 	void refresh() {
 		setState((){});
 	}
-	void updateFilterValues() {
-		// filterValues[]
+
+	@override
+	void initState() {
+		viewModel = SearchViewModel(widget.searchUtils);
+		widget.pagesRefresher.searchPageRefresh = refresh;
+		super.initState();
 	}
 	@override
 	Widget build(BuildContext context) {
@@ -161,7 +124,8 @@ class _SearchPageState extends State<SearchPage> {
 						// ad type
 						TextField(
 							controller: TextEditingController(
-								text: StringHelp.filterPickerToString(adTypes),
+								text:
+								StringHelp.filterPickerToString(widget.searchUtils.adTypes),
 							),
 							decoration: InputDecoration(
 								labelText: "Ad type",
@@ -189,9 +153,18 @@ class _SearchPageState extends State<SearchPage> {
 												return ListView.builder(
 													padding: EdgeInsets.only(left: 20),
 													itemBuilder: (context, index) {
-														return FilterCheckBox(adTypes.entries.elementAt(index), adTypes, setState, index == 0 ? true : false, refresh);
+														return
+																FilterCheckBox(widget.searchUtils.adTypes.entries.elementAt(index),
+																		widget.searchUtils.adTypes,
+																		setState,
+																		index
+																		== 0 ?
+																		true :
+																		false,
+																		widget.pagesRefresher);
 													},
-													itemCount: adTypes.length
+													itemCount:
+													widget.searchUtils.adTypes.length
 												);
 											},
 										);
@@ -203,7 +176,8 @@ class _SearchPageState extends State<SearchPage> {
 						// property type
 						TextField(
 							controller: TextEditingController(
-								text: StringHelp.filterPickerToString(propertyType),
+								text:
+								StringHelp.filterPickerToString(widget.searchUtils.propertyType),
 							),
 							decoration: InputDecoration(
 								labelText: "Property type",
@@ -231,9 +205,17 @@ class _SearchPageState extends State<SearchPage> {
 												return ListView.builder(
 													padding: EdgeInsets.only(left: 20),
 													itemBuilder: (context, index) {
-														return FilterCheckBox(propertyType.entries.elementAt(index), propertyType, setState, index == 0 ? true : false, refresh);
+														return
+																FilterCheckBox(widget.searchUtils.propertyType.entries.elementAt(index),
+																		widget.searchUtils.propertyType,
+																		setState,
+																		index
+																		== 0 ?
+																		true :
+																		false,
+																		widget.pagesRefresher);
 													},
-													itemCount: propertyType.length
+													itemCount: widget.searchUtils.propertyType.length
 												);
 											},
 										);
@@ -245,7 +227,8 @@ class _SearchPageState extends State<SearchPage> {
 						// finishing degree 
 						TextField(
 							controller: TextEditingController(
-								text: StringHelp.filterPickerToString(finishingDegree),
+								text:
+								StringHelp.filterPickerToString(widget.searchUtils.finishingDegree),
 							),
 							decoration: InputDecoration(
 								labelText: "Finishing Degree",
@@ -273,9 +256,17 @@ class _SearchPageState extends State<SearchPage> {
 												return ListView.builder(
 													padding: EdgeInsets.only(left: 20),
 													itemBuilder: (context, index) {
-														return FilterCheckBox(finishingDegree.entries.elementAt(index), finishingDegree, setState, index == 0 ? true : false, refresh);
+														return
+																FilterCheckBox(widget.searchUtils.finishingDegree.entries.elementAt(index),
+																		widget.searchUtils.finishingDegree,
+																		setState,
+																		index
+																		== 0 ?
+																		true :
+																		false,
+																		widget.pagesRefresher);
 													},
-													itemCount: finishingDegree.length
+													itemCount: widget.searchUtils.finishingDegree.length
 												);
 											},
 										);
@@ -296,8 +287,9 @@ class _SearchPageState extends State<SearchPage> {
 								)
 							),
 							onPressed: () async {
-								// apply the filters and sort
-								await _database.filterPropertiesBy(filterValues);
+								// refresh HomePage
+								viewModel.applyFilters();
+								widget.pagesRefresher.homePageRefresh();
 								Navigator.pop(context);
 							},
 						),

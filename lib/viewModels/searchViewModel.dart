@@ -1,24 +1,14 @@
-class SearchViewModel {
-	Map<String, String> defaultFilterValues = Map<String, String>();
+import 'package:MyProperty/utils/search/searchCategories.dart';
+import 'package:MyProperty/utils/stringHelp.dart';
 
-	SearchViewModel() {
-		defaultFilterValues = {
-			"adType" : "All",
-			"propertyType" : "All",
-			"size" : "All",
-			"finishingDegree" : "All",
-			// "startPrice" : "0",
-			// "endPrice" : "1000000000",
-			"buildingAge" : "All",
-			"bedroom" : "All",
-			"bathroom" : "All",
-			"livingroom" : "All",
-			"kitchen" : "All",
-			"balacone" : "All",
-			"reception" : "All",
-			"installments" : "All",
-			"negotiatable" : "All",
-			"city" : "All",
-		};
+class SearchViewModel {
+	SearchCategories searchCategories;
+	SearchViewModel(SearchCategories searchCaterories) {
+		this.searchCategories = searchCaterories;
+	}
+
+	void applyFilters() {
+		searchCategories.filterValues["adType"] =
+				StringHelp.singleFieldFilterPickerToString(searchCategories.adTypes);
 	}
 }

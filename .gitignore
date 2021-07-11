@@ -37,3 +37,6 @@ app.*.symbols
 app.*.map.json
 install.ps1
 *.txt
+
+__Flutter_Output__
+install.sh

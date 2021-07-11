@@ -1,3 +1,4 @@
+import 'package:MyProperty/utils/pagesRefresher.dart';
 import 'package:flutter/material.dart';
 
 class FilterCheckBox extends StatefulWidget {
@@ -5,8 +6,9 @@ class FilterCheckBox extends StatefulWidget {
 	final MapEntry<String, bool> entry;
 	final StateSetter listStateSetter;
 	final bool isAll;
-	final Function refreshSeachPage;
-	FilterCheckBox(this.entry, this.map, this.listStateSetter, this.isAll, this.refreshSeachPage);
+	final PagesRefresher pagesRefresher;
+	FilterCheckBox(this.entry, this.map, this.listStateSetter, this.isAll,
+			this.pagesRefresher);
 	@override
 	_FilterCheckBoxState createState() => _FilterCheckBoxState();
 }
@@ -72,7 +74,7 @@ class _FilterCheckBoxState extends State<FilterCheckBox> {
 							widget.map[widget.entry.key] = isChecked;
 							checkerHandler(widget.map, widget.isAll);
 						});
-						widget.refreshSeachPage();
+						widget.pagesRefresher.searchPageRefresh();
 					}
 				)
 			]

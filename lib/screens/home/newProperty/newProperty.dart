@@ -6,6 +6,7 @@ import 'package:MyProperty/screens/home/newProperty/ad%20type/rent.dart';
 import 'package:MyProperty/screens/home/newProperty/location.dart';
 import 'package:MyProperty/utils/boolean.dart';
 import 'package:MyProperty/utils/integer.dart';
+import 'package:MyProperty/utils/pagesRefresher.dart';
 import 'package:MyProperty/utils/showToast.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
 import 'package:MyProperty/viewModels/newPropertyViewModel.dart';
@@ -17,8 +18,9 @@ class NewPropertyPage extends StatefulWidget {
 	final Integer homePageIndex;
 	final Boolean isLoading;
 	final GlobalKey scaffoldKey;
-	final Function(Function fn) notifyParent;
-	NewPropertyPage(this.homePageIndex, this.notifyParent, this.isLoading, this.scaffoldKey);
+	final PagesRefresher pagesRefresher;
+	NewPropertyPage(this.homePageIndex, this.isLoading, this.scaffoldKey,
+			this.pagesRefresher);
 	@override
 	_NewPropertyPageState createState() => _NewPropertyPageState();
 }
@@ -649,20 +651,16 @@ class _NewPropertyPageState extends State<NewPropertyPage> {
 								),
 								onPressed: () async {
 									if (_validate()) {
-										widget.notifyParent(() {
-											widget.isLoading.myBool = true;
-										});
+										widget.isLoading.myBool = true;
+										widget.pagesRefresher.homeWrapperRefresh();
 										await propertyViewModel.uploadPropertyImages(_property.ownerUID, _property.uid, _images);
 										_property.imagesRefs = propertyViewModel.storeRefsToProperty(_property.ownerUID, _property.uid, _images);
 										_property.imagesURLs = await propertyViewModel.storeURLsToProperty(_property.imagesRefs);
 										ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Images added", duration: Duration(milliseconds: 800));
 										await propertyViewModel.createProperty(_property);
-										widget.notifyParent(() {
-											// return to homepage
-											widget.homePageIndex.myNum = 0;
-											// stop loading
-											widget.isLoading.myBool = false;
-										});
+										widget.homePageIndex.myNum = 0;
+										widget.isLoading.myBool = false;
+										widget.pagesRefresher.homeWrapperRefresh();
 										ShowToast(widget.scaffoldKey.currentContext).popUp(text: "Property added", duration: Duration(milliseconds: 800));
 									}
 								},

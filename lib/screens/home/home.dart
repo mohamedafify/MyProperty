@@ -1,46 +1,50 @@
-import 'dart:io';
 import 'package:MyProperty/screens/home/propertyView/propertyPreview.dart';
+import 'package:MyProperty/utils/pagesRefresher.dart';
 import 'package:MyProperty/utils/loading.dart';
-import 'package:MyProperty/utils/show_dialog.dart';
+import 'package:MyProperty/utils/search/searchCategories.dart';
 import 'package:MyProperty/viewModels/homeViewModel.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
 	final GlobalKey scaffoldKey;
-	Home(this.scaffoldKey);
+	final SearchCategories searchCategories;
+	final PagesRefresher pagesRefresher;
+	Home(this.scaffoldKey, this.searchCategories, this.pagesRefresher);
 	@override
 	_HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-	final HomeViewModel _homeViewModel = HomeViewModel();
+	void refresh() {
+		setState((){});
+	}
+	HomeViewModel _homeViewModel;
+	@override
+	void initState() {
+		_homeViewModel = HomeViewModel(widget.searchCategories);
+		widget.pagesRefresher.homePageRefresh = refresh;
+		super.initState();
+	}
 	@override
 	Widget build(BuildContext context) {
-		return WillPopScope(
-			onWillPop: () async{
-				bool confirmation = await ShowDialog().askForConfirmation(context, "Are you sure you want to exit?");
-				if (confirmation) {
-					exit(0);
-				}
-				return confirmation;
-			},
-			child: Container(
-				child: FutureBuilder(
-					future: _homeViewModel.getAllProperties(),
-					builder: (context, snapshot) {
-						if (snapshot.connectionState == ConnectionState.done) { 
-							return ListView.separated(
-								padding: EdgeInsets.only(top: 0),
-								separatorBuilder: (context, index) => Divider(color: Colors.black54),
-								itemBuilder: (_, index) => PropertyPreview(snapshot.data[index], widget.scaffoldKey),
-								itemCount: snapshot.data.length,
-							);
-						} else {
-							return Loading(Colors.blue);
-						}
-					},
-				)
-			),
+		return Container(
+			child: FutureBuilder(
+				future: _homeViewModel.filterProperties(),
+				builder: (context, snapshot) {
+					if (snapshot.connectionState == ConnectionState.done) { 
+						return ListView.separated(
+							padding: EdgeInsets.only(top: 0),
+							separatorBuilder: (context, index) => Divider(color: Colors.black54),
+							itemBuilder: (_, index) =>
+							PropertyPreview(snapshot.data[index],
+									widget.scaffoldKey),
+							itemCount: snapshot.data.length,
+						);
+					} else {
+						return Loading(Colors.blue);
+					}
+				},
+			)
 		);
 	}
 }

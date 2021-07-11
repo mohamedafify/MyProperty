@@ -1,11 +1,13 @@
 import 'package:MyProperty/screens/home/propertyView/propertyPreview.dart';
 import 'package:MyProperty/utils/loading.dart';
+import 'package:MyProperty/utils/pagesRefresher.dart';
 import 'package:MyProperty/viewModels/favouritePropertyViewModel.dart';
 import 'package:flutter/material.dart';
 
 class FavouritePropertiesPage extends StatefulWidget {
 	final GlobalKey scaffoldKey;
-	FavouritePropertiesPage(this.scaffoldKey);
+	final PagesRefresher pagesRefresher;
+	FavouritePropertiesPage(this.scaffoldKey, this.pagesRefresher);
 	@override
 	_FavouritePropertiesPageState createState() => _FavouritePropertiesPageState();
 }
@@ -13,6 +15,11 @@ class FavouritePropertiesPage extends StatefulWidget {
 class _FavouritePropertiesPageState extends State<FavouritePropertiesPage> {
 	void refresh(Function fn) {
 		setState(fn);
+	}
+	@override
+	void initState() {
+		widget.pagesRefresher.favouritePropertiesPageRefresh = refresh;
+		super.initState();
 	}
 	@override
 	Widget build(BuildContext context) {

@@ -24,4 +24,13 @@ class StringHelp {
 		});
 		return result;
 	}
+	static String singleFieldFilterPickerToString(Map<String, bool> map) {
+		String result = "";
+		map.forEach((key, value) {
+			if (value) {
+				result = key;
+			}
+		});
+		return result;
+	}
 }

@@ -2,8 +2,10 @@ import 'package:MyProperty/screens/home/favouriteProperty/favouriteProperties.da
 import 'package:MyProperty/screens/home/ownedProperty/ownedProperties.dart';
 import 'package:MyProperty/screens/home/search.dart';
 import 'package:MyProperty/utils/boolean.dart';
+import 'package:MyProperty/utils/pagesRefresher.dart';
 import 'package:MyProperty/utils/integer.dart';
 import 'package:MyProperty/utils/loading.dart';
+import 'package:MyProperty/utils/search/searchCategories.dart';
 import 'package:flutter/material.dart';
 import 'package:MyProperty/screens/home/home.dart';
 import 'package:MyProperty/screens/home/newProperty/newProperty.dart';
@@ -16,21 +18,27 @@ class HomeWrapper extends StatefulWidget {
 }
 
 class _HomeWrapperState extends State<HomeWrapper> {
-	refresh(Function fn) {
-		setState(fn);
+	void refresh() {
+		setState((){});
 	}
 	Integer index = Integer(0);
 	final List<Widget> navigationPages = List.empty(growable: true);
 	final List<String> navigationPagesNames = ["Home", "Owned Properties", "Add new property", "Settings", "Favourite properties"];
 	final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+	final SearchCategories searchCategories = SearchCategories();
+	final pagesRefresher = PagesRefresher();
 	Boolean isLoading = Boolean(false);
 	@override
 	void initState() {
-		navigationPages.add(Home(_scaffoldKey));
-		navigationPages.add(OwnedPropertiesPage(_scaffoldKey));
-		navigationPages.add(NewPropertyPage(index, refresh, isLoading, _scaffoldKey));
-		navigationPages.add(Settings());
-		navigationPages.add(FavouritePropertiesPage(_scaffoldKey));
+		pagesRefresher.homeWrapperRefresh = refresh;
+		navigationPages.add(Home(_scaffoldKey, searchCategories,
+						pagesRefresher));
+		navigationPages.add(OwnedPropertiesPage(_scaffoldKey, pagesRefresher));
+		navigationPages.add(NewPropertyPage(index, isLoading,
+						_scaffoldKey, pagesRefresher));
+		navigationPages.add(Settings(pagesRefresher));
+		navigationPages.add(FavouritePropertiesPage(_scaffoldKey,
+						pagesRefresher));
 		super.initState();
 	}
 	@override
@@ -88,7 +96,10 @@ class _HomeWrapperState extends State<HomeWrapper> {
 									onPressed: () {
 										Navigator.push(
 											context,
-											MaterialPageRoute(builder: (context) => SearchPage()),
+											MaterialPageRoute(builder:
+													(context) =>
+													SearchPage(searchCategories,
+															pagesRefresher)),
 										);
 									},
 								),

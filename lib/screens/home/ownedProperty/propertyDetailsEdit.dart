@@ -556,10 +556,10 @@ class _PropertyDetailsEditState extends State<PropertyDetailsEdit> {
 										),
 									),
 									onPressed: () async {
-										setState(() {
-											isLoading.myBool = true;
-										});
 										if (_validate()) {
+											setState(() {
+												isLoading.myBool = true;
+											});
 											if (_images.isNotEmpty) {
 												await propertyViewModel.uploadPropertyImages(widget._property.ownerUID, widget._property.uid, _images);
 												widget._property.imagesRefs.addAll(propertyViewModel.storeRefsToProperty(widget._property.ownerUID, widget._property.uid, _images));

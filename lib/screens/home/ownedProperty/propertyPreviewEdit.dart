@@ -1,5 +1,6 @@
 import 'package:MyProperty/models/property.dart';
 import 'package:MyProperty/screens/home/ownedProperty/propertyDetailsEdit.dart';
+import 'package:MyProperty/utils/pagesRefresher.dart';
 import 'package:MyProperty/utils/screen.dart';
 import 'package:MyProperty/utils/show_dialog.dart';
 import 'package:MyProperty/utils/stringHelp.dart';
@@ -11,8 +12,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class PropertyPreviewEdit extends StatefulWidget {
 	final Property _property;
 	final GlobalKey scaffoldKey;
-	final Function refresh;
-	PropertyPreviewEdit(this._property, this.scaffoldKey, this.refresh);
+	final PagesRefresher pagesRefresher;
+	PropertyPreviewEdit(this._property, this.scaffoldKey, this.pagesRefresher);
 	@override
 	_PropertyPreviewEditState createState() => _PropertyPreviewEditState();
 }
@@ -127,7 +128,11 @@ class _PropertyPreviewEditState extends State<PropertyPreviewEdit> {
 										onPressed: () {
 											Navigator.push(
 												context,
-												MaterialPageRoute(builder: (context) => PropertyDetailsEdit(widget._property, widget.scaffoldKey, widget.refresh))
+												MaterialPageRoute(builder:
+														(context) =>
+														PropertyDetailsEdit(widget._property,
+																widget.scaffoldKey,
+																widget.pagesRefresher.ownedPropertiesPageRefresh))
 											);
 										},
 									),
@@ -151,7 +156,7 @@ class _PropertyPreviewEditState extends State<PropertyPreviewEdit> {
 												bool confirmed = await ShowDialog().askForConfirmation(context, "Are you sure you want to delete ?");
 												if (confirmed) {
 													await _viewModel.deleteProperty(widget._property.uid, widget._property.imagesRefs, widget._property.favouritedByUsersUIDs);
-													widget.refresh();
+													widget.pagesRefresher.ownedPropertiesPageRefresh();
 												}
 										},
 									),
